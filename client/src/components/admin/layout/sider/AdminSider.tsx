@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu } from 'antd';
-import Sider from 'antd/es/layout/Sider';
 import { CloudOutlined } from '@ant-design/icons';
+import Sider from 'antd/es/layout/Sider';
 
 import { items } from './menu-items';
 
-import styles from './admin-sider.module.scss';
+import styles from './AdminSider.module.scss';
 
 export default function AdminSider() {
-	const [collapsed, setCollapsed] = useState(false);
+	const [collapsed, setCollapsed] = useState(!!localStorage.getItem('adminSider'));
+	const navigate = useNavigate();
+
+	function onCollapseSider(value: boolean) {
+		if (value) {
+			localStorage.setItem('adminSider', `${value}`);
+		} else {
+			localStorage.removeItem('adminSider');
+		}
+
+		setCollapsed(value);
+	}
 
 	return (
 		<Sider
@@ -16,7 +28,7 @@ export default function AdminSider() {
 			width={250}
 			collapsible
 			collapsed={collapsed}
-			onCollapse={(value) => setCollapsed(value)}
+			onCollapse={onCollapseSider}
 		>
 			<div className={styles.siderWrapper}>
 				<div className={styles.siderHeader}>
@@ -27,9 +39,10 @@ export default function AdminSider() {
 				</div>
 				<Menu
 					theme="dark"
-					defaultSelectedKeys={['1']}
 					mode="inline"
 					items={items}
+					onClick={({ key }) => navigate(key)}
+					selectedKeys={[window.location.pathname]}
 				/>
 			</div>
 		</Sider>

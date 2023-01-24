@@ -2,7 +2,7 @@ import Title from 'antd/es/typography/Title';
 import { Button } from 'antd';
 import { BookOutlined } from '@ant-design/icons';
 
-import TableSubjects from '../../subjects/table-subjects/table-subjects';
+import TableSubjects from '../../subjects/table-subjects/TableSubjects';
 
 export default function SubjectsPage() {
 	return (
@@ -19,7 +19,8 @@ export default function SubjectsPage() {
 					size="large"
 					icon={<BookOutlined />}
 				>
-					Додати новий предмет</Button>
+					Додати новий предмет
+				</Button>
 			</div>
 			<TableSubjects />
 		</>

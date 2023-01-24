@@ -1,25 +1,25 @@
 import React from 'react';
+import { ItemType } from 'antd/es/menu/hooks/useItems';
 import {
 	AreaChartOutlined,
 	BookOutlined,
 	TeamOutlined,
 	BankOutlined,
 	UserOutlined,
-    SettingOutlined,
+	SettingOutlined,
+	LogoutOutlined,
 } from '@ant-design/icons';
 
-export interface MenuItem {
-	label: React.ReactNode,
-	key: React.Key,
-	icon?: React.ReactNode,
-	children?: MenuItem[]
+function getKey(url: string): React.Key {
+	return `/admin${url}`;
 }
 
-export const items: MenuItem[] = [
-	{ label: 'Статистика', icon: <AreaChartOutlined /> },
-	{ label: 'Предмети', icon: <BookOutlined /> },
-	{ label: 'Класи', icon: <TeamOutlined /> },
-	{ label: 'Викладання предметів', icon: <BankOutlined /> },
-	{ label: 'Користувачі', icon: <UserOutlined /> },
-	{ label: 'Налаштування', icon: <SettingOutlined /> },
-].map((item, index) => ({ ...item, key: index + 1 }));
+export const items: ItemType[] = [
+	{ key: getKey('/statistics'), label: 'Статистика', icon: <AreaChartOutlined /> },
+	{ key: getKey('/subjects'), label: 'Предмети', icon: <BookOutlined /> },
+	{ key: getKey('/classes'), label: 'Класи', icon: <TeamOutlined /> },
+	{ key: getKey('/educations'), label: 'Викладання предметів', icon: <BankOutlined /> },
+	{ key: getKey('/users'), label: 'Користувачі', icon: <UserOutlined /> },
+	{ key: getKey('/settings'), label: 'Налаштування', icon: <SettingOutlined /> },
+	{ key: getKey('/logout'), label: 'Вихід', icon: <LogoutOutlined /> }
+];

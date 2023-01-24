@@ -1,14 +1,17 @@
+import React from 'react';
 import { Content } from 'antd/es/layout/layout';
 
-import SubjectsPage from '../../subjects/subjects-page/subjects-page';
+import styles from './Main.module.scss';
 
-import './main.css';
+interface Props {
+	children?: React.ReactNode;
+}
 
-export default function Main() {
+export default function Main({ children }: Props) {
 	return (
-		<Content className="container">
-			<div className="wrapper">
-				<SubjectsPage/>
+		<Content className={styles.container}>
+			<div className={styles.wrapper}>
+				{children}
 			</div>
 		</Content>
 	);

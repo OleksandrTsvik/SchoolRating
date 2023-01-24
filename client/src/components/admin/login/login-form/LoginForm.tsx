@@ -1,13 +1,30 @@
 import React from 'react';
-import { Button, Form, Input } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-
-import styles from './login-form.module.scss';
+import { Alert, Button, Form, Input } from 'antd';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { rules } from './rules';
+import { CustomError, useLoginMutation } from '../../../../api/auth/authAdminApi';
+import { logIn } from '../../../../api/auth/authAdminSlice';
+
+import styles from './LoginForm.module.scss';
 
 export default function LoginForm() {
-	function onFinish(values: any) {
-		console.log('Received values of form: ', values);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const [login, { isLoading, isError, error }] = useLoginMutation();
+
+	async function onFinish(values: any) {
+		try {
+			const payload = await login(values).unwrap();
+			dispatch(logIn(payload));
+			navigate('/admin');
+		} catch (e) {
+			console.log(e);
+		}
 	}
 
 	return (
@@ -22,32 +39,43 @@ export default function LoginForm() {
 				Адмін-панель
 			</Title>
 
+			{isError &&
+				<Alert
+					className="mb-3"
+					message={(error as CustomError).data.message}
+					type="error"
+					showIcon
+				/>
+			}
+
 			<Form.Item
+				hasFeedback
 				name="email"
-				rules={[{ required: true, message: 'Please input your Email!' }]}
+				rules={rules.email}
 			>
 				<Input
-					prefix={<UserOutlined className="site-form-item-icon" />}
+					prefix={<MailOutlined />}
 					placeholder="Email"
 				/>
 			</Form.Item>
 
 			<Form.Item
+				hasFeedback
 				name="password"
-				rules={[{ required: true, message: 'Please input your Password!' }]}
+				rules={rules.password}
 			>
-				<Input
-					prefix={<LockOutlined className="site-form-item-icon" />}
-					type="password"
+				<Input.Password
+					prefix={<LockOutlined />}
 					placeholder="Пароль"
 				/>
 			</Form.Item>
 
 			<Form.Item>
 				<Button
+					className={styles.loginFormButton}
 					type="primary"
 					htmlType="submit"
-					className={styles.loginFormButton}
+					loading={isLoading}
 				>
 					Увійти
 				</Button>
