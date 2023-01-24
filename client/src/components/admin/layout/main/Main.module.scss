@@ -1,10 +1,12 @@
-.container {
+.admin {
+  .container {
     margin: 16px 16px 0 16px;
     background: #F5F5F5;
-}
+  }
 
-.wrapper {
+  .wrapper {
     padding: 16px 24px;
     min-height: calc(100vh - (16px * 2) - 52px);
     background: #FFFFFF;
+  }
 }

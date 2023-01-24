@@ -1,25 +1,31 @@
 import {
-	Body,
 	Controller,
 	Delete,
 	Get,
 	NotFoundException,
 	Param,
-	Post,
-	Put
+	Put,
+	UseGuards
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { AdminDto } from './dto/admin-dto';
+import { JwtAuthGuard } from '../authorization/guards/jwt.guard';
+import { UpdateDto } from './dto/update.dto';
 
 @Controller('admin')
+@UseGuards(JwtAuthGuard)
 export class AdminController {
 	constructor(
 		private readonly adminService: AdminService
 	) {}
 
-	@Post('register')
-	async register(@Body() dto: AdminDto) {
-		return this.adminService.register(dto);
+	@Get()
+	async findAll() {
+		const admins = await this.adminService.getAll();
+
+		return admins.map(admin => {
+			const { password, ...result } = admin;
+			return result;
+		});
 	}
 
 	@Get(':id')
@@ -29,7 +35,9 @@ export class AdminController {
 			throw new NotFoundException();
 		}
 
-		return admin;
+		const { password, ...result } = admin;
+
+		return result;
 	}
 
 	@Delete(':id')
@@ -38,7 +46,7 @@ export class AdminController {
 	}
 
 	@Put(':id')
-	async update(id: string, @Body() dto: AdminDto) {
+	async update(@Param('id') id: string, dto: UpdateDto) {
 		return this.adminService.update(id, dto);
 	}
 }

@@ -5,9 +5,9 @@ export class AdminModel {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
-	@Column('varchar', { unique: true, length: 64 })
+	@Column('varchar', {unique: true, length: 64})
 	email: string;
 
-	@Column('varchar', { length: 256 })
+	@Column('varchar', {length: 256})
 	password: string;
 }

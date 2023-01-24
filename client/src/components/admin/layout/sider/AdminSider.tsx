@@ -5,20 +5,21 @@ import { CloudOutlined } from '@ant-design/icons';
 
 import { items } from './menu-items';
 
-import './admin-sider.css';
+import styles from './admin-sider.module.scss';
 
 export default function AdminSider() {
 	const [collapsed, setCollapsed] = useState(false);
 
 	return (
 		<Sider
+			className={styles.antLayoutSider}
 			width={250}
 			collapsible
 			collapsed={collapsed}
 			onCollapse={(value) => setCollapsed(value)}
 		>
-			<div className="sider-wrapper">
-				<div className="sider-header">
+			<div className={styles.siderWrapper}>
+				<div className={styles.siderHeader}>
 					{collapsed
 						? <CloudOutlined />
 						: 'School'
