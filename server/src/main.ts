@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 import { AdminSeedService } from './admin/admin.seed.service';
 
 async function bootstrap() {
@@ -9,6 +10,7 @@ async function bootstrap() {
 	app.setGlobalPrefix('api');
 	app.enableCors();
 
+	app.use(cookieParser());
 	app.useGlobalPipes(new ValidationPipe());
 
 	app.get(AdminSeedService);

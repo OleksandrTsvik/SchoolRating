@@ -1,18 +1,19 @@
 import {
+	ClassSerializerInterceptor,
 	Controller,
 	Delete,
 	Get,
-	NotFoundException,
 	Param,
 	Put,
-	UseGuards
+	UseGuards, UseInterceptors
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { JwtAuthGuard } from '../authorization/guards/jwt.guard';
+import { JwtAuthGuard } from '../authentication/guards/jwt.guard';
 import { UpdateDto } from './dto/update.dto';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 export class AdminController {
 	constructor(
 		private readonly adminService: AdminService
@@ -20,24 +21,12 @@ export class AdminController {
 
 	@Get()
 	async findAll() {
-		const admins = await this.adminService.getAll();
-
-		return admins.map(admin => {
-			const { password, ...result } = admin;
-			return result;
-		});
+		return this.adminService.getAll();
 	}
 
 	@Get(':id')
 	async findOne(@Param('id') id: string) {
-		const admin = await this.adminService.findById(id);
-		if (!admin) {
-			throw new NotFoundException();
-		}
-
-		const { password, ...result } = admin;
-
-		return result;
+		return this.adminService.findById(id);
 	}
 
 	@Delete(':id')

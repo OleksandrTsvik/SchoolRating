@@ -1,8 +1,23 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+	Body,
+	ClassSerializerInterceptor,
+	Controller,
+	HttpCode,
+	HttpStatus,
+	Post,
+	Put,
+	Req,
+	UseGuards,
+	UseInterceptors
+} from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
+import { JwtRefreshTokenGuard } from '../authentication/guards/jwt-refresh-token.guard';
+import RequestWithUser from '../authentication/request-with-user.interface';
+import { JwtAuthGuard } from '../authentication/guards/jwt.guard';
 
 @Controller('admin')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService
@@ -13,10 +28,32 @@ export class AuthController {
 		return this.authService.register(dto);
 	}
 
-	@HttpCode(200)
+	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	async login(@Body() dto: AuthDto) {
-		const { email } = await this.authService.validate(dto);
-		return this.authService.login(email);
+	async login(@Req() request: RequestWithUser, @Body() dto: AuthDto) {
+		const { id } = await this.authService.validate(dto);
+		const { user, cookies: { cookieRefresh, cookieAuthentication } } = await this.authService.login(id);
+
+		request.res?.setHeader('Set-Cookie', [cookieRefresh, cookieAuthentication]);
+
+		return user;
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@HttpCode(HttpStatus.OK)
+	@Post('logout')
+	async logout(@Req() request: RequestWithUser) {
+		const cookies = await this.authService.logout(request.user?.id);
+
+		request.res?.setHeader('Set-Cookie', cookies);
+	}
+
+	@UseGuards(JwtRefreshTokenGuard)
+	@Put('refresh')
+	async refresh(@Req() request: RequestWithUser) {
+		const { cookieAuthentication } = await this.authService.getCookieWithJwtAccessToken(request.user?.id);
+
+		request.res?.setHeader('Set-Cookie', cookieAuthentication);
+		return request.user;
 	}
 }
