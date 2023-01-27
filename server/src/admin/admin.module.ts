@@ -16,11 +16,6 @@ import { AdminSeedService } from './admin.seed.service';
 	imports: [
 		TypeOrmModule.forFeature([AdminEntity]),
 		JwtModule.register({}),
-		// JwtModule.registerAsync({
-		// 	imports: [ConfigModule],
-		// 	inject: [ConfigService],
-		// 	useFactory: getJwtAccessTokenConfig
-		// }),
 		PassportModule,
 		ConfigModule
 	],
