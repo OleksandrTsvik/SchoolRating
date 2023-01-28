@@ -1,0 +1,7 @@
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: linear-gradient(#64B5F6, transparent 1px), linear-gradient(90deg, #64B5F6, transparent 1px) center center;
+  background-size: 15px 15px;
+}

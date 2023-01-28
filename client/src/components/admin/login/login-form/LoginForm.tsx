@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { rules } from './rules';
-import { CustomError, useLoginMutation } from '../../../../api/auth/authAdminApi';
+import { ApiError, useLoginMutation } from '../../../../api/auth/authAdminApi';
 import { logIn } from '../../../../api/auth/authAdminSlice';
 
 import styles from './LoginForm.module.scss';
@@ -22,8 +22,8 @@ export default function LoginForm() {
 			const payload = await login(values).unwrap();
 			dispatch(logIn(payload));
 			navigate('/admin');
-		} catch (e) {
-			console.log(e);
+		} catch (error) {
+			// console.log(error);
 		}
 	}
 
@@ -42,7 +42,7 @@ export default function LoginForm() {
 			{isError &&
 				<Alert
 					className="mb-3"
-					message={(error as CustomError).data.message}
+					message={(error as ApiError)?.data?.message || 'Виникла помилка під час входу'}
 					type="error"
 					showIcon
 				/>

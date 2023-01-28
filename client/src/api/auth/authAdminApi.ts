@@ -1,20 +1,11 @@
-import {
-	BaseQueryFn,
-	createApi,
-	FetchArgs,
-	fetchBaseQuery
-} from '@reduxjs/toolkit/query/react';
-import { RootState } from '../../store';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { Role } from './role.enum';
+import authAdminFetchBase from './authAdminFetchBase';
+import { setAdmin } from './authAdminSlice';
 
 export interface Admin {
-	email: string;
+	id: string;
 	role: Role;
-}
-
-export interface AdminResponse {
-	user: Admin;
-	token: string;
 }
 
 export interface LoginRequest {
@@ -22,7 +13,7 @@ export interface LoginRequest {
 	password: string;
 }
 
-export interface CustomError {
+export interface ApiError {
 	data: {
 		error: string,
 		message: string,
@@ -32,25 +23,47 @@ export interface CustomError {
 }
 
 export const authAdminApi = createApi({
-	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://localhost:3001/api/admin',
-		prepareHeaders: (headers, { getState }) => {
-			const { token } = (getState() as RootState).authAdmin;
-			if (token) {
-				headers.set('authorization', `Bearer ${token}`);
-			}
-			return headers;
-		}
-	}) as BaseQueryFn<string | FetchArgs, unknown, CustomError, {}>,
+	baseQuery: authAdminFetchBase,
+	tagTypes: ['Admin'],
 	endpoints: (builder) => ({
-		login: builder.mutation<AdminResponse, LoginRequest>({
+		login: builder.mutation<Admin, LoginRequest>({
 			query: (credentials) => ({
 				url: '/login',
 				method: 'POST',
 				body: credentials,
+				providesTags: ['Admin'],
+				credentials: 'include'
 			})
+		}),
+		logout: builder.mutation<void, void>({
+			query: () => ({
+				url: '/logout',
+				method: 'POST',
+				providesTags: ['Admin'],
+				credentials: 'include'
+			})
+		}),
+		getAdmin: builder.query<Admin, void>({
+			query: () => ({
+				url: '/me',
+				providesTags: ['Admin'],
+				credentials: 'include'
+			}),
+			transformResponse: (result: Admin) => result,
+			onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+				try {
+					const { data } = await queryFulfilled;
+					dispatch(setAdmin(data));
+				} catch (error) {
+					// console.log(error);
+				}
+			}
 		})
 	}),
 });
 
-export const { useLoginMutation } = authAdminApi;
+export const {
+	useLoginMutation,
+	useLogoutMutation,
+	useGetAdminQuery
+} = authAdminApi;

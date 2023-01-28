@@ -4,21 +4,21 @@ import { Outlet } from 'react-router-dom';
 
 import AdminFooter from '../../layout/footer/AdminFooter';
 import AdminSider from '../../layout/sider/AdminSider';
-import Main from '../../layout/main/Main';
+import AdminMain from '../../layout/main/AdminMain';
 
 import styles from './LayoutPage.module.scss';
 
 export default function LayoutPage() {
-    return (
-        <Layout className={styles.admin}>
-            <AdminSider />
+	return (
+		<Layout className={styles.admin}>
+			<AdminSider />
 
-            <Layout className="site-layout">
-                <Main>
-                    <Outlet />
-                </Main>
-                <AdminFooter />
-            </Layout>
-        </Layout>
-    );
+			<Layout className="site-layout">
+				<AdminMain>
+					<Outlet />
+				</AdminMain>
+				<AdminFooter />
+			</Layout>
+		</Layout>
+	);
 };

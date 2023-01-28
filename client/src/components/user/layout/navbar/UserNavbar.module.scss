@@ -1,0 +1,72 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: #001529;
+}
+
+.logo, .btnBars {
+  line-height: 46px;
+  color: #ffffff;
+  background-color: #212529;
+  transition: color 0.5s, background-color 0.5s, background-size 0.8s ease;
+
+  background-image: linear-gradient(#595959, #595959);
+  background-size: 0 3px;
+  background-repeat: no-repeat;
+  background-position: 50% 100%; //calc(100% - 3px)
+}
+
+.logo {
+  display: inline-block;
+  user-select: none;
+  font-family: 'Trebuchet MS', sans-serif;
+  letter-spacing: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+}
+
+.logo:hover, .btnBars:hover {
+  color: #212529;
+  background-color: #ffffff;
+
+  background-size: 100% 3px;
+}
+
+.menuContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btnBars {
+  cursor: pointer;
+  font-size: 24px;
+  display: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: auto;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .btnBars {
+    display: block;
+  }
+
+  .menuContainer {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .btnBars {
+    margin-right: 1rem;
+  }
+
+  .logo {
+    margin-left: 1rem;
+  }
+}

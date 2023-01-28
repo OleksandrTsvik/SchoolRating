@@ -2,3 +2,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.ant-layout-sider.ant-layout-sider-dark.ant-layout-sider-has-trigger .ant-layout-sider-trigger {
+  bottom: unset !important;
+}

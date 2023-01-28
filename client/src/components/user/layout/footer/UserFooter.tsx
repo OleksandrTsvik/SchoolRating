@@ -1,8 +1,12 @@
 import { Footer } from 'antd/es/layout/layout';
 
-export default function AdminFooter() {
+import styles from './UserFooter.module.scss';
+
+export default function UserFooter() {
 	return (
-		<Footer className="text-center">
+		<Footer
+			className={`${styles.footer} text-white px-3 py-4`}
+		>
 			{/*© 2023 - {(new Date()).getFullYear()}. Copyright:&ensp;*/}
 			© 2023. Copyright:&ensp;
 			<a
