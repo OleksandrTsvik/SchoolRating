@@ -1,6 +1,8 @@
 import * as Joi from '@hapi/joi';
 
 export const validationSchemaConfig = Joi.object({
+	FRONTEND_URL: Joi.string().required(),
+
 	POSTGRES_HOST: Joi.string().required(),
 	POSTGRES_PORT: Joi.string().required(),
 	POSTGRES_USERNAME: Joi.string().required(),

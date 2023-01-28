@@ -2,6 +2,7 @@ import {
 	Body,
 	ClassSerializerInterceptor,
 	Controller,
+	Get,
 	HttpCode,
 	HttpStatus,
 	Post,
@@ -16,7 +17,7 @@ import { JwtRefreshTokenGuard } from '../authentication/guards/jwt-refresh-token
 import RequestWithUser from '../authentication/request-with-user.interface';
 import { JwtAuthGuard } from '../authentication/guards/jwt.guard';
 
-@Controller('admin')
+@Controller('admin/auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
 	constructor(
@@ -46,6 +47,12 @@ export class AuthController {
 		const cookies = await this.authService.logout(request.user?.id);
 
 		request.res?.setHeader('Set-Cookie', cookies);
+	}
+
+	@UseGuards(JwtAuthGuard)
+	@Get('/me')
+	async me(@Req() request: RequestWithUser) {
+		return request.user;
 	}
 
 	@UseGuards(JwtRefreshTokenGuard)
