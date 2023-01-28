@@ -18,7 +18,7 @@ export default function UserNavbar() {
 
 	return (
 		<Header className={styles.header}>
-			<div className="container d-flex align-items-center">
+			<div className={`container ${styles.wrapper}`}>
 				<Link
 					className={styles.logo}
 					to="/"

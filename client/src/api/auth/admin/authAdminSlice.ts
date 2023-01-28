@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Admin, authAdminApi } from './authAdminApi';
-import { RootState } from '../../store';
+import { RootState } from '../../../store';
 
 interface initState {
 	admin: Admin | null | undefined;
@@ -10,7 +10,7 @@ const initialState: initState = {
 	admin: null
 };
 
-const authSlice = createSlice({
+const authAdminSlice = createSlice({
 	name: 'authAdmin',
 	initialState: initialState,
 	reducers: {
@@ -36,8 +36,8 @@ const authSlice = createSlice({
 			})
 });
 
-export const { logout } = authSlice.actions;
+export default authAdminSlice.reducer;
 
-export default authSlice.reducer;
+export const { logout } = authAdminSlice.actions;
 
 export const selectCurrentAdmin = (state: RootState) => state.authAdmin.admin;

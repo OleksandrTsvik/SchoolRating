@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 
-import { selectCurrentAdmin } from '../api/auth/authAdminSlice';
+import { selectCurrentAdmin } from '../api/auth/admin/authAdminSlice';
 import { Role } from '../api/auth/role.enum';
+import { useAppSelector } from '../store';
 
 export default function useAdminAuth() {
-	const admin = useSelector(selectCurrentAdmin);
+	const admin = useAppSelector(selectCurrentAdmin);
 
 	return useMemo(() => ({
 		admin,

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useLogoutMutation } from '../../../../api/auth/authAdminApi';
+import { useLogoutMutation } from '../../../../api/auth/admin/authAdminApi';
 import LoadingPage from '../../../../utils/loading/LoadingPage';
 import useAdminAuth from '../../../../hooks/useAdminAuth';
 

@@ -1,8 +1,11 @@
 import { Menu } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { ItemType } from 'antd/es/menu/hooks/useItems';
 
 import { HomeItemType } from './menu-items';
+import { useAppSelector } from '../../../../store';
+import { selectCurrentUser } from '../../../../api/auth/user/authUserSlice';
 
 interface Props {
 	theme: 'light' | 'dark';
@@ -12,14 +15,13 @@ interface Props {
 }
 
 export default function MenuNavbar({ theme, mode, items, onCloseDrawer }: Props) {
-	const navigate = useNavigate();
+	const user = useAppSelector(selectCurrentUser);
+	const location = useLocation();
 
 	function onClickItem(info: MenuInfo) {
 		if (onCloseDrawer) {
 			onCloseDrawer();
 		}
-
-		navigate(info.key);
 	}
 
 	return (
@@ -27,9 +29,17 @@ export default function MenuNavbar({ theme, mode, items, onCloseDrawer }: Props)
 			theme={theme}
 			mode={mode}
 			disabledOverflow={true}
-			items={items}
+			items={
+				(user
+					? items.filter(item => item.rolesAccess?.includes(user.role))
+					: items.filter(item => item.rolesAccess?.length === 0))
+					.map(item => {
+						const { rolesAccess, ...newItem } = item;
+						return newItem as ItemType;
+					})
+			}
 			onClick={onClickItem}
-			selectedKeys={[window.location.pathname]}
+			selectedKeys={[location.pathname]}
 		/>
 	);
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
 import { CloudOutlined } from '@ant-design/icons';
 import Sider from 'antd/es/layout/Sider';
@@ -10,7 +10,7 @@ import styles from './AdminSider.module.scss';
 
 export default function AdminSider() {
 	const [collapsed, setCollapsed] = useState(!!localStorage.getItem('adminSider'));
-	const navigate = useNavigate();
+	const location = useLocation();
 
 	function onCollapseSider(value: boolean) {
 		if (value) {
@@ -31,18 +31,20 @@ export default function AdminSider() {
 			onCollapse={onCollapseSider}
 		>
 			<div className={styles.siderWrapper}>
-				<div className={styles.siderHeader}>
+				<Link
+					to="/"
+					className={styles.siderHeader}
+				>
 					{collapsed
 						? <CloudOutlined />
 						: 'School'
 					}
-				</div>
+				</Link>
 				<Menu
 					theme="dark"
 					mode="inline"
 					items={items}
-					onClick={({ key }) => navigate(key)}
-					selectedKeys={[window.location.pathname]}
+					selectedKeys={[location.pathname]}
 				/>
 			</div>
 		</Sider>

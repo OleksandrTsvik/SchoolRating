@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import LoadingPage from './loading/LoadingPage';
-import { useGetAdminQuery } from '../api/auth/authAdminApi';
+import { useGetAdminQuery } from '../api/auth/admin/authAdminApi';
 
 interface Props {
 	children: React.ReactNode;

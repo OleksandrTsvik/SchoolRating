@@ -9,17 +9,26 @@ import {
 	SettingOutlined,
 	LogoutOutlined,
 } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
-function getKey(url: string): React.Key {
+function getKey(url: string): string {
 	return `/admin${url}`;
 }
 
+function getItem(url: string, label: string, icon: React.ReactNode): ItemType {
+	return {
+		key: getKey(url),
+		label: <Link to={getKey(url)}>{label}</Link>,
+		icon
+	};
+}
+
 export const items: ItemType[] = [
-	{ key: getKey('/statistics'), label: 'Статистика', icon: <AreaChartOutlined /> },
-	{ key: getKey('/subjects'), label: 'Предмети', icon: <BookOutlined /> },
-	{ key: getKey('/classes'), label: 'Класи', icon: <TeamOutlined /> },
-	{ key: getKey('/educations'), label: 'Викладання предметів', icon: <BankOutlined /> },
-	{ key: getKey('/users'), label: 'Користувачі', icon: <UserOutlined /> },
-	{ key: getKey('/settings'), label: 'Налаштування', icon: <SettingOutlined /> },
-	{ key: getKey('/logout'), label: 'Вихід', icon: <LogoutOutlined /> }
+	getItem('/statistics', 'Статистика', <AreaChartOutlined />),
+	getItem('/subjects', 'Предмети', <BookOutlined />),
+	getItem('/classes', 'Класи', <TeamOutlined />),
+	getItem('/educations', 'Викладання предметів', <BankOutlined />),
+	getItem('/users', 'Користувачі', <UserOutlined />),
+	getItem('/settings', 'Налаштування', <SettingOutlined />),
+	getItem('/logout', 'Вихід', <LogoutOutlined />)
 ];

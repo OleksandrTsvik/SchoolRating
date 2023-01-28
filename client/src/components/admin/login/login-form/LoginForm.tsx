@@ -5,7 +5,7 @@ import Title from 'antd/es/typography/Title';
 import { useNavigate } from 'react-router-dom';
 
 import { rules } from './rules';
-import { ApiError, useLoginMutation } from '../../../../api/auth/authAdminApi';
+import { ApiError, useLoginMutation } from '../../../../api/auth/admin/authAdminApi';
 
 import styles from './LoginForm.module.scss';
 

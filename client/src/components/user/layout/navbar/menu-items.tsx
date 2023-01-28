@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { LogoutOutlined } from '@ant-design/icons';
 
@@ -17,8 +18,9 @@ function getItem(
 ): HomeItemType {
 	return {
 		key: url,
-		label,
+		label: <Link to={url}>{label}</Link>,
 		icon,
+		rolesAccess,
 		className
 	};
 }

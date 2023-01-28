@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Role } from './role.enum';
+import { Role } from '../role.enum';
 import authAdminFetchBase from './authAdminFetchBase';
 
 export interface Admin {
@@ -40,16 +40,7 @@ export const authAdminApi = createApi({
 		getAdmin: builder.query<Admin, void>({
 			query: () => ({
 				url: '/me'
-			}),
-			// transformResponse: (result: Admin) => result,
-			// onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
-			// 	try {
-			// 		const { data } = await queryFulfilled;
-			// 		dispatch(setAdmin(data));
-			// 	} catch (error) {
-			// 		// console.log(error);
-			// 	}
-			// }
+			})
 		})
 	}),
 });

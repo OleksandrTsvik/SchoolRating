@@ -1,0 +1,11 @@
+.cardImg {
+  max-height: 235px;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cardMeta div {
+  text-align: center;
+  white-space: normal !important;
+  text-overflow: clip !important;
+}

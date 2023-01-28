@@ -6,6 +6,11 @@
   background-color: #001529;
 }
 
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .logo, .btnBars {
   line-height: 46px;
   color: #ffffff;
@@ -62,6 +67,10 @@
 }
 
 @media (max-width: 576px) {
+  .wrapper {
+    flex-wrap: wrap;
+  }
+
   .btnBars {
     margin-right: 1rem;
   }

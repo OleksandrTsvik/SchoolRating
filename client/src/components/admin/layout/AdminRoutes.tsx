@@ -12,7 +12,7 @@ export default (
 	<>
 		<Route path="admin/login" element={<LoginPage />} />
 		<Route path="admin" element={<PrivateOutlet />}>
-			<Route index element={<Navigate to="subjects" />} />
+			<Route index element={<Navigate to="subjects" replace />} />
 			<Route path="logout" element={<LogoutPage />} />
 			<Route path="subjects" element={<SubjectsPage />} />
 			<Route path="*" element={<NotFoundPage />} />
