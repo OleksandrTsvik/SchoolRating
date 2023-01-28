@@ -5,13 +5,14 @@ import {
 	FetchBaseQueryError,
 } from '@reduxjs/toolkit/query';
 import { Mutex } from 'async-mutex';
-import { logOut } from './authAdminSlice';
+import { logout } from './authAdminSlice';
 
 // create a new mutex
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
 	baseUrl: 'http://localhost:3001/api/admin/auth',
+	credentials: 'include'
 });
 
 const authAdminFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
@@ -29,8 +30,7 @@ const authAdminFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQuer
 				const refreshResult = await baseQuery(
 					{
 						url: '/refresh',
-						method: 'PUT',
-						credentials: 'include',
+						method: 'PUT'
 					},
 					api,
 					extraOptions
@@ -40,7 +40,7 @@ const authAdminFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQuer
 					// Retry the initial query
 					result = await baseQuery(args, api, extraOptions);
 				} else {
-					api.dispatch(logOut());
+					api.dispatch(logout());
 				}
 			} finally {
 				// release must be called once the mutex should be released again

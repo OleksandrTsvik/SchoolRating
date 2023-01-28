@@ -1,19 +1,22 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
-import { logOut } from '../../../../api/auth/authAdminSlice';
 import { useLogoutMutation } from '../../../../api/auth/authAdminApi';
+import LoadingPage from '../../../../utils/loading/LoadingPage';
+import useAdminAuth from '../../../../hooks/useAdminAuth';
 
 export default function LogoutPage() {
-	const dispatch = useDispatch();
-	const [logout] = useLogoutMutation();
+	const { isAuth } = useAdminAuth();
+	const [logout, { isLoading }] = useLogoutMutation();
 
 	useEffect(() => {
 		logout();
-		dispatch(logOut());
 		// eslint-disable-next-line
 	}, []);
+
+	if (isLoading || isAuth) {
+		return <LoadingPage />;
+	}
 
 	return (
 		<Navigate to="/admin/login" />

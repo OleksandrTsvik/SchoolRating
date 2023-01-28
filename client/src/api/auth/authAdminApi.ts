@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { Role } from './role.enum';
 import authAdminFetchBase from './authAdminFetchBase';
-import { setAdmin } from './authAdminSlice';
 
 export interface Admin {
 	id: string;
@@ -24,40 +23,33 @@ export interface ApiError {
 
 export const authAdminApi = createApi({
 	baseQuery: authAdminFetchBase,
-	tagTypes: ['Admin'],
 	endpoints: (builder) => ({
 		login: builder.mutation<Admin, LoginRequest>({
 			query: (credentials) => ({
 				url: '/login',
 				method: 'POST',
-				body: credentials,
-				providesTags: ['Admin'],
-				credentials: 'include'
+				body: credentials
 			})
 		}),
 		logout: builder.mutation<void, void>({
 			query: () => ({
 				url: '/logout',
-				method: 'POST',
-				providesTags: ['Admin'],
-				credentials: 'include'
+				method: 'POST'
 			})
 		}),
 		getAdmin: builder.query<Admin, void>({
 			query: () => ({
-				url: '/me',
-				providesTags: ['Admin'],
-				credentials: 'include'
+				url: '/me'
 			}),
-			transformResponse: (result: Admin) => result,
-			onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
-				try {
-					const { data } = await queryFulfilled;
-					dispatch(setAdmin(data));
-				} catch (error) {
-					// console.log(error);
-				}
-			}
+			// transformResponse: (result: Admin) => result,
+			// onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+			// 	try {
+			// 		const { data } = await queryFulfilled;
+			// 		dispatch(setAdmin(data));
+			// 	} catch (error) {
+			// 		// console.log(error);
+			// 	}
+			// }
 		})
 	}),
 });

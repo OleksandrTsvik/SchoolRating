@@ -8,7 +8,9 @@ export const store = configureStore({
 		authAdmin: authAdminReducer
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-		.concat(authAdminApi.middleware),
+		.concat([
+			authAdminApi.middleware
+		]),
 	devTools: process.env.NODE_ENV !== 'production'
 });
 

@@ -2,25 +2,21 @@ import React from 'react';
 import { Alert, Button, Form, Input } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import Title from 'antd/es/typography/Title';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { rules } from './rules';
 import { ApiError, useLoginMutation } from '../../../../api/auth/authAdminApi';
-import { logIn } from '../../../../api/auth/authAdminSlice';
 
 import styles from './LoginForm.module.scss';
 
 export default function LoginForm() {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const [login, { isLoading, isError, error }] = useLoginMutation();
 
 	async function onFinish(values: any) {
 		try {
-			const payload = await login(values).unwrap();
-			dispatch(logIn(payload));
+			await login(values).unwrap();
 			navigate('/admin');
 		} catch (error) {
 			// console.log(error);
