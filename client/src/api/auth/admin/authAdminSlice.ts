@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Admin, authAdminApi } from './authAdminApi';
 import { RootState } from '../../../store';
 
@@ -10,7 +10,7 @@ const initialState: initState = {
 	admin: null
 };
 
-const authAdminSlice = createSlice({
+const authAdminSlice: any = createSlice({
 	name: 'authAdmin',
 	initialState: initialState,
 	reducers: {
@@ -21,17 +21,17 @@ const authAdminSlice = createSlice({
 	extraReducers: (builder) => builder
 		.addMatcher(
 			authAdminApi.endpoints.login.matchFulfilled,
-			(state, { payload }) => {
+			(state, { payload }: PayloadAction<Admin>) => {
 				state.admin = payload;
 			})
 		.addMatcher(
 			authAdminApi.endpoints.logout.matchFulfilled,
-			(state) => {
+			(state: RootState) => {
 				state.admin = null;
 			})
 		.addMatcher(
 			authAdminApi.endpoints.getAdmin.matchFulfilled,
-			(state, { payload }) => {
+			(state, { payload }: PayloadAction<Admin>) => {
 				state.admin = payload;
 			})
 });

@@ -1,15 +1,16 @@
 import {
+	Body,
 	ClassSerializerInterceptor,
 	Controller,
 	Delete,
 	Get,
 	Param,
-	Put,
+	Patch,
 	UseGuards, UseInterceptors
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../authentication/guards/jwt.guard';
-import { UpdateDto } from './dto/update.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard)
@@ -34,8 +35,8 @@ export class AdminController {
 		return this.adminService.delete(id);
 	}
 
-	@Put(':id')
-	async update(@Param('id') id: string, dto: UpdateDto) {
-		return this.adminService.update(id, dto);
+	@Patch('change-password/:id')
+	async changePassword(@Param('id') id: string, @Body() dto: ChangePasswordDto) {
+		return this.adminService.changePassword(id, dto);
 	}
 }

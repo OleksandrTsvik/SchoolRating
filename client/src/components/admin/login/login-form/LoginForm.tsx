@@ -5,7 +5,9 @@ import Title from 'antd/es/typography/Title';
 import { useNavigate } from 'react-router-dom';
 
 import { rules } from './rules';
-import { ApiError, useLoginMutation } from '../../../../api/auth/admin/authAdminApi';
+import { useLoginMutation } from '../../../../api/auth/admin/authAdminApi';
+import { ApiError } from '../../../../api/config';
+import RenderError from '../../../../utils/RenderError';
 
 import styles from './LoginForm.module.scss';
 
@@ -38,7 +40,7 @@ export default function LoginForm() {
 			{isError &&
 				<Alert
 					className="mb-3"
-					message={(error as ApiError)?.data?.message || 'Виникла помилка під час входу'}
+					message={<RenderError error={error as ApiError} message="Виникла помилка під час входу" />}
 					type="error"
 					showIcon
 				/>

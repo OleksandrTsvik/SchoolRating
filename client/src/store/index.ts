@@ -1,18 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { authAdminApi } from '../api/auth/admin/authAdminApi';
+import { adminService } from '../api/services/adminService';
 import authAdminReducer from '../api/auth/admin/authAdminSlice';
 import authUserReducer from '../api/auth/user/authUserSlice';
 
 export const store = configureStore({
-	reducer: {
+	reducer: combineReducers({
 		[authAdminApi.reducerPath]: authAdminApi.reducer,
+		[adminService.reducerPath]: adminService.reducer,
 		authAdmin: authAdminReducer,
 		authUser: authUserReducer
-	},
+	}),
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 		.concat(
-			authAdminApi.middleware
+			authAdminApi.middleware,
+			adminService.middleware
 		),
 	devTools: process.env.NODE_ENV !== 'production'
 });

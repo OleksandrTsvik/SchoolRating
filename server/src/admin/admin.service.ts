@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { AdminEntity } from './admin.entity';
-import { UpdateDto } from './dto/update.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AdminService {
@@ -29,16 +29,19 @@ export class AdminService {
 		return this.adminRepository.delete({ id });
 	}
 
-	async update(id: string, dto: UpdateDto) {
+	async changePassword(id: string, dto: ChangePasswordDto) {
 		const admin = await this.findById(id);
 
-		if (dto.email) {
-			admin.email = dto.email;
+		const passwordMatches = await compare(dto.currentPassword, admin.hashedPassword);
+		if (!passwordMatches) {
+			throw new BadRequestException('Невірний поточний пароль');
 		}
 
-		if (dto.password) {
-			admin.hashedPassword = await hash(dto.password, 10);
+		if (dto.newPassword !== dto.confirmPassword) {
+			throw new BadRequestException('Паролі не співпадають');
 		}
+
+		admin.hashedPassword = await hash(dto.newPassword, 10);
 
 		await this.adminRepository.save(admin);
 	}
