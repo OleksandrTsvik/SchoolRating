@@ -1,4 +1,4 @@
-import { Rule } from "antd/es/form";
+import { Rule } from 'antd/es/form';
 
 interface Rules {
 	currentPassword: Rule[];

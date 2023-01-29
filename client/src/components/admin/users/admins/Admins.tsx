@@ -1,10 +1,9 @@
-import { Button, Empty, Result, Skeleton } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
-import { useGetAdminsQuery } from "../../../../api/services/adminService";
+import { useGetAdminsQuery } from '../../../../api/services/adminService';
+import FailedRequest from '../FailedRequest';
 import { ApiError } from '../../../../api/config';
-import RenderError from '../../../../utils/RenderError';
-import React from 'react';
 
 interface DataType {
 	key: string;
@@ -21,20 +20,7 @@ export default function Admins() {
 	const { data, isLoading, error, refetch } = useGetAdminsQuery();
 
 	if (error) {
-		return (
-			<Result
-				status="error"
-				title={<RenderError
-					error={error as ApiError}
-					message="Виникла помилка під час завантаження даних"
-				/>}
-				extra={[
-					<Button key="refetch" loading={isLoading} onClick={refetch}>
-						Надіслати повторний запит
-					</Button>
-				]}
-			/>
-		);
+		return <FailedRequest loading={isLoading} error={error as ApiError} refetch={refetch} />;
 	}
 
 	if (isLoading) {
