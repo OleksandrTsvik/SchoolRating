@@ -32,8 +32,11 @@ export class AuthController {
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
 	async login(@Req() request: RequestWithUser, @Body() dto: AuthDto) {
-		const { id } = await this.authService.validate(dto);
-		const { user, cookies: { cookieRefresh, cookieAuthentication } } = await this.authService.login(id);
+		const admin = await this.authService.validate(dto);
+		const {
+			user,
+			cookies: { cookieRefresh, cookieAuthentication }
+		} = await this.authService.login(admin);
 
 		request.res?.setHeader('Set-Cookie', [cookieRefresh, cookieAuthentication]);
 
@@ -58,7 +61,8 @@ export class AuthController {
 	@UseGuards(JwtRefreshTokenGuard)
 	@Put('refresh')
 	async refresh(@Req() request: RequestWithUser) {
-		const { cookieAuthentication } = await this.authService.getCookieWithJwtAccessToken(request.user?.id);
+		const { id, email } = request.user;
+		const { cookieAuthentication } = await this.authService.getCookieWithJwtAccessToken(id, email);
 
 		request.res?.setHeader('Set-Cookie', cookieAuthentication);
 		return request.user;

@@ -19,17 +19,17 @@ const authAdminSlice = createSlice({
 		}
 	},
 	extraReducers: (builder) => builder
-		.addMatcher<Admin>(
+		.addMatcher(
 			authAdminApi.endpoints.login.matchFulfilled,
 			(state, { payload }) => {
 				state.admin = payload;
 			})
-		.addMatcher<void>(
+		.addMatcher(
 			authAdminApi.endpoints.logout.matchFulfilled,
 			(state) => {
 				state.admin = null;
 			})
-		.addMatcher<Admin>(
+		.addMatcher(
 			authAdminApi.endpoints.getAdmin.matchFulfilled,
 			(state, { payload }) => {
 				state.admin = payload;

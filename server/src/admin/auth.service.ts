@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
 import { AdminEntity } from './admin.entity';
-import { AuthPayloadDto } from '../authentication/dto/auth-payload.dto';
+import { AuthAdminPayloadDto } from '../authentication/dto/auth-admin-payload.dto';
 import { Role } from '../authentication/dto/role.enum';
 
 @Injectable()
@@ -35,21 +35,16 @@ export class AuthService {
 		return newAdmin;
 	}
 
-	async login(id: string) {
-		const payload: AuthPayloadDto = {
-			id: id,
-			role: Role.Admin
-		};
+	async login(admin: AdminEntity) {
+		const { id, email } = admin;
 
-		const { cookieAuthentication } = await this.getCookieWithJwtAccessToken(id);
-		const { cookieRefresh, refreshToken } = await this.getCookieWithJwtRefreshToken(id);
+		const { cookieAuthentication } = await this.getCookieWithJwtAccessToken(id, email);
+		const { cookieRefresh, refreshToken } = await this.getCookieWithJwtRefreshToken(id, email);
 
 		await this.updateRefreshToken(id, refreshToken);
 
 		return {
-			user: {
-				...payload
-			},
+			user: this.getJwtPayload(id, email),
 			cookies: {
 				cookieAuthentication,
 				cookieRefresh
@@ -75,7 +70,7 @@ export class AuthService {
 		await this.adminRepository.update({ id }, { hashedRefreshToken });
 	}
 
-	async validate(dto: AuthDto): Promise<Pick<AuthPayloadDto, 'id'>> {
+	async validate(dto: AuthDto): Promise<AdminEntity> {
 		const admin = await this.findByEmail(dto.email);
 		if (!admin) {
 			throw new UnauthorizedException('Неправильна електронна адреса або пароль');
@@ -86,17 +81,11 @@ export class AuthService {
 			throw new UnauthorizedException('Неправильна електронна адреса або пароль');
 		}
 
-		return {
-			id: admin.id
-		};
+		return admin;
 	}
 
-	async getCookieWithJwtAccessToken(id: string) {
-		const jwtPayload: AuthPayloadDto = {
-			id,
-			role: Role.Admin
-		};
-
+	async getCookieWithJwtAccessToken(id: string, email: string) {
+		const jwtPayload = this.getJwtPayload(id, email);
 		const expiresIn = this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME');
 
 		const accessToken = await this.jwtService.signAsync(jwtPayload, {
@@ -112,12 +101,8 @@ export class AuthService {
 		};
 	}
 
-	async getCookieWithJwtRefreshToken(id: string) {
-		const jwtPayload: AuthPayloadDto = {
-			id,
-			role: Role.Admin
-		};
-
+	async getCookieWithJwtRefreshToken(id: string, email: string) {
+		const jwtPayload = this.getJwtPayload(id, email);
 		const expiresIn = this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME');
 
 		const refreshToken = await this.jwtService.signAsync(jwtPayload, {
@@ -145,5 +130,13 @@ export class AuthService {
 		}
 
 		return compare(refreshToken, admin.hashedRefreshToken);
+	}
+
+	getJwtPayload(id: string, email: string): AuthAdminPayloadDto {
+		return {
+			id,
+			email,
+			role: Role.Admin
+		};
 	}
 }

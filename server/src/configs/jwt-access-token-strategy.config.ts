@@ -7,7 +7,7 @@ export function getJwtAccessTokenStrategyConfig(configService: ConfigService) {
 		jwtFromRequest: ExtractJwt.fromExtractors([
 			(request: Request) => {
 				return request?.cookies?.Authentication;
-			},
+			}
 		]),
 		ignoreExpiration: false,
 		secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET')

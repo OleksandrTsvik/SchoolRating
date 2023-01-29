@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { AuthPayloadDto } from './dto/auth-payload.dto';
+import { AuthAdminPayloadDto } from './dto/auth-admin-payload.dto';
 
 export default interface RequestWithUser extends Request {
-	user: AuthPayloadDto;
+	user: AuthAdminPayloadDto;
 }

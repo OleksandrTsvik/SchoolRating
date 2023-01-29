@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import LoadingPage from './loading/LoadingPage';
 import { useGetAdminQuery } from '../api/auth/admin/authAdminApi';
@@ -8,14 +8,9 @@ interface Props {
 }
 
 export default function AuthMiddleware({ children }: Props) {
-	const { isFetching, isError } = useGetAdminQuery();
-	const [loading, setLoading] = useState(isFetching);
+	const { isFetching } = useGetAdminQuery();
 
-	useEffect(() => {
-		setLoading(isFetching && !isError);
-	}, [isError, isFetching]);
-
-	if (loading) {
+	if (isFetching) {
 		return <LoadingPage />;
 	}
 

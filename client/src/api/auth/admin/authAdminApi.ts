@@ -4,6 +4,7 @@ import authAdminFetchBase from './authAdminFetchBase';
 
 export interface Admin {
 	id: string;
+	email: string;
 	role: Role;
 }
 

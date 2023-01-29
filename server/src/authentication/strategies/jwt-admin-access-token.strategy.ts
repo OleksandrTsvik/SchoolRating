@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { AuthPayloadDto } from '../dto/auth-payload.dto';
+import { AuthAdminPayloadDto } from '../dto/auth-admin-payload.dto';
 import { getJwtAccessTokenStrategyConfig } from '../../configs/jwt-access-token-strategy.config';
 import { Role } from '../dto/role.enum';
 import { AuthService } from '../../admin/auth.service';
@@ -16,7 +16,7 @@ export class JwtAdminAccessTokenStrategy extends PassportStrategy(Strategy) {
 		super(getJwtAccessTokenStrategyConfig(configService));
 	}
 
-	async validate(dto: AuthPayloadDto) {
+	async validate(dto: AuthAdminPayloadDto) {
 		if (
 			dto.role !== Role.Admin ||
 			!await this.authService.existAdmin(dto.id)

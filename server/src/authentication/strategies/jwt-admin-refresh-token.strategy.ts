@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
-import { AuthPayloadDto } from '../dto/auth-payload.dto';
+import { AuthAdminPayloadDto } from '../dto/auth-admin-payload.dto';
 import { getJwtRefreshTokenStrategyConfig } from '../../configs/jwt-refresh-token-strategy.config';
 import { Role } from '../dto/role.enum';
 import { AuthService } from '../../admin/auth.service';
@@ -17,7 +17,7 @@ export class JwtAdminRefreshTokenStrategy extends PassportStrategy(Strategy, 'jw
 		super(getJwtRefreshTokenStrategyConfig(configService));
 	}
 
-	async validate(request: Request, dto: AuthPayloadDto) {
+	async validate(request: Request, dto: AuthAdminPayloadDto) {
 		const refreshToken = request.cookies?.Refresh;
 
 		if (

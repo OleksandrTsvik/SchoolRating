@@ -7,7 +7,7 @@ export function getJwtRefreshTokenStrategyConfig(configService: ConfigService) {
 		jwtFromRequest: ExtractJwt.fromExtractors([
 			(request: Request) => {
 				return request?.cookies?.Refresh;
-			},
+			}
 		]),
 		ignoreExpiration: false,
 		secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
