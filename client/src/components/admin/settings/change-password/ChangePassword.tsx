@@ -30,7 +30,10 @@ export default function ChangePassword() {
 			notification.open({
 				type: 'error',
 				message: 'Виникла помилка під час зміни пароля',
-				description: <RenderError error={error as ApiError} message="На сервері виникла помилка" />
+				description: <RenderError
+					error={error as ApiError}
+					message="Виникла помилка під час зміни пароля"
+				/>
 			});
 		}
 	}
