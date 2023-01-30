@@ -40,15 +40,12 @@ export default function ChangePassword() {
 
 	return (
 		<>
-			<div className="text-end mt-3">
-				<Button
-					type="default"
-					danger
-					onClick={onOpen}
-				>
-					Змінити пароль
-				</Button>
-			</div>
+			<Button
+				type="default"
+				onClick={onOpen}
+			>
+				Змінити пароль
+			</Button>
 			<Modal
 				title="Зміна пароля"
 				open={isOpen}

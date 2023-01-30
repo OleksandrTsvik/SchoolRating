@@ -2,11 +2,15 @@ import { Empty, Skeleton } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 
 import { useGetAdminsQuery } from '../../../../api/services/adminService';
+import { selectCurrentAdmin } from '../../../../api/auth/admin/authAdminSlice';
 import FailedRequest from '../FailedRequest';
 import { ApiError } from '../../../../api/config';
+import { useAppSelector } from '../../../../store';
+import AddAdmin from './AddAdmin';
+
+import styles from './Admins.module.scss';
 
 interface DataType {
-	key: string;
 	id: string;
 	email: string;
 }
@@ -17,6 +21,7 @@ const columns: ColumnsType<DataType> = [
 ];
 
 export default function Admins() {
+	const admin = useAppSelector(selectCurrentAdmin);
 	const { data, isLoading, error, refetch } = useGetAdminsQuery();
 
 	if (error) {
@@ -32,14 +37,18 @@ export default function Admins() {
 	}
 
 	return (
-		<Table
-			bordered
-			pagination={false}
-			columns={columns}
-			dataSource={data.map(admin => ({
-				...admin,
-				key: admin.id
-			}))}
-		/>
+		<>
+			<AddAdmin />
+			<Table
+				bordered
+				rowClassName={(record) => record.id === admin.id ? styles.rowCurrentAdmin : ''}
+				pagination={false}
+				columns={columns}
+				dataSource={data.map(admin => ({
+					...admin,
+					key: admin.id
+				}))}
+			/>
+		</>
 	);
 }

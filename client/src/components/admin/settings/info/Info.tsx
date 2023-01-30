@@ -1,6 +1,7 @@
 import { Descriptions } from 'antd';
 
 import { Admin } from '../../../../api/auth/admin/authAdminApi';
+import ChangePassword from '../change-password/ChangePassword';
 
 interface Props {
 	admin: Admin;
@@ -8,8 +9,11 @@ interface Props {
 
 export default function Info({ admin }: Props) {
 	return (
-		<Descriptions title="Профіль" bordered>
-			<Descriptions.Item label="Email">{admin.email}</Descriptions.Item>
+		<Descriptions title="Профіль" bordered column={24}>
+			<Descriptions.Item span={24} label="Email">{admin.email}</Descriptions.Item>
+			<Descriptions.Item span={24} label="Змінити пароль">
+				<ChangePassword />
+			</Descriptions.Item>
 		</Descriptions>
 	);
 }

@@ -3,7 +3,7 @@ import { Empty } from 'antd';
 import { useAppSelector } from '../../../../store';
 import { selectCurrentAdmin } from '../../../../api/auth/admin/authAdminSlice';
 import Info from '../../settings/info/Info';
-import ChangePassword from '../../settings/change-password/ChangePassword';
+import DeleteAccount from '../../settings/delete-account/DeleteAccount';
 
 export default function SettingsPage() {
 	const admin = useAppSelector(selectCurrentAdmin);
@@ -15,7 +15,9 @@ export default function SettingsPage() {
 	return (
 		<>
 			<Info admin={admin} />
-			<ChangePassword />
+			<div className="text-end mt-3">
+				<DeleteAccount />
+			</div>
 		</>
 	);
 }
