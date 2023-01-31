@@ -7,13 +7,13 @@ export default function NotFoundPage() {
 		<div className="h-100 bg-secondary bg-gradient">
 			<div className="h-100 p-3 d-flex justify-content-center align-items-center">
 				<div className="text-light">
-					<h2 className="mt-0">Oops!</h2>
-					<h1>404 Not Found</h1>
+					<h2 className="mt-0">Помилка 404</h2>
+					<h1>Сторінку не знайдено</h1>
 					<div className="mb-3">
-						Sorry, an error has occurred, Requested page not found!
+						Неправильно набрано адресу або такої сторінки на сайті не існує.
 					</div>
 					<Link to="/admin">
-						<Button icon={<HomeOutlined />}>Home</Button>
+						<Button icon={<HomeOutlined />}>Перейти на головну сторінку</Button>
 					</Link>
 				</div>
 			</div>
