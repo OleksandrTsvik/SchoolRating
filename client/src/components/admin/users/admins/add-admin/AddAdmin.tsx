@@ -1,11 +1,10 @@
-import { Button, Form, Modal, notification } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
-import useModal from '../../../../hooks/useModal';
-import { useRegisterMutation } from '../../../../api/services/adminService';
-import RenderError from '../../../../utils/RenderError';
-import { ApiError } from '../../../../api/config';
+import useModal from '../../../../../hooks/useModal';
+import { useRegisterMutation } from '../../../../../api/services/adminService';
 import AddAdminForm, { FormValues } from './AddAdminForm';
+import transactionWithNotification from '../../../../../utils/transactionWithNotification';
 
 export default function AddAdmin() {
 	const { isOpen, onOpen, onClose } = useModal();
@@ -13,26 +12,15 @@ export default function AddAdmin() {
 	const [registerAdmin, { isLoading }] = useRegisterMutation();
 
 	async function onFinishAddAdmin(values: FormValues) {
-		try {
-			await registerAdmin(values).unwrap();
-
-			notification.open({
-				type: 'success',
-				message: 'Нового адміністратора успішно додано'
-			});
-
-			onClose();
-			formAddAdmin.resetFields();
-		} catch (error) {
-			notification.open({
-				type: 'error',
-				message: 'Виникла помилка',
-				description: <RenderError
-					error={error as ApiError}
-					message="Виникла помилка при додаванні нового адміністратора"
-				/>
-			});
-		}
+		await transactionWithNotification(
+			async () => {
+				await registerAdmin(values).unwrap();
+				onClose();
+				formAddAdmin.resetFields();
+			},
+			'Нового адміністратора успішно додано',
+			'Виникла помилка при додаванні нового адміністратора'
+		);
 	}
 
 	return (

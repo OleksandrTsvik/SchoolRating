@@ -32,7 +32,7 @@ export default function fetchBase(
 				try {
 					const refreshResult = await baseQuery(
 						{
-							url: refreshUrl,
+							url: `${baseUrl}${refreshUrl}`,
 							method: refreshMethod
 						},
 						api,

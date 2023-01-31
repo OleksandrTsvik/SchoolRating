@@ -1,28 +1,42 @@
+import { Empty, Skeleton } from 'antd';
 import Title from 'antd/es/typography/Title';
-import { Button } from 'antd';
-import { BookOutlined } from '@ant-design/icons';
 
 import TableSubjects from '../../subjects/table-subjects/TableSubjects';
+import AddSubject from '../../subjects/add-subject/AddSubject';
+import { useGetSubjectsQuery } from '../../../../api/services/subjectService';
+import FailedRequest from '../../users/FailedRequest';
+import { ApiError } from '../../../../api/config';
 
 export default function SubjectsPage() {
+	const { data, isLoading, error, refetch } = useGetSubjectsQuery();
+
+	if (error) {
+		return <FailedRequest loading={isLoading} error={error as ApiError} refetch={refetch} />;
+	}
+
+	if (isLoading) {
+		return <Skeleton active />;
+	}
+
+	if (!data || data.length === 0) {
+		return (
+			<>
+				<Empty description="Предмети відсутні" />
+				<AddSubject />
+			</>
+		);
+	}
+
 	return (
 		<>
 			<Title
 				level={2}
 				className="text-center"
 			>
-				Предмети ({0})
+				Предмети ({data.length})
 			</Title>
-			<div className="text-end mb-3">
-				<Button
-					type="primary"
-					size="large"
-					icon={<BookOutlined />}
-				>
-					Додати новий предмет
-				</Button>
-			</div>
-			<TableSubjects />
+			<AddSubject />
+			<TableSubjects subjects={data} />
 		</>
 	);
 }

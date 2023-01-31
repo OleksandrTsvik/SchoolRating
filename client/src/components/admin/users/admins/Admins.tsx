@@ -6,7 +6,7 @@ import { selectCurrentAdmin } from '../../../../api/auth/admin/authAdminSlice';
 import FailedRequest from '../FailedRequest';
 import { ApiError } from '../../../../api/config';
 import { useAppSelector } from '../../../../store';
-import AddAdmin from './AddAdmin';
+import AddAdmin from './add-admin/AddAdmin';
 
 import styles from './Admins.module.scss';
 
@@ -16,7 +16,7 @@ interface DataType {
 }
 
 const columns: ColumnsType<DataType> = [
-	{ dataIndex: 'id', title: 'id' },
+	{ dataIndex: 'id', title: 'id', width: 320 },
 	{ dataIndex: 'email', title: 'email' },
 ];
 
@@ -39,16 +39,18 @@ export default function Admins() {
 	return (
 		<>
 			<AddAdmin />
-			<Table
-				bordered
-				rowClassName={(record) => record.id === admin.id ? styles.rowCurrentAdmin : ''}
-				pagination={false}
-				columns={columns}
-				dataSource={data.map(admin => ({
-					...admin,
-					key: admin.id
-				}))}
-			/>
+			<div className="table-responsive">
+				<Table
+					bordered
+					rowClassName={(record) => record.id === admin.id ? styles.rowCurrentAdmin : ''}
+					pagination={false}
+					columns={columns}
+					dataSource={data.map(admin => ({
+						...admin,
+						key: admin.id
+					}))}
+				/>
+			</div>
 		</>
 	);
 }

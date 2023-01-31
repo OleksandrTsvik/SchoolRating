@@ -9,7 +9,7 @@ import {
 	UseGuards, UseInterceptors
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { JwtAuthGuard } from '../authentication/guards/jwt.guard';
+import { JwtAuthGuard } from '../common/authentication/guards/jwt.guard';
 import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('admin')

@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getPostgresConfig } from './configs/postrgres.config';
 import { AdminModule } from './admin/admin.module';
 import { validationSchemaConfig } from './configs/validation-schema.config';
+import { SubjectModule } from './subject/subject.module';
 
 @Module({
 	imports: [
@@ -15,7 +16,8 @@ import { validationSchemaConfig } from './configs/validation-schema.config';
 			inject: [ConfigService],
 			useFactory: getPostgresConfig
 		}),
-		AdminModule
+		AdminModule,
+		SubjectModule
 	]
 })
 export class AppModule {}

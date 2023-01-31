@@ -13,9 +13,9 @@ import {
 } from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
-import { JwtRefreshTokenGuard } from '../authentication/guards/jwt-refresh-token.guard';
-import RequestWithUser from '../authentication/request-with-user.interface';
-import { JwtAuthGuard } from '../authentication/guards/jwt.guard';
+import { JwtRefreshTokenGuard } from '../common/authentication/guards/jwt-refresh-token.guard';
+import RequestWithUser from '../common/authentication/request-with-user.interface';
+import { JwtAuthGuard } from '../common/authentication/guards/jwt.guard';
 
 @Controller('admin/auth')
 @UseInterceptors(ClassSerializerInterceptor)

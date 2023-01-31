@@ -1,12 +1,11 @@
-import { Button, Form, Modal, notification } from 'antd';
+import { Button, Form, Modal } from 'antd';
 
 import useModal from '../../../../hooks/useModal';
 import ChangePasswordForm, { FormValues } from '../change-password-form/ChangePasswordForm';
-import { ApiError } from '../../../../api/config';
 import { useChangePasswordMutation } from '../../../../api/services/adminService';
 import { selectCurrentAdmin } from '../../../../api/auth/admin/authAdminSlice';
 import { useAppSelector } from '../../../../store';
-import RenderError from '../../../../utils/RenderError';
+import transactionWithNotification from '../../../../utils/transactionWithNotification';
 
 export default function ChangePassword() {
 	const { id } = useAppSelector(selectCurrentAdmin);
@@ -16,26 +15,15 @@ export default function ChangePassword() {
 	const [changePassword, { isLoading }] = useChangePasswordMutation();
 
 	async function onFinishChangePassword(values: FormValues) {
-		try {
-			await changePassword({ ...values, id }).unwrap();
-
-			notification.open({
-				type: 'success',
-				message: 'Пароль успішно змінено'
-			});
-
-			onClose();
-			formChangePassword.resetFields();
-		} catch (error) {
-			notification.open({
-				type: 'error',
-				message: 'Виникла помилка під час зміни пароля',
-				description: <RenderError
-					error={error as ApiError}
-					message="Виникла помилка під час зміни пароля"
-				/>
-			});
-		}
+		await transactionWithNotification(
+			async () => {
+				await changePassword({ ...values, id }).unwrap();
+				onClose();
+				formChangePassword.resetFields();
+			},
+			'Пароль успішно змінено',
+			'Виникла помилка під час зміни пароля'
+		);
 	}
 
 	return (

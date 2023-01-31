@@ -3,9 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthAdminPayloadDto } from '../dto/auth-admin-payload.dto';
-import { getJwtAccessTokenStrategyConfig } from '../../configs/jwt-access-token-strategy.config';
+import { getJwtAccessTokenStrategyConfig } from '../../../configs/jwt-access-token-strategy.config';
 import { Role } from '../dto/role.enum';
-import { AuthService } from '../../admin/auth.service';
+import { AuthService } from '../../../admin/auth.service';
 
 @Injectable()
 export class JwtAdminAccessTokenStrategy extends PassportStrategy(Strategy) {

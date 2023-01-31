@@ -21,7 +21,7 @@ export interface DeleteRequest {
 
 export const adminService = createApi({
 	reducerPath: 'adminService',
-	baseQuery: fetchBase('/admin', logout, '/auth/refresh'),
+	baseQuery: fetchBase('/admin', logout, ''),
 	tagTypes: ['Admin'],
 	endpoints: (builder) => ({
 		getAdmins: builder.query<IAdmin[], void>({

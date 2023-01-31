@@ -4,9 +4,9 @@ import { Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { AuthAdminPayloadDto } from '../dto/auth-admin-payload.dto';
-import { getJwtRefreshTokenStrategyConfig } from '../../configs/jwt-refresh-token-strategy.config';
+import { getJwtRefreshTokenStrategyConfig } from '../../../configs/jwt-refresh-token-strategy.config';
 import { Role } from '../dto/role.enum';
-import { AuthService } from '../../admin/auth.service';
+import { AuthService } from '../../../admin/auth.service';
 
 @Injectable()
 export class JwtAdminRefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {

@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { Role } from '../role.enum';
 import fetchBase from '../../fetchBase';
 import { logout } from './authAdminSlice';
+import { urlAdminRefresh } from '../../config';
 
 export interface Admin {
 	id: string;
@@ -16,7 +17,7 @@ export interface LoginRequest {
 
 export const authAdminApi = createApi({
 	reducerPath: 'authAdminApi',
-	baseQuery: fetchBase('/admin/auth', logout),
+	baseQuery: fetchBase('/admin/auth', logout, urlAdminRefresh),
 	endpoints: (builder) => ({
 		login: builder.mutation<Admin, LoginRequest>({
 			query: (data) => ({

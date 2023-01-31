@@ -6,8 +6,8 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
 import { AdminEntity } from './admin.entity';
-import { AuthAdminPayloadDto } from '../authentication/dto/auth-admin-payload.dto';
-import { Role } from '../authentication/dto/role.enum';
+import { AuthAdminPayloadDto } from '../common/authentication/dto/auth-admin-payload.dto';
+import { Role } from '../common/authentication/dto/role.enum';
 
 @Injectable()
 export class AuthService {
