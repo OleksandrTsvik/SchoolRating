@@ -1,9 +1,9 @@
-import LayoutPage from './layout/LayoutPage';
-import HomePage from './home/HomePage';
-import LoginPage from './login/LoginPage';
-import RegisterPage from './register/RegisterPage';
-import LogoutPage from './logout/LogoutPage';
-import NotFoundPage from './404/NotFoundPage';
+import LayoutPage from './LayoutPage';
+import HomePage from './HomePage';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
+import LogoutPage from './LogoutPage';
+import NotFoundPage from './NotFoundPage';
 
 export {
 	LayoutPage,

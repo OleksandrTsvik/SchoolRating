@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingPage from './loading/LoadingPage';
+import LoadingPage from '../components/LoadingPage';
 import { useGetAdminQuery } from '../api/auth/admin/authAdminApi';
 import { useGetStudentQuery } from '../api/auth/user/authStudentApi';
 

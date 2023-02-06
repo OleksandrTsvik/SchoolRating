@@ -1,10 +1,10 @@
-import LayoutPage from './layout/LayoutPage';
-import LoginPage from './login/LoginPage';
-import SubjectsPage from './subjects/SubjectsPage';
-import LogoutPage from './logout/LogoutPage';
-import SettingsPage from './settings/SettingsPage';
-import UsersPage from './users/UsersPage';
-import NotFoundPage from './404/NotFoundPage';
+import LayoutPage from './LayoutPage';
+import LoginPage from './LoginPage';
+import SubjectsPage from './SubjectsPage';
+import LogoutPage from './LogoutPage';
+import SettingsPage from './SettingsPage';
+import UsersPage from './UsersPage';
+import NotFoundPage from './NotFoundPage';
 
 export {
 	LayoutPage,
