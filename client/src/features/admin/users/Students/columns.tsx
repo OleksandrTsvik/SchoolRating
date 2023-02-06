@@ -1,5 +1,8 @@
 import { ColumnsType } from 'antd/es/table';
 import Moment from 'moment/moment';
+import { Space } from 'antd';
+
+import ActionButton from '../../../../components/ActionButton';
 
 export interface DataType {
 	id: string;
@@ -9,6 +12,7 @@ export interface DataType {
 	patronymic: string;
 	email: string;
 	createdAt: Date;
+	onClickDelete: () => void;
 }
 
 export const columns: ColumnsType<DataType> = [
@@ -21,5 +25,22 @@ export const columns: ColumnsType<DataType> = [
 		dataIndex: 'createdAt',
 		title: 'Дата реєстрації',
 		render: (_, record) => Moment(record.createdAt).format('DD.MM.YYYY HH:mm')
+	},
+	{
+		key: 'action',
+		className: 'text-center',
+		width: 120,
+		render: (_, record) => (
+			<Space size="small">
+				<ActionButton
+					action={'edit'}
+					onClick={() => console.log('edit')}
+				/>
+				< ActionButton
+					action={'delete'}
+					onClick={record.onClickDelete}
+				/>
+			</Space>
+		)
 	}
 ];

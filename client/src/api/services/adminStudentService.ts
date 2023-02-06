@@ -13,6 +13,10 @@ export interface RegisterRequest {
 	confirmPassword: string;
 }
 
+export interface DeleteRequest {
+	id: string;
+}
+
 export const adminStudentService = createApi({
 	reducerPath: 'adminStudentService',
 	baseQuery: fetchBase('/student', logout, urlAdminRefresh),
@@ -31,11 +35,19 @@ export const adminStudentService = createApi({
 				body: data
 			}),
 			invalidatesTags: ['Student']
+		}),
+		delete: builder.mutation<void, DeleteRequest>({
+			query: ({ id }) => ({
+				url: `/${id}`,
+				method: 'DELETE'
+			}),
+			invalidatesTags: ['Student']
 		})
 	})
 });
 
 export const {
 	useGetStudentsQuery,
-	useRegisterMutation
+	useRegisterMutation,
+	useDeleteMutation
 } = adminStudentService;
