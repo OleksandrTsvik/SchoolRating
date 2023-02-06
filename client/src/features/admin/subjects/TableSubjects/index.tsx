@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Modal, Table } from 'antd';
-import { WarningOutlined } from '@ant-design/icons';
+import { Form, Table } from 'antd';
 
 import { ISubject } from '../../../../models/ISubject';
 import { useDeleteMutation, useEditMutation } from '../../../../api/services/subjectService';
@@ -8,15 +7,15 @@ import transactionWithNotification from '../../../../utils/transactionWithNotifi
 import { columns } from './columns';
 import { FormValues } from '../SubjectForm';
 import EditSubjectModal from '../EditSubjectModal';
-
-const { confirm } = Modal;
+import confirmDelete from '../../../../utils/confirmDelete';
+import useModal from '../../../../hooks/useModal';
 
 interface Props {
 	subjects: ISubject[];
 }
 
 export default function TableSubjects({ subjects }: Props) {
-	const [visibleEditModal, setVisibleModal] = useState(false);
+	const { isOpen, onOpen, onClose } = useModal();
 	const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
 
 	const [formEditSubject] = Form.useForm();
@@ -33,7 +32,7 @@ export default function TableSubjects({ subjects }: Props) {
 
 				await editSubject({ ...values, id: selectedEditId }).unwrap();
 				setSelectedEditId(null);
-				setVisibleModal(false);
+				onClose();
 			},
 			'Назву предмета успішно змінено',
 			'Виникла помилка при зміні назви предмета'
@@ -49,28 +48,18 @@ export default function TableSubjects({ subjects }: Props) {
 	}
 
 	function showDeleteConfirm(id: string, name: string) {
-		confirm({
-			type: 'warning',
-			title: 'Видалити предмет?',
-			icon: <WarningOutlined />,
-			content: (
-				<>
-					<p>Ви дійсно бажаєте видалити предмет "{name}"?</p>
-					<p className="text-muted">Дану дію скасувати неможливо.</p>
-				</>
-			),
-			okText: 'Так, видалити',
-			okType: 'danger',
-			cancelText: 'Скасувати',
-			onOk: () => onDeleteSubject(id, name)
-		});
+		confirmDelete(
+			'Видалити предмет?',
+			`Ви дійсно бажаєте видалити предмет "${name}"?`,
+			() => onDeleteSubject(id, name)
+		);
 	}
 
 	function onClickEdit(id: string, name: string) {
 		formEditSubject.resetFields();
 		formEditSubject.setFieldValue('name', name);
 		setSelectedEditId(id);
-		setVisibleModal(true);
+		onOpen();
 	}
 
 	return (
@@ -90,8 +79,8 @@ export default function TableSubjects({ subjects }: Props) {
 				/>
 			</div>
 			<EditSubjectModal
-				isOpen={visibleEditModal}
-				onClose={() => setVisibleModal(false)}
+				isOpen={isOpen}
+				onClose={onClose}
 				isLoading={isLoading}
 				formEditSubject={formEditSubject}
 				onFinishEditSubject={onEditSubject}

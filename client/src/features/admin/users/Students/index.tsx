@@ -1,6 +1,5 @@
-import { Empty, Modal, Skeleton } from 'antd';
+import { Empty, Skeleton } from 'antd';
 import Table from 'antd/es/table';
-import { WarningOutlined } from '@ant-design/icons';
 
 import FailedRequest from '../FailedRequest';
 import { ApiError } from '../../../../api/config';
@@ -8,8 +7,7 @@ import { useDeleteMutation, useGetStudentsQuery } from '../../../../api/services
 import { columns } from './columns';
 import transactionWithNotification from '../../../../utils/transactionWithNotification';
 import getFullName from '../../../../utils/getFullName';
-
-const { confirm } = Modal;
+import confirmDelete from '../../../../utils/confirmDelete';
 
 export default function Students() {
 	const { data, isLoading, error, refetch } = useGetStudentsQuery();
@@ -28,30 +26,20 @@ export default function Students() {
 		return <Empty description="Дані відсутні" />;
 	}
 
-	async function onDeleteStudent(id: string, name: string) {
+	async function onDeleteStudent(id: string, fullName: string) {
 		await transactionWithNotification(
 			async () => {await deleteStudent({ id }).unwrap()},
-			`Учня "${name}" успішно видалено`,
-			`Виникла помилка під час видалення учня "${name}"`
+			`Учня "${fullName}" успішно видалено`,
+			`Виникла помилка під час видалення учня "${fullName}"`
 		);
 	}
 
 	function showDeleteConfirm(id: string, fullName: string) {
-		confirm({
-			type: 'warning',
-			title: 'Видалити учня?',
-			icon: <WarningOutlined />,
-			content: (
-				<>
-					<p>Ви дійсно бажаєте видалити учня "{fullName}"?</p>
-					<p className="text-muted">Дану дію скасувати неможливо.</p>
-				</>
-			),
-			okText: 'Так, видалити',
-			okType: 'danger',
-			cancelText: 'Скасувати',
-			onOk: () => onDeleteStudent(id, fullName)
-		});
+		confirmDelete(
+			'Видалити учня?',
+			`Ви дійсно бажаєте видалити учня "${fullName}"?`,
+			() => onDeleteStudent(id, fullName)
+		);
 	}
 
 	return (
