@@ -9,11 +9,11 @@ import {
 	UseGuards, UseInterceptors
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { JwtAuthGuard } from '../common/authentication/guards/jwt.guard';
+import { AdminJwtGuard } from './guards/admin-jwt.guard';
 import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('admin')
-@UseGuards(JwtAuthGuard)
+@UseGuards(AdminJwtGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class AdminController {
 	constructor(

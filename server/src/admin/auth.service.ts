@@ -6,8 +6,13 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from './dto/auth.dto';
 import { AdminEntity } from './admin.entity';
-import { AuthAdminPayloadDto } from '../common/authentication/dto/auth-admin-payload.dto';
-import { Role } from '../common/authentication/dto/role.enum';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
+import { Role } from '../common/enums/role.enum';
+import {
+	clearCookie,
+	getCookieWithJwtAccessToken,
+	getCookieWithJwtRefreshToken
+} from 'src/common/utils/cookie-with-jwt';
 
 @Injectable()
 export class AuthService {
@@ -37,14 +42,18 @@ export class AuthService {
 
 	async login(admin: AdminEntity) {
 		const { id, email } = admin;
+		const jwtPayload = this.getJwtPayload(id, email);
 
-		const { cookieAuthentication } = await this.getCookieWithJwtAccessToken(id, email);
-		const { cookieRefresh, refreshToken } = await this.getCookieWithJwtRefreshToken(id, email);
+		const { cookieAuthentication } = await getCookieWithJwtAccessToken(this.configService,
+			this.jwtService, jwtPayload, 'AdminAuthentication');
+
+		const { cookieRefresh, refreshToken } = await getCookieWithJwtRefreshToken(this.configService,
+			this.jwtService, jwtPayload, 'AdminRefresh');
 
 		await this.updateRefreshToken(id, refreshToken);
 
 		return {
-			user: this.getJwtPayload(id, email),
+			user: jwtPayload,
 			cookies: {
 				cookieAuthentication,
 				cookieRefresh
@@ -55,10 +64,7 @@ export class AuthService {
 	async logout(id: string) {
 		await this.adminRepository.update({ id }, { hashedRefreshToken: null });
 
-		return [
-			'Authentication=; HttpOnly; Path=/; Max-Age=0',
-			'Refresh=; HttpOnly; Path=/; Max-Age=0'
-		];
+		return clearCookie('AdminAuthentication', 'AdminRefresh');
 	}
 
 	async findByEmail(email: string): Promise<AdminEntity | null> {
@@ -85,37 +91,8 @@ export class AuthService {
 	}
 
 	async getCookieWithJwtAccessToken(id: string, email: string) {
-		const jwtPayload = this.getJwtPayload(id, email);
-		const expiresIn = this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME');
-
-		const accessToken = await this.jwtService.signAsync(jwtPayload, {
-			secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-			expiresIn: expiresIn
-		});
-
-		const cookieAuthentication = `Authentication=${accessToken}; HttpOnly; Path=/; Max-Age=${expiresIn}`;
-
-		return {
-			cookieAuthentication,
-			accessToken
-		};
-	}
-
-	async getCookieWithJwtRefreshToken(id: string, email: string) {
-		const jwtPayload = this.getJwtPayload(id, email);
-		const expiresIn = this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME');
-
-		const refreshToken = await this.jwtService.signAsync(jwtPayload, {
-			secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-			expiresIn: expiresIn
-		});
-
-		const cookieRefresh = `Refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${expiresIn}`;
-
-		return {
-			cookieRefresh,
-			refreshToken
-		};
+		return getCookieWithJwtAccessToken(this.configService, this.jwtService,
+			this.getJwtPayload(id, email), 'AdminAuthentication');
 	}
 
 	async existAdmin(id: string): Promise<boolean> {
@@ -132,7 +109,7 @@ export class AuthService {
 		return compare(refreshToken, admin.hashedRefreshToken);
 	}
 
-	getJwtPayload(id: string, email: string): AuthAdminPayloadDto {
+	getJwtPayload(id: string, email: string): JwtPayloadDto {
 		return {
 			id,
 			email,

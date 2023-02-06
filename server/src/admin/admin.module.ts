@@ -8,8 +8,8 @@ import { AdminService } from './admin.service';
 import { AdminEntity } from './admin.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtAdminAccessTokenStrategy } from '../common/authentication/strategies/jwt-admin-access-token.strategy';
-import { JwtAdminRefreshTokenStrategy } from '../common/authentication/strategies/jwt-admin-refresh-token.strategy';
+import { AdminJwtAtStrategy } from './strategies/admin-jwt-at.strategy';
+import { AdminJwtRtStrategy } from './strategies/admin-jwt-rt.strategy';
 import { AdminSeedService } from './admin.seed.service';
 
 @Module({
@@ -23,8 +23,8 @@ import { AdminSeedService } from './admin.seed.service';
 	providers: [
 		AdminService,
 		AuthService,
-		JwtAdminAccessTokenStrategy,
-		JwtAdminRefreshTokenStrategy,
+		AdminJwtAtStrategy,
+		AdminJwtRtStrategy,
 		AdminSeedService
 	]
 })

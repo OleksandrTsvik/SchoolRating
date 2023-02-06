@@ -2,11 +2,14 @@ import { ConfigService } from '@nestjs/config';
 import { ExtractJwt } from 'passport-jwt';
 import { Request } from 'express';
 
-export function getJwtRefreshTokenStrategyConfig(configService: ConfigService) {
+export function getJwtRefreshTokenStrategyConfig(
+	configService: ConfigService,
+	cookieType: 'Refresh' | 'AdminRefresh'
+) {
 	return {
 		jwtFromRequest: ExtractJwt.fromExtractors([
 			(request: Request) => {
-				return request?.cookies?.Refresh;
+				return request?.cookies[cookieType];
 			}
 		]),
 		ignoreExpiration: false,

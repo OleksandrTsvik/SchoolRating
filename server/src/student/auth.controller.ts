@@ -11,13 +11,14 @@ import {
 	UseGuards,
 	UseInterceptors
 } from '@nestjs/common';
-import { AuthDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
-import { AdminJwtRtGuard } from './guards/admin-jwt-rt.guard';
 import RequestWithUser from './dto/request-with-user.interface';
-import { AdminJwtGuard } from './guards/admin-jwt.guard';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { StudentJwtRtGuard } from './guards/student-jwt-rt.guard';
+import { StudentJwtGuard } from './guards/student-jwt.guard';
 
-@Controller('admin/auth')
+@Controller('student/auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
 	constructor(
@@ -25,25 +26,25 @@ export class AuthController {
 	) {}
 
 	@Post('register')
-	async register(@Body() dto: AuthDto) {
+	async register(@Body() dto: RegisterDto) {
 		return this.authService.register(dto);
 	}
 
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	async login(@Req() request: RequestWithUser, @Body() dto: AuthDto) {
-		const admin = await this.authService.validate(dto);
+	async login(@Req() request: RequestWithUser, @Body() dto: LoginDto) {
+		const student = await this.authService.validate(dto);
 		const {
 			user,
 			cookies: { cookieRefresh, cookieAuthentication }
-		} = await this.authService.login(admin);
+		} = await this.authService.login(student);
 
 		request.res?.setHeader('Set-Cookie', [cookieRefresh, cookieAuthentication]);
 
 		return user;
 	}
 
-	@UseGuards(AdminJwtGuard)
+	@UseGuards(StudentJwtGuard)
 	@HttpCode(HttpStatus.OK)
 	@Post('logout')
 	async logout(@Req() request: RequestWithUser) {
@@ -52,17 +53,16 @@ export class AuthController {
 		request.res?.setHeader('Set-Cookie', cookies);
 	}
 
-	@UseGuards(AdminJwtGuard)
+	@UseGuards(StudentJwtGuard)
 	@Get('/me')
 	async me(@Req() request: RequestWithUser) {
 		return request.user;
 	}
 
-	@UseGuards(AdminJwtRtGuard)
+	@UseGuards(StudentJwtRtGuard)
 	@Put('refresh')
 	async refresh(@Req() request: RequestWithUser) {
-		const { id, email } = request.user;
-		const { cookieAuthentication } = await this.authService.getCookieWithJwtAccessToken(id, email);
+		const { cookieAuthentication } = await this.authService.getCookieWithJwtAccessToken(request.user);
 
 		request.res?.setHeader('Set-Cookie', cookieAuthentication);
 		return request.user;

@@ -5,6 +5,7 @@ import { getPostgresConfig } from './configs/postrgres.config';
 import { AdminModule } from './admin/admin.module';
 import { validationSchemaConfig } from './configs/validation-schema.config';
 import { SubjectModule } from './subject/subject.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
 	imports: [
@@ -17,6 +18,7 @@ import { SubjectModule } from './subject/subject.module';
 			useFactory: getPostgresConfig
 		}),
 		AdminModule,
+		StudentModule,
 		SubjectModule
 	]
 })

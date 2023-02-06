@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../common/authentication/guards/jwt.guard';
+import { AdminJwtGuard } from '../admin/guards/admin-jwt.guard';
 import { SubjectService } from './subject.service';
 import { SubjectDto } from './dto/subject.dto';
 
 @Controller('subject')
-@UseGuards(JwtAuthGuard)
+@UseGuards(AdminJwtGuard)
 export class SubjectController {
 	constructor(
 		private readonly subjectService: SubjectService

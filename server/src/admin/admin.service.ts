@@ -37,10 +37,6 @@ export class AdminService {
 			throw new BadRequestException('Невірний поточний пароль');
 		}
 
-		if (dto.newPassword !== dto.confirmPassword) {
-			throw new BadRequestException('Паролі не співпадають');
-		}
-
 		admin.hashedPassword = await hash(dto.newPassword, 10);
 
 		await this.adminRepository.save(admin);
