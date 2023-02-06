@@ -12,6 +12,7 @@ export interface DataType {
 	patronymic: string;
 	email: string;
 	createdAt: Date;
+	onClickEdit: () => void;
 	onClickDelete: () => void;
 }
 
@@ -34,7 +35,7 @@ export const columns: ColumnsType<DataType> = [
 			<Space size="small">
 				<ActionButton
 					action={'edit'}
-					onClick={() => console.log('edit')}
+					onClick={record.onClickEdit}
 				/>
 				< ActionButton
 					action={'delete'}

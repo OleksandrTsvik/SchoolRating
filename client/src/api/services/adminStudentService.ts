@@ -13,6 +13,15 @@ export interface RegisterRequest {
 	confirmPassword: string;
 }
 
+export interface EditRequest {
+	id: string;
+	firstName: string;
+	lastName: string;
+	patronymic: string;
+	email: string;
+	password: string;
+}
+
 export interface DeleteRequest {
 	id: string;
 }
@@ -36,6 +45,14 @@ export const adminStudentService = createApi({
 			}),
 			invalidatesTags: ['Student']
 		}),
+		edit: builder.mutation<void, EditRequest>({
+			query: (data) => ({
+				url: `/${data.id}`,
+				method: 'PATCH',
+				body: data
+			}),
+			invalidatesTags: ['Student']
+		}),
 		delete: builder.mutation<void, DeleteRequest>({
 			query: ({ id }) => ({
 				url: `/${id}`,
@@ -49,5 +66,6 @@ export const adminStudentService = createApi({
 export const {
 	useGetStudentsQuery,
 	useRegisterMutation,
+	useEditMutation,
 	useDeleteMutation
 } = adminStudentService;
