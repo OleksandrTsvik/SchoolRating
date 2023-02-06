@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { LogoutOutlined } from '@ant-design/icons';
 
-import { Role } from '../../../../api/auth/role.enum';
+import { Role } from '../../../../models/role.enum';
 
 export type HomeItemType = ItemType & {
 	rolesAccess?: Role[]

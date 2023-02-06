@@ -16,12 +16,14 @@ export default function UserNavbar() {
 	const user = useAppSelector(selectCurrentUser);
 	const [visible, setVisible] = useState(false);
 
+	// eslint-disable-next-line
 	const itemsLeft = useMemo(() => itemsFilter(itemsLeftMenu), [user]);
+	// eslint-disable-next-line
 	const itemsRight = useMemo(() => itemsFilter(itemsRightMenu), [user]);
 
 	function itemsFilter(items: HomeItemType[]): ItemType[] {
 		const itemsFilter = user
-			? items.filter(item => item.rolesAccess?.includes(user.role))
+			? items.filter(item => item.rolesAccess?.length === 0 || item.rolesAccess?.includes(user.role))
 			: items.filter(item => item.rolesAccess?.length === 0);
 
 		return itemsFilter.map(item => {

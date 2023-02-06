@@ -1,5 +1,5 @@
 import { Empty, Skeleton } from 'antd';
-import Table, { ColumnsType } from 'antd/es/table';
+import Table from 'antd/es/table';
 
 import { useGetAdminsQuery } from '../../../../api/services/adminService';
 import { selectCurrentAdmin } from '../../../../api/auth/admin/authAdminSlice';
@@ -7,18 +7,9 @@ import FailedRequest from '../FailedRequest';
 import { ApiError } from '../../../../api/config';
 import { useAppSelector } from '../../../../store';
 import AddAdmin from './add-admin/AddAdmin';
+import { columns } from './columns';
 
 import styles from './Admins.module.scss';
-
-interface DataType {
-	id: string;
-	email: string;
-}
-
-const columns: ColumnsType<DataType> = [
-	{ dataIndex: 'id', title: 'id', width: 320 },
-	{ dataIndex: 'email', title: 'email' },
-];
 
 export default function Admins() {
 	const admin = useAppSelector(selectCurrentAdmin);

@@ -1,14 +1,14 @@
 import { Navigate } from 'react-router-dom';
 
-import useAdminAuth from '../../../hooks/useAdminAuth';
+import useUserAuth from '../../../hooks/useUserAuth';
 import { LayoutPage } from '../pages';
 
 export function PrivateOutlet() {
-	const { isAuth } = useAdminAuth();
+	const { isAuth } = useUserAuth();
 
 	return (
 		isAuth
 			? <LayoutPage />
-			: <Navigate to="/admin/login" />
+			: <Navigate to="/login" replace />
 	);
 }

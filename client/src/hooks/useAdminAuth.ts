@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { selectCurrentAdmin } from '../api/auth/admin/authAdminSlice';
-import { Role } from '../api/auth/role.enum';
+import { Role } from '../models/role.enum';
 import { useAppSelector } from '../store';
 
 export default function useAdminAuth() {

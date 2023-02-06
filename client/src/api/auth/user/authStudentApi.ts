@@ -1,25 +1,18 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Role } from '../../../models/role.enum';
 import fetchBase from '../../fetchBase';
-import { logout } from './authAdminSlice';
-import { urlAdminRefresh } from '../../config';
-
-export interface Admin {
-	id: string;
-	email: string;
-	role: Role;
-}
+import { logout, User } from './authUserSlice';
+import { urlStudentRefresh } from '../../config';
 
 export interface LoginRequest {
 	email: string;
 	password: string;
 }
 
-export const authAdminApi = createApi({
-	reducerPath: 'authAdminApi',
-	baseQuery: fetchBase('/admin/auth', logout, urlAdminRefresh),
+export const authStudentApi = createApi({
+	reducerPath: 'authStudentApi',
+	baseQuery: fetchBase('/student/auth', logout, urlStudentRefresh),
 	endpoints: (builder) => ({
-		login: builder.mutation<Admin, LoginRequest>({
+		login: builder.mutation<User, LoginRequest>({
 			query: (data) => ({
 				url: '/login',
 				method: 'POST',
@@ -32,7 +25,7 @@ export const authAdminApi = createApi({
 				method: 'POST'
 			})
 		}),
-		getAdmin: builder.query<Admin, void>({
+		getStudent: builder.query<User, void>({
 			query: () => ({
 				url: '/me'
 			})
@@ -43,5 +36,5 @@ export const authAdminApi = createApi({
 export const {
 	useLoginMutation,
 	useLogoutMutation,
-	useGetAdminQuery
-} = authAdminApi;
+	useGetStudentQuery
+} = authStudentApi;
