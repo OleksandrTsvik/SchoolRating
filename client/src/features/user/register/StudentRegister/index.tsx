@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form } from 'antd';
 
 import RegisterForm, { FormValues } from '../RegisterForm';
-import { useRegisterMutation } from '../../../../api/services/adminStudentService';
+import { useRegisterMutation } from '../../../../api/auth/user/authStudentApi';
 
 import styles from './StudentRegister.module.scss';
 import transactionWithNotification from '../../../../utils/transactionWithNotification';
@@ -10,7 +10,7 @@ import transactionWithNotification from '../../../../utils/transactionWithNotifi
 export default function StudentRegister() {
 	const navigate = useNavigate();
 
-	const [form] = Form.useForm();
+	const [form] = Form.useForm<FormValues>();
 	const [register, { isLoading, isError, error }] = useRegisterMutation();
 
 	async function onFinish(values: FormValues) {

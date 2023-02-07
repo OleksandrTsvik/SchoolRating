@@ -8,6 +8,15 @@ export interface LoginRequest {
 	password: string;
 }
 
+export interface RegisterRequest {
+	firstName: string;
+	lastName: string;
+	patronymic: string;
+	email: string;
+	password: string;
+	confirmPassword: string;
+}
+
 export const authStudentApi = createApi({
 	reducerPath: 'authStudentApi',
 	baseQuery: fetchBase('/student/auth', logout, urlStudentRefresh),
@@ -15,6 +24,13 @@ export const authStudentApi = createApi({
 		login: builder.mutation<User, LoginRequest>({
 			query: (data) => ({
 				url: '/login',
+				method: 'POST',
+				body: data
+			})
+		}),
+		register: builder.mutation<void, RegisterRequest>({
+			query: (data) => ({
+				url: '/register',
 				method: 'POST',
 				body: data
 			})
@@ -35,6 +51,7 @@ export const authStudentApi = createApi({
 
 export const {
 	useLoginMutation,
+	useRegisterMutation,
 	useLogoutMutation,
 	useGetStudentQuery
 } = authStudentApi;

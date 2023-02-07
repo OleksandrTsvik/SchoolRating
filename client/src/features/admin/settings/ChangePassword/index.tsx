@@ -11,7 +11,7 @@ export default function ChangePassword() {
 	const { id } = useAppSelector(selectCurrentAdmin);
 
 	const { isOpen, onOpen, onClose } = useModal();
-	const [formChangePassword] = Form.useForm();
+	const [formChangePassword] = Form.useForm<FormValues>();
 	const [changePassword, { isLoading }] = useChangePasswordMutation();
 
 	async function onFinishChangePassword(values: FormValues) {

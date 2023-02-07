@@ -8,7 +8,7 @@ import transactionWithNotification from '../../../../utils/transactionWithNotifi
 
 export default function AddSubject() {
 	const { isOpen, onOpen, onClose } = useModal();
-	const [formAddSubject] = Form.useForm();
+	const [formAddSubject] = Form.useForm<FormValues>();
 	const [addSubject, { isLoading }] = useAddMutation();
 
 	async function onFinishAddSubject(values: FormValues) {

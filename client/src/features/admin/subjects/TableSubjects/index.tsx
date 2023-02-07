@@ -18,7 +18,7 @@ export default function TableSubjects({ subjects }: Props) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
 
-	const [formEditSubject] = Form.useForm();
+	const [formEditSubject] = Form.useForm<FormValues>();
 	const [editSubject, { isLoading }] = useEditMutation();
 
 	const [deleteSubject] = useDeleteMutation();

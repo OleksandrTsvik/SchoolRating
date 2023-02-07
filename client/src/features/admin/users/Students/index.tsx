@@ -10,14 +10,15 @@ import transactionWithNotification from '../../../../utils/transactionWithNotifi
 import getFullName from '../../../../utils/getFullName';
 import confirmDelete from '../../../../utils/confirmDelete';
 import useModal from '../../../../hooks/useModal';
-import UserEditForm, { FormValues } from '../../../../components/UserEditForm';
+import UserForm, { FormValues } from '../../../../components/UserForm';
 import { IStudent } from '../../../../models/IStudent';
+import AddStudent from './AddStudent';
 
 export default function Students() {
 	const { data, isLoading, error, refetch } = useGetStudentsQuery();
 
 	const { isOpen, onOpen, onClose } = useModal();
-	const [formEditStudent] = Form.useForm();
+	const [formEditStudent] = Form.useForm<FormValues>();
 	const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
 	const [editStudent, { isLoading: isEditLoading }] = useEditMutation();
 
@@ -69,11 +70,7 @@ export default function Students() {
 
 	function onClickEdit(student: IStudent) {
 		formEditStudent.resetFields();
-
-		formEditStudent.setFieldValue('firstName', student.firstName);
-		formEditStudent.setFieldValue('lastName', student.lastName);
-		formEditStudent.setFieldValue('patronymic', student.patronymic);
-		formEditStudent.setFieldValue('email', student.email);
+		formEditStudent.setFieldsValue(student);
 
 		setSelectedEditId(student.id);
 		onOpen();
@@ -81,6 +78,7 @@ export default function Students() {
 
 	return (
 		<>
+			<AddStudent />
 			<div className="table-responsive">
 				<Table
 					bordered
@@ -96,7 +94,7 @@ export default function Students() {
 				/>
 			</div>
 			<Modal
-				title="Редагування предмету"
+				title="Редагування даних учня"
 				open={isOpen}
 				onCancel={onClose}
 				okText="Зберегти зміни"
@@ -104,7 +102,7 @@ export default function Students() {
 				confirmLoading={isEditLoading}
 				onOk={formEditStudent.submit}
 			>
-				<UserEditForm
+				<UserForm
 					form={formEditStudent}
 					onFinish={onEditStudent}
 				/>

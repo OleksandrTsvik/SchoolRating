@@ -1,12 +1,11 @@
 import {
 	Body,
-	ClassSerializerInterceptor,
 	Controller,
 	Delete,
 	Get,
 	Param,
 	Patch,
-	UseGuards, UseInterceptors
+	UseGuards
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AdminJwtGuard } from './guards/admin-jwt.guard';
@@ -14,7 +13,6 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('admin')
 @UseGuards(AdminJwtGuard)
-@UseInterceptors(ClassSerializerInterceptor)
 export class AdminController {
 	constructor(
 		private readonly adminService: AdminService

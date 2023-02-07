@@ -1,6 +1,5 @@
 import {
 	Body,
-	ClassSerializerInterceptor,
 	Controller,
 	Get,
 	HttpCode,
@@ -8,8 +7,7 @@ import {
 	Post,
 	Put,
 	Req,
-	UseGuards,
-	UseInterceptors
+	UseGuards
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import RequestWithUser from './dto/request-with-user.interface';
@@ -19,7 +17,6 @@ import { StudentJwtRtGuard } from './guards/student-jwt-rt.guard';
 import { StudentJwtGuard } from './guards/student-jwt.guard';
 
 @Controller('student/auth')
-@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService

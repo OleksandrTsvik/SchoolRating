@@ -1,6 +1,7 @@
 import { Form, FormInstance, Input } from 'antd';
 
 import { inputs } from './inputs';
+import { passwordRequired } from './rules';
 
 export interface FormValues {
 	firstName: string;
@@ -13,9 +14,10 @@ export interface FormValues {
 interface Props {
 	form: FormInstance<FormValues>;
 	onFinish: (values: FormValues) => void;
+	isPasswordRequired?: boolean;
 }
 
-export default function UserEditForm({ form, onFinish }: Props) {
+export default function UserForm({ form, onFinish, isPasswordRequired = false }: Props) {
 	return (
 		<Form
 			layout="vertical"
@@ -28,7 +30,10 @@ export default function UserEditForm({ form, onFinish }: Props) {
 					hasFeedback
 					label={input.label}
 					name={input.name}
-					rules={input.rules}
+					rules={isPasswordRequired && input.name === 'password'
+						? [...input.rules, passwordRequired]
+						: input.rules
+					}
 				>
 					<Input prefix={input.prefix} />
 				</Form.Item>

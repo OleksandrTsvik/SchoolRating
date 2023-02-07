@@ -9,7 +9,7 @@ import styles from './StudentLogin.module.scss';
 export default function StudentLogin() {
 	const navigate = useNavigate();
 
-	const [form] = Form.useForm();
+	const [form] = Form.useForm<FormValues>();
 	const [login, { isLoading, isError, error }] = useLoginMutation();
 
 	async function onFinish(values: FormValues) {

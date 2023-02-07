@@ -8,19 +8,23 @@ import transactionWithNotification from '../../../../../utils/transactionWithNot
 
 export default function AddAdmin() {
 	const { isOpen, onOpen, onClose } = useModal();
-	const [formAddAdmin] = Form.useForm();
+	const [formAddAdmin] = Form.useForm<FormValues>();
 	const [registerAdmin, { isLoading }] = useRegisterMutation();
 
 	async function onFinishAddAdmin(values: FormValues) {
 		await transactionWithNotification(
 			async () => {
 				await registerAdmin(values).unwrap();
-				onClose();
-				formAddAdmin.resetFields();
+				closeModal();
 			},
 			'Нового адміністратора успішно додано',
 			'Виникла помилка при додаванні нового адміністратора'
 		);
+	}
+
+	function closeModal() {
+		onClose();
+		formAddAdmin.resetFields();
 	}
 
 	return (
@@ -37,7 +41,7 @@ export default function AddAdmin() {
 			<Modal
 				title="Новий адміністратор"
 				open={isOpen}
-				onCancel={onClose}
+				onCancel={closeModal}
 				okText="Додати"
 				cancelText="Скасувати"
 				confirmLoading={isLoading}

@@ -4,13 +4,12 @@ import { logout } from '../auth/admin/authAdminSlice';
 import { urlAdminRefresh } from '../config';
 import { IStudent } from '../../models/IStudent';
 
-export interface RegisterRequest {
+export interface AddRequest {
 	firstName: string;
 	lastName: string;
 	patronymic: string;
 	email: string;
 	password: string;
-	confirmPassword: string;
 }
 
 export interface EditRequest {
@@ -37,9 +36,9 @@ export const adminStudentService = createApi({
 			}),
 			providesTags: ['Student']
 		}),
-		register: builder.mutation<void, RegisterRequest>({
+		add: builder.mutation<void, AddRequest>({
 			query: (data) => ({
-				url: '/auth/register',
+				url: '',
 				method: 'POST',
 				body: data
 			}),
@@ -65,7 +64,7 @@ export const adminStudentService = createApi({
 
 export const {
 	useGetStudentsQuery,
-	useRegisterMutation,
+	useAddMutation,
 	useEditMutation,
 	useDeleteMutation
 } = adminStudentService;
