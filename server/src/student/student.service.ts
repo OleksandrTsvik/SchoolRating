@@ -13,8 +13,21 @@ export class StudentService {
 		private readonly studentRepository: Repository<StudentEntity>
 	) {}
 
-	async getAll(): Promise<StudentEntity[]> {
-		return this.studentRepository.find();
+	async getAll(page: number, limit: number): Promise<{ data: StudentEntity[], total: number }> {
+		const students = await this.studentRepository.findAndCount({
+			order: {
+				firstName: 'ASC',
+				lastName: 'ASC',
+				patronymic: 'ASC'
+			},
+			take: limit,
+			skip: limit * (page - 1)
+		});
+
+		return {
+			data: students[0],
+			total: students[1]
+		};
 	}
 
 	async add(dto: AddDto) {

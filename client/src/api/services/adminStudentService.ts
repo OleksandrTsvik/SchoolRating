@@ -4,6 +4,16 @@ import { logout } from '../auth/admin/authAdminSlice';
 import { urlAdminRefresh } from '../config';
 import { IStudent } from '../../models/IStudent';
 
+export interface GetStudentsRequest {
+	page: number;
+	limit: number;
+}
+
+export interface GetStudentsResponse {
+	data: IStudent[];
+	total: number;
+}
+
 export interface AddRequest {
 	firstName: string;
 	lastName: string;
@@ -30,9 +40,13 @@ export const adminStudentService = createApi({
 	baseQuery: fetchBase('/student', logout, urlAdminRefresh),
 	tagTypes: ['Student'],
 	endpoints: (builder) => ({
-		getStudents: builder.query<IStudent[], void>({
-			query: () => ({
-				url: ''
+		getStudents: builder.query<GetStudentsResponse, GetStudentsRequest>({
+			query: ({ page, limit }) => ({
+				url: '',
+				params: {
+					page,
+					limit
+				}
 			}),
 			providesTags: ['Student']
 		}),

@@ -1,11 +1,14 @@
 import {
 	Body,
 	Controller,
+	DefaultValuePipe,
 	Delete,
 	Get,
 	Param,
+	ParseIntPipe,
 	Patch,
 	Post,
+	Query,
 	UseGuards
 } from '@nestjs/common';
 import { StudentService } from './student.service';
@@ -21,8 +24,11 @@ export class StudentController {
 
 	@UseGuards(AdminJwtGuard)
 	@Get()
-	async findAll() {
-		return this.studentService.getAll();
+	async findAll(
+		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+		@Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10
+	) {
+		return this.studentService.getAll(page, limit);
 	}
 
 	@UseGuards(AdminJwtGuard)

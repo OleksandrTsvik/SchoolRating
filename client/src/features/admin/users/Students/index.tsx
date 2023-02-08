@@ -15,7 +15,9 @@ import { IStudent } from '../../../../models/IStudent';
 import AddStudent from './AddStudent';
 
 export default function Students() {
-	const { data, isLoading, error, refetch } = useGetStudentsQuery();
+	const [page, setPage] = useState(1);
+	const [limit, setLimit] = useState(10);
+	const { data, isLoading, error, refetch } = useGetStudentsQuery({ page, limit });
 
 	const { isOpen, onOpen, onClose } = useModal();
 	const [formEditStudent] = Form.useForm<FormValues>();
@@ -82,12 +84,23 @@ export default function Students() {
 			<div className="table-responsive">
 				<Table
 					bordered
-					pagination={false}
+					pagination={{
+						pageSize: limit,
+						total: data.total,
+						showSizeChanger: true,
+						pageSizeOptions: [2, 5, 10, 20, 50, 100],
+						responsive: true,
+						showTotal: (total) => `Всього ${total} учнів`,
+						onChange: (page, pageSize) => {
+							setPage(page);
+							setLimit(pageSize);
+						}
+					}}
 					columns={columns}
-					dataSource={data.map((student, index) => ({
+					dataSource={data.data.map((student, index) => ({
 						...student,
 						key: student.id,
-						number: index + 1,
+						number: limit * (page - 1) + index + 1,
 						onClickEdit: () => onClickEdit(student),
 						onClickDelete: () => showDeleteConfirm(student.id, getFullName(student)),
 					}))}
