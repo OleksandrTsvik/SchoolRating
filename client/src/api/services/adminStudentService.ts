@@ -3,10 +3,15 @@ import fetchBase from '../fetchBase';
 import { logout } from '../auth/admin/authAdminSlice';
 import { urlAdminRefresh } from '../config';
 import { IStudent } from '../../models/IStudent';
+import getObjectWithoutNullValues from '../../utils/getObjectWithoutNullValues';
 
 export interface GetStudentsRequest {
 	page: number;
 	limit: number;
+	firstName: string | null;
+	lastName: string | null;
+	patronymic: string | null;
+	email: string | null;
 }
 
 export interface GetStudentsResponse {
@@ -41,12 +46,9 @@ export const adminStudentService = createApi({
 	tagTypes: ['Student'],
 	endpoints: (builder) => ({
 		getStudents: builder.query<GetStudentsResponse, GetStudentsRequest>({
-			query: ({ page, limit }) => ({
+			query: (params) => ({
 				url: '',
-				params: {
-					page,
-					limit
-				}
+				params: getObjectWithoutNullValues(params)
 			}),
 			providesTags: ['Student']
 		}),

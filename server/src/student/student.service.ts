@@ -2,9 +2,12 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
+import { Query } from 'express-serve-static-core';
 import { StudentEntity } from './student.entity';
 import { UpdateDto } from './dto/update.dto';
 import { AddDto } from './dto/add.dto';
+import StudentsResponse from './interfaces/students-response.interface';
+import { queryParamsForWhere } from '../common/utils/query-param';
 
 @Injectable()
 export class StudentService {
@@ -13,8 +16,9 @@ export class StudentService {
 		private readonly studentRepository: Repository<StudentEntity>
 	) {}
 
-	async getAll(page: number, limit: number): Promise<{ data: StudentEntity[], total: number }> {
-		const students = await this.studentRepository.findAndCount({
+	async getStudents(page: number, limit: number, query: Query): Promise<StudentsResponse> {
+		const [data, total] = await this.studentRepository.findAndCount({
+			where: queryParamsForWhere(query, ['firstName', 'lastName', 'patronymic', 'email']),
 			order: {
 				firstName: 'ASC',
 				lastName: 'ASC',
@@ -25,8 +29,10 @@ export class StudentService {
 		});
 
 		return {
-			data: students[0],
-			total: students[1]
+			total,
+			data,
+			page,
+			limit
 		};
 	}
 

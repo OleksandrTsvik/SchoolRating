@@ -10,7 +10,7 @@ import {
 	UseGuards
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import RequestWithUser from './dto/request-with-user.interface';
+import RequestWithUser from './interfaces/request-with-user.interface';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { StudentJwtRtGuard } from './guards/student-jwt-rt.guard';
