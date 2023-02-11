@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import fetchBase from '../../fetchBase';
 import { logout, User } from './authUserSlice';
-import { urlStudentRefresh } from '../../config';
+import { urlTeacherRefresh } from '../../config';
 import { logoutOnQueryStarted, setUserOnQueryStarted } from './userOnQueryStarted';
 
 export interface LoginRequest {
@@ -18,9 +18,9 @@ export interface RegisterRequest {
 	confirmPassword: string;
 }
 
-export const authStudentApi = createApi({
-	reducerPath: 'authStudentApi',
-	baseQuery: fetchBase('/student/auth', logout, urlStudentRefresh),
+export const authTeacherApi = createApi({
+	reducerPath: 'authTeacherApi',
+	baseQuery: fetchBase('/teacher/auth', logout, urlTeacherRefresh),
 	endpoints: (builder) => ({
 		login: builder.mutation<User, LoginRequest>({
 			query: (data) => ({
@@ -44,7 +44,7 @@ export const authStudentApi = createApi({
 			}),
 			onQueryStarted: logoutOnQueryStarted
 		}),
-		getStudent: builder.query<User, void>({
+		getTeacher: builder.query<User, void>({
 			query: () => ({
 				url: '/me'
 			}),
@@ -57,5 +57,5 @@ export const {
 	useLoginMutation,
 	useRegisterMutation,
 	useLogoutMutation,
-	useGetStudentQuery
-} = authStudentApi;
+	useGetTeacherQuery
+} = authTeacherApi;

@@ -2,8 +2,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { authAdminApi } from '../api/auth/admin/authAdminApi';
 import { authStudentApi } from '../api/auth/user/authStudentApi';
+import { authTeacherApi } from '../api/auth/user/authTeacherApi';
 import { adminService } from '../api/services/adminService';
 import { adminStudentService } from '../api/services/adminStudentService';
+import { adminTeacherService } from '../api/services/adminTeacherService';
 import { subjectService } from '../api/services/subjectService';
 import authAdminReducer from '../api/auth/admin/authAdminSlice';
 import authUserReducer from '../api/auth/user/authUserSlice';
@@ -12,8 +14,10 @@ export const store = configureStore({
 	reducer: combineReducers({
 		[authAdminApi.reducerPath]: authAdminApi.reducer,
 		[authStudentApi.reducerPath]: authStudentApi.reducer,
+		[authTeacherApi.reducerPath]: authTeacherApi.reducer,
 		[adminService.reducerPath]: adminService.reducer,
 		[adminStudentService.reducerPath]: adminStudentService.reducer,
+		[adminTeacherService.reducerPath]: adminTeacherService.reducer,
 		[subjectService.reducerPath]: subjectService.reducer,
 		authAdmin: authAdminReducer,
 		authUser: authUserReducer
@@ -22,8 +26,10 @@ export const store = configureStore({
 		.concat(
 			authAdminApi.middleware,
 			authStudentApi.middleware,
+			authTeacherApi.middleware,
 			adminService.middleware,
 			adminStudentService.middleware,
+			adminTeacherService.middleware,
 			subjectService.middleware
 		),
 	devTools: process.env.NODE_ENV !== 'production'

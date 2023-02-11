@@ -1,5 +1,6 @@
-import { Alert, Button, Form, FormInstance, Input } from 'antd';
+import { Alert, Button, Form, Input } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 import RenderError from '../../../../utils/RenderError';
 import { ApiError } from '../../../../api/config';
@@ -16,58 +17,76 @@ interface Props {
 	isLoading: boolean;
 	isError: boolean;
 	error: unknown;
-	form: FormInstance<FormValues>;
 	onFinish: (values: FormValues) => void;
+	btnTextLogin: string;
+	linkToRegister: string;
 }
 
-export default function LoginForm({ isLoading, isError, error, form, onFinish }: Props) {
+export default function LoginForm(
+	{
+		isLoading,
+		isError,
+		error,
+		onFinish,
+		btnTextLogin,
+		linkToRegister
+	}: Props
+) {
+	const [form] = Form.useForm<FormValues>();
+
 	return (
-		<Form
-			className={styles.loginForm}
-			form={form}
-			onFinish={onFinish}
-		>
-			{isError &&
-				<Alert
-					className="mb-3"
-					message={<RenderError error={error as ApiError} message="Виникла помилка під час входу" />}
-					type="error"
-					showIcon
-				/>
-			}
-
-			<Form.Item
-				hasFeedback
-				name="email"
-				rules={rules.email}
+		<>
+			<Form
+				className={styles.loginForm}
+				form={form}
+				onFinish={onFinish}
 			>
-				<Input
-					prefix={<MailOutlined />}
-					placeholder="Email"
-				/>
-			</Form.Item>
+				{isError &&
+					<Alert
+						className="mb-3"
+						message={<RenderError error={error as ApiError} message="Виникла помилка під час входу" />}
+						type="error"
+						showIcon
+					/>
+				}
 
-			<Form.Item
-				hasFeedback
-				name="password"
-				rules={rules.password}
-			>
-				<Input.Password
-					prefix={<LockOutlined />}
-					placeholder="Пароль"
-				/>
-			</Form.Item>
-
-			<Form.Item>
-				<Button
-					className={styles.loginFormButton}
-					type="primary"
-					htmlType="submit"
-					loading={isLoading}
+				<Form.Item
+					hasFeedback
+					name="email"
+					rules={rules.email}
 				>
-					Увійти
-				</Button>
-			</Form.Item>
-		</Form>
+					<Input
+						prefix={<MailOutlined />}
+						placeholder="Email"
+					/>
+				</Form.Item>
+
+				<Form.Item
+					hasFeedback
+					name="password"
+					rules={rules.password}
+				>
+					<Input.Password
+						prefix={<LockOutlined />}
+						placeholder="Пароль"
+					/>
+				</Form.Item>
+
+				<Form.Item>
+					<Button
+						className={styles.loginFormButton}
+						type="primary"
+						htmlType="submit"
+						loading={isLoading}
+					>
+						{btnTextLogin}
+					</Button>
+				</Form.Item>
+			</Form>
+			<div className={styles.registerLink}>
+				<div>Немає облікового запису?</div>
+				<Link to={linkToRegister}>Перейти до реєстрації</Link>
+			</div>
+		</>
 	);
 }

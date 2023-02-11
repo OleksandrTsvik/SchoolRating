@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
-import { useLoginMutation } from '../../../../api/auth/user/authStudentApi';
+import { useLoginMutation } from '../../../../api/auth/user/authTeacherApi';
 import LoginForm, { FormValues } from '../LoginForm';
 
-export default function StudentLogin() {
+export default function TeacherLogin() {
 	const navigate = useNavigate();
 	const [login, { isLoading, isError, error }] = useLoginMutation();
 
@@ -22,8 +22,8 @@ export default function StudentLogin() {
 			isError={isError}
 			error={error}
 			onFinish={onFinish}
-			btnTextLogin="Увійти як учень"
-			linkToRegister="/register/student"
+			btnTextLogin="Увійти як учитель"
+			linkToRegister="/register/teacher"
 		/>
 	);
 }

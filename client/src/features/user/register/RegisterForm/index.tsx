@@ -1,5 +1,6 @@
-import { Alert, Button, Col, Form, FormInstance, Input, Row } from 'antd';
+import { Alert, Button, Col, Form, Input, Row } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 import RenderError from '../../../../utils/RenderError';
 import { ApiError } from '../../../../api/config';
@@ -20,97 +21,115 @@ interface Props {
 	isLoading: boolean;
 	isError: boolean;
 	error: unknown;
-	form: FormInstance<FormValues>;
 	onFinish: (values: FormValues) => void;
+	btnTextRegister: string;
+	linkToLogin: string;
 }
 
-export default function RegisterForm({ isLoading, isError, error, form, onFinish }: Props) {
+export default function RegisterForm(
+	{
+		isLoading,
+		isError,
+		error,
+		onFinish,
+		btnTextRegister,
+		linkToLogin
+	}: Props
+) {
+	const [form] = Form.useForm<FormValues>();
+
 	return (
-		<Form
-			className={styles.loginForm}
-			layout="vertical"
-			form={form}
-			onFinish={onFinish}
-		>
-			{isError &&
-				<Alert
-					className="mb-3"
-					message={<RenderError error={error as ApiError} message="Виникла помилка під час реєстрації" />}
-					type="error"
-					showIcon
-				/>
-			}
-
-			<Row gutter={16}>
-				<Col xs={24} sm={8}>
-					<Form.Item
-						hasFeedback
-						label="Ім'я"
-						name="firstName"
-						rules={rules.firstName}
-					>
-						<Input />
-					</Form.Item>
-				</Col>
-				<Col xs={24} sm={8}>
-					<Form.Item
-						hasFeedback
-						label="Прізвище"
-						name="lastName"
-						rules={rules.lastName}
-					>
-						<Input />
-					</Form.Item>
-				</Col>
-				<Col xs={24} sm={8}>
-					<Form.Item
-						hasFeedback
-						label="По батькові"
-						name="patronymic"
-						rules={rules.patronymic}
-					>
-						<Input />
-					</Form.Item>
-				</Col>
-			</Row>
-
-			<Form.Item
-				hasFeedback
-				label="Email"
-				name="email"
-				rules={rules.email}
+		<>
+			<Form
+				className={styles.loginForm}
+				layout="vertical"
+				form={form}
+				onFinish={onFinish}
 			>
-				<Input prefix={<MailOutlined />} />
-			</Form.Item>
+				{isError &&
+					<Alert
+						className="mb-3"
+						message={<RenderError error={error as ApiError} message="Виникла помилка під час реєстрації" />}
+						type="error"
+						showIcon
+					/>
+				}
 
-			<Form.Item
-				hasFeedback
-				label="Пароль"
-				name="password"
-				rules={rules.password}
-			>
-				<Input.Password prefix={<LockOutlined />} />
-			</Form.Item>
+				<Row gutter={16}>
+					<Col xs={24} sm={8}>
+						<Form.Item
+							hasFeedback
+							label="Ім'я"
+							name="firstName"
+							rules={rules.firstName}
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col xs={24} sm={8}>
+						<Form.Item
+							hasFeedback
+							label="Прізвище"
+							name="lastName"
+							rules={rules.lastName}
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+					<Col xs={24} sm={8}>
+						<Form.Item
+							hasFeedback
+							label="По батькові"
+							name="patronymic"
+							rules={rules.patronymic}
+						>
+							<Input />
+						</Form.Item>
+					</Col>
+				</Row>
 
-			<Form.Item
-				hasFeedback
-				label="Повторіть пароль"
-				name="confirmPassword"
-				rules={rules.confirmPassword}
-			>
-				<Input.Password prefix={<LockOutlined />} />
-			</Form.Item>
-
-			<Form.Item>
-				<Button
-					className={styles.loginFormButton}
-					type="primary"
-					htmlType="submit"
-					loading={isLoading}
+				<Form.Item
+					hasFeedback
+					label="Email"
+					name="email"
+					rules={rules.email}
 				>
-					Зареєструватися
-				</Button>
-			</Form.Item>
-		</Form>
+					<Input prefix={<MailOutlined />} />
+				</Form.Item>
+
+				<Form.Item
+					hasFeedback
+					label="Пароль"
+					name="password"
+					rules={rules.password}
+				>
+					<Input.Password prefix={<LockOutlined />} />
+				</Form.Item>
+
+				<Form.Item
+					hasFeedback
+					label="Повторіть пароль"
+					name="confirmPassword"
+					rules={rules.confirmPassword}
+				>
+					<Input.Password prefix={<LockOutlined />} />
+				</Form.Item>
+
+				<Form.Item>
+					<Button
+						className={styles.loginFormButton}
+						type="primary"
+						htmlType="submit"
+						loading={isLoading}
+					>
+						{btnTextRegister}
+					</Button>
+				</Form.Item>
+			</Form>
+			<div className={styles.registerLink}>
+				<div>Вже є акаунт?</div>
+				<Link to={linkToLogin}>Увійти</Link>
+			</div>
+		</>
 	);
 }

@@ -6,7 +6,7 @@ import { Query } from 'express-serve-static-core';
 import { StudentEntity } from './student.entity';
 import { UpdateDto } from './dto/update.dto';
 import { AddDto } from './dto/add.dto';
-import StudentsResponse from './interfaces/students-response.interface';
+import PaginationResponse from '../common/interfaces/pagination-response.interface';
 import { queryParamsForWhere } from '../common/utils/query-param';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class StudentService {
 		private readonly studentRepository: Repository<StudentEntity>
 	) {}
 
-	async getStudents(page: number, limit: number, query: Query): Promise<StudentsResponse> {
+	async getStudents(page: number, limit: number, query: Query): Promise<PaginationResponse<StudentEntity>> {
 		const [data, total] = await this.studentRepository.findAndCount({
 			where: queryParamsForWhere(query, ['firstName', 'lastName', 'patronymic', 'email']),
 			order: {

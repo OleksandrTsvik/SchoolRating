@@ -6,6 +6,7 @@ import { AdminModule } from './admin/admin.module';
 import { validationSchemaConfig } from './configs/validation-schema.config';
 import { SubjectModule } from './subject/subject.module';
 import { StudentModule } from './student/student.module';
+import { TeacherModule } from './teacher/teacher.module';
 
 @Module({
 	imports: [
@@ -19,7 +20,8 @@ import { StudentModule } from './student/student.module';
 		}),
 		AdminModule,
 		StudentModule,
-		SubjectModule
+		SubjectModule,
+		TeacherModule
 	]
 })
 export class AppModule {}

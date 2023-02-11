@@ -11,3 +11,13 @@
 .loginForm .ant-form-item:last-of-type {
   margin-bottom: 0;
 }
+
+.registerLink {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 350px;
+  margin: auto;
+  gap: 16px;
+}

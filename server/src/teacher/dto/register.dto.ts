@@ -1,6 +1,7 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import { Match } from '../../common/decorators/match.decorator';
 
-export class UpdateDto {
+export class RegisterDto {
 	@IsNotEmpty()
 	@IsString()
 	@Length(1, 32, { message: 'Ім\'я повинне містити до 32-х символів' })
@@ -20,7 +21,12 @@ export class UpdateDto {
 	@IsEmail({}, { message: 'Некоректна електронна адреса' })
 	email: string;
 
-	@IsOptional()
+	@IsNotEmpty()
+	@IsString()
 	@Length(6, 32, { message: 'Довжина пароля має бути від 6 до 32 символів' })
-	password?: string;
+	password: string;
+
+	@IsString()
+	@Match('password', { message: 'Паролі не співпадають' })
+	confirmPassword: string;
 }
