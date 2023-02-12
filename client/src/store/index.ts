@@ -7,6 +7,7 @@ import { adminService } from '../api/services/adminService';
 import { adminStudentService } from '../api/services/adminStudentService';
 import { adminTeacherService } from '../api/services/adminTeacherService';
 import { subjectService } from '../api/services/subjectService';
+import { classService } from '../api/services/classService';
 import authAdminReducer from '../api/auth/admin/authAdminSlice';
 import authUserReducer from '../api/auth/user/authUserSlice';
 
@@ -19,6 +20,7 @@ export const store = configureStore({
 		[adminStudentService.reducerPath]: adminStudentService.reducer,
 		[adminTeacherService.reducerPath]: adminTeacherService.reducer,
 		[subjectService.reducerPath]: subjectService.reducer,
+		[classService.reducerPath]: classService.reducer,
 		authAdmin: authAdminReducer,
 		authUser: authUserReducer
 	}),
@@ -30,7 +32,8 @@ export const store = configureStore({
 			adminService.middleware,
 			adminStudentService.middleware,
 			adminTeacherService.middleware,
-			subjectService.middleware
+			subjectService.middleware,
+			classService.middleware
 		),
 	devTools: process.env.NODE_ENV !== 'production'
 });

@@ -4,6 +4,7 @@ import SubjectsPage from './SubjectsPage';
 import LogoutPage from './LogoutPage';
 import SettingsPage from './SettingsPage';
 import UsersPage from './UsersPage';
+import ClassesPage from './ClassesPage';
 import NotFoundPage from './NotFoundPage';
 
 export {
@@ -13,5 +14,6 @@ export {
 	LogoutPage,
 	SettingsPage,
 	UsersPage,
+	ClassesPage,
 	NotFoundPage
 };
