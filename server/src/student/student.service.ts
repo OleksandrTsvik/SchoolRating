@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { Query } from 'express-serve-static-core';
 import { StudentEntity } from './student.entity';
@@ -16,13 +16,23 @@ export class StudentService {
 		private readonly studentRepository: Repository<StudentEntity>
 	) {}
 
-	async getStudents(page: number, limit: number, query: Query): Promise<PaginationResponse<StudentEntity>> {
+	async getStudents(
+		page: number, limit: number, query: Query, isWithoutClass: boolean
+	): Promise<PaginationResponse<StudentEntity>> {
+		const whereClass = isWithoutClass ? { cls: IsNull() } : {};
+
 		const [data, total] = await this.studentRepository.findAndCount({
-			where: queryParamsForWhere(query, ['firstName', 'lastName', 'patronymic', 'email']),
+			where: {
+				...queryParamsForWhere(query, ['firstName', 'lastName', 'patronymic', 'email']),
+				...whereClass
+			},
 			order: {
 				firstName: 'ASC',
 				lastName: 'ASC',
 				patronymic: 'ASC'
+			},
+			relations: {
+				cls: true
 			},
 			take: limit,
 			skip: limit * (page - 1)

@@ -7,7 +7,8 @@ import {
 	LogoutPage,
 	SettingsPage,
 	UsersPage,
-	ClassesPage
+	ClassesPage,
+	ClassStudentsPage
 } from '../pages';
 import { PrivateOutlet } from './PrivateOutlet';
 
@@ -18,7 +19,10 @@ export default (
 			<Route index element={<Navigate to="subjects" replace />} />
 			<Route path="logout" element={<LogoutPage />} />
 			<Route path="subjects" element={<SubjectsPage />} />
-			<Route path="classes" element={<ClassesPage />} />
+			<Route path="classes">
+				<Route index element={<ClassesPage />} />
+				<Route path=":id/students" element={<ClassStudentsPage />} />
+			</Route>
 			<Route path="settings" element={<SettingsPage />} />
 			<Route path="users" element={<UsersPage />} />
 			<Route path="*" element={<NotFoundPage />} />

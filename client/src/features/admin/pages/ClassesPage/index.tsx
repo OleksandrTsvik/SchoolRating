@@ -8,13 +8,13 @@ import AddClass from '../../classes/AddClass';
 import TableClasses from '../../classes/TableClasses';
 
 export default function ClassesPage() {
-	const { data, isLoading, error, refetch } = useGetClassesQuery();
+	const { data, isFetching, error, refetch } = useGetClassesQuery();
 
 	if (error) {
-		return <FailedRequest loading={isLoading} error={error as ApiError} refetch={refetch} />;
+		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}
 
-	if (isLoading) {
+	if (isFetching) {
 		return <Skeleton active />;
 	}
 

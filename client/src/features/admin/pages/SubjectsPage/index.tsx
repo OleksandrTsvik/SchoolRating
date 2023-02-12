@@ -8,13 +8,13 @@ import FailedRequest from '../../../../components/FailedRequest';
 import { ApiError } from '../../../../api/config';
 
 export default function SubjectsPage() {
-	const { data, isLoading, error, refetch } = useGetSubjectsQuery();
+	const { data, isFetching, error, refetch } = useGetSubjectsQuery();
 
 	if (error) {
-		return <FailedRequest loading={isLoading} error={error as ApiError} refetch={refetch} />;
+		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}
 
-	if (isLoading) {
+	if (isFetching) {
 		return <Skeleton active />;
 	}
 

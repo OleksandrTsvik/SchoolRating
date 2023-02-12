@@ -5,6 +5,7 @@ import {
 	Delete,
 	Get,
 	Param,
+	ParseBoolPipe,
 	ParseIntPipe,
 	Patch,
 	Post,
@@ -28,9 +29,10 @@ export class StudentController {
 	async findStudents(
 		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
 		@Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+		@Query('isWithoutClass', new DefaultValuePipe(false), ParseBoolPipe) isWithoutClass: boolean = false,
 		@Query() query: ExpressQuery
 	) {
-		return this.studentService.getStudents(page, limit, query);
+		return this.studentService.getStudents(page, limit, query, isWithoutClass);
 	}
 
 	@UseGuards(AdminJwtGuard)

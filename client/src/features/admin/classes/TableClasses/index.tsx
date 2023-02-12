@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ColumnsType } from 'antd/es/table';
-import { Form, Modal, Space, Table } from 'antd';
+import { Button, Form, Modal, Space, Table } from 'antd';
+import { TeamOutlined } from '@ant-design/icons';
 
 import { IClass } from '../../../../models/IClass';
 import useModal from '../../../../hooks/useModal';
@@ -14,6 +16,7 @@ export interface DataType {
 	id: string;
 	number: number;
 	name: string;
+	countStudents: number;
 }
 
 interface Props {
@@ -69,13 +72,20 @@ export default function TableClasses({ classes }: Props) {
 
 	const columns: ColumnsType<DataType> = [
 		{ title: '#', dataIndex: 'number', width: 20, className: 'text-center' },
-		{ title: 'Name', dataIndex: 'name' },
+		{ title: 'Назва', dataIndex: 'name' },
+		{ title: 'Кількість учнів', dataIndex: 'countStudents' },
 		{
 			key: 'action',
 			className: 'text-center',
 			width: 120,
 			render: (_, record) => (
 				<Space size="small">
+					<Link to={`${record.id}/students`}>
+						<Button
+							size="large"
+							icon={<TeamOutlined />}
+						/>
+					</Link>
 					<ActionButton
 						action="edit"
 						onClick={() => onClickEdit(record)}
@@ -99,7 +109,8 @@ export default function TableClasses({ classes }: Props) {
 					dataSource={classes.map((cls, index) => ({
 						...cls,
 						key: cls.id,
-						number: index + 1
+						number: index + 1,
+						countStudents: cls.students.length
 					}))}
 				/>
 			</div>

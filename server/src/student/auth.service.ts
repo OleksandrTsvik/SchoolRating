@@ -89,9 +89,7 @@ export class AuthService {
 		await this.studentRepository.update({ id }, { hashedRefreshToken });
 	}
 
-	async getCookieWithJwtAccessToken(
-		student: Omit<StudentEntity, 'hashedPassword' | 'hashedRefreshToken' | 'updatedAt'>
-	) {
+	async getCookieWithJwtAccessToken(student: JwtPayloadDto) {
 		return getCookieWithJwtAccessToken(this.configService, this.jwtService,
 			this.getJwtPayload(student), 'Authentication');
 	}
@@ -114,9 +112,7 @@ export class AuthService {
 		return compare(refreshToken, student.hashedRefreshToken);
 	}
 
-	getJwtPayload(
-		student: Omit<StudentEntity, 'hashedPassword' | 'hashedRefreshToken' | 'updatedAt'>
-	): JwtPayloadDto {
+	getJwtPayload(student: Omit<JwtPayloadDto, 'role'>): JwtPayloadDto {
 		return {
 			id: student.id,
 			firstName: student.firstName,

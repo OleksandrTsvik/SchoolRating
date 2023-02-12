@@ -13,7 +13,7 @@ export interface DataType {
 
 export const columns: ColumnsType<DataType> = [
 	{ title: '#', dataIndex: 'number', width: 20, className: 'text-center' },
-	{ title: 'Name', dataIndex: 'name' },
+	{ title: 'Назва', dataIndex: 'name' },
 	{
 		key: 'action',
 		className: 'text-center',

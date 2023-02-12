@@ -19,6 +19,7 @@ import UserForm, { FormValues } from '../../../../components/UserForm';
 import ActionButton from '../../../../components/ActionButton';
 import AddUser from '../../../../components/AddUser';
 import FailedRequest from '../../../../components/FailedRequest';
+import { IClass } from '../../../../models/IClass';
 
 interface DataType {
 	id: string;
@@ -27,6 +28,7 @@ interface DataType {
 	lastName: string;
 	patronymic: string;
 	email: string;
+	cls: Omit<IClass, "students"> | null;
 	createdAt: Date;
 }
 
@@ -120,6 +122,13 @@ export default function Students() {
 			title: 'Email',
 			dataIndex: 'email',
 			...getColumnSearchProps('email')
+		},
+		{
+			title: 'Клас',
+			dataIndex: 'cls',
+			width: 100,
+			className: 'text-center',
+			render: (_, record) => record?.cls?.name
 		},
 		{
 			title: 'Дата реєстрації',

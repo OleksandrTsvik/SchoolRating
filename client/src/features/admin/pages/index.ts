@@ -5,6 +5,7 @@ import LogoutPage from './LogoutPage';
 import SettingsPage from './SettingsPage';
 import UsersPage from './UsersPage';
 import ClassesPage from './ClassesPage';
+import ClassStudentsPage from './ClassStudentsPage';
 import NotFoundPage from './NotFoundPage';
 
 export {
@@ -15,5 +16,6 @@ export {
 	SettingsPage,
 	UsersPage,
 	ClassesPage,
+	ClassStudentsPage,
 	NotFoundPage
 };

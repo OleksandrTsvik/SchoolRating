@@ -13,13 +13,13 @@ import styles from './Admins.module.scss';
 
 export default function Admins() {
 	const admin = useAppSelector(selectCurrentAdmin);
-	const { data, isLoading, error, refetch } = useGetAdminsQuery();
+	const { data, isFetching, error, refetch } = useGetAdminsQuery();
 
 	if (error) {
-		return <FailedRequest loading={isLoading} error={error as ApiError} refetch={refetch} />;
+		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}
 
-	if (isLoading) {
+	if (isFetching) {
 		return <Skeleton active />;
 	}
 
