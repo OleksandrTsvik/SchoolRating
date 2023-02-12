@@ -1,12 +1,12 @@
 import React from 'react';
-import { ApiError } from '../api/config';
+import { ApiError } from '../../api/config';
 
 interface Props {
 	error?: ApiError;
 	message?: React.ReactNode;
 }
 
-export default function RenderError({ error, message }: Props): JSX.Element {
+export default function ShowError({ error, message }: Props): JSX.Element {
 	if (!error || !error.data || !error.data.message) {
 		return <>{message}</>;
 	}

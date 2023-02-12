@@ -3,7 +3,7 @@ import Table from 'antd/es/table';
 
 import { useGetAdminsQuery } from '../../../../api/services/adminService';
 import { selectCurrentAdmin } from '../../../../api/auth/admin/authAdminSlice';
-import FailedRequest from '../FailedRequest';
+import FailedRequest from '../../../../components/FailedRequest';
 import { ApiError } from '../../../../api/config';
 import { useAppSelector } from '../../../../store';
 import AddAdmin from './AddAdmin';

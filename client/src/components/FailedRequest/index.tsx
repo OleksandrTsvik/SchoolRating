@@ -1,7 +1,7 @@
 import { Button, Result } from 'antd';
 
-import RenderError from '../../../utils/RenderError';
-import { ApiError } from '../../../api/config';
+import ShowError from '../ShowError';
+import { ApiError } from '../../api/config';
 
 interface Props {
 	loading: boolean;
@@ -13,7 +13,7 @@ export default function FailedRequest({ loading, error, refetch }: Props) {
 	return (
 		<Result
 			status="error"
-			title={<RenderError
+			title={<ShowError
 				error={error as ApiError}
 				message="Виникла помилка під час завантаження даних"
 			/>}

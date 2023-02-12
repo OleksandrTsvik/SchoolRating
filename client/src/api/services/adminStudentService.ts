@@ -8,10 +8,8 @@ import getObjectWithoutNullValues from '../../utils/getObjectWithoutNullValues';
 export interface GetStudentsRequest {
 	page: number;
 	limit: number;
-	firstName: string | null;
-	lastName: string | null;
-	patronymic: string | null;
-	email: string | null;
+
+	[key: string]: string | number | null;
 }
 
 export interface GetStudentsResponse {

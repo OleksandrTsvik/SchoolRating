@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
 import RegisterForm, { FormValues } from '../../../../components/RegisterForm';
-import { useRegisterMutation } from '../../../../api/auth/user/authStudentApi';
+import { useRegisterMutation } from '../../../../api/auth/user/authTeacherApi';
 import transactionWithNotification from '../../../../utils/transactionWithNotification';
 
-export default function StudentRegister() {
+export default function TeacherRegister() {
 	const navigate = useNavigate();
 	const [register, { isLoading, isError, error }] = useRegisterMutation();
 
@@ -12,10 +12,10 @@ export default function StudentRegister() {
 		await transactionWithNotification(
 			async () => {
 				await register(values).unwrap();
-				navigate('/login/student');
+				navigate('/login/teacher');
 			},
-			'Ви успішно зареєструвалися як учень, тепер можете увійти в свій акаунт',
-			'Виникла помилка при реєстрації як учень'
+			'Ви успішно зареєструвалися як учитель, тепер можете увійти в свій акаунт',
+			'Виникла помилка при реєстрації як учитель'
 		);
 	}
 
@@ -25,8 +25,8 @@ export default function StudentRegister() {
 			isError={isError}
 			error={error}
 			onFinish={onFinish}
-			btnTextRegister="Зареєструватися як учень"
-			linkToLogin="/login/student"
+			btnTextRegister="Зареєструватися як учитель"
+			linkToLogin="/login/teacher"
 		/>
 	);
 }

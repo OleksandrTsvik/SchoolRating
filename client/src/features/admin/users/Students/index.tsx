@@ -1,22 +1,24 @@
-import React, { useRef, useState } from 'react';
-import { Button, Form, Input, InputRef, Modal, Space } from 'antd';
+import React, { useState } from 'react';
+import { Form, Modal, Space } from 'antd';
 import Moment from 'moment';
-import Table, { ColumnsType, ColumnType } from 'antd/es/table';
-import { FilterConfirmProps } from 'antd/es/table/interface';
-import { SearchOutlined } from '@ant-design/icons';
-import Highlighter from 'react-highlight-words';
+import Table, { ColumnsType } from 'antd/es/table';
 
-import FailedRequest from '../FailedRequest';
 import { ApiError } from '../../../../api/config';
-import { useDeleteMutation, useEditMutation, useGetStudentsQuery } from '../../../../api/services/adminStudentService';
+import {
+	useAddMutation,
+	useDeleteMutation,
+	useEditMutation,
+	useGetStudentsQuery
+} from '../../../../api/services/adminStudentService';
 import transactionWithNotification from '../../../../utils/transactionWithNotification';
 import getFullName from '../../../../utils/getFullName';
 import confirmDelete from '../../../../utils/confirmDelete';
 import useModal from '../../../../hooks/useModal';
+import useColumnSearchProps from '../../../../hooks/useColumnSearchProps';
 import UserForm, { FormValues } from '../../../../components/UserForm';
 import ActionButton from '../../../../components/ActionButton';
-import { IStudent } from '../../../../models/IStudent';
-import AddStudent from './AddStudent';
+import AddUser from '../../../../components/AddUser';
+import FailedRequest from '../../../../components/FailedRequest';
 
 interface DataType {
 	id: string;
@@ -28,23 +30,22 @@ interface DataType {
 	createdAt: Date;
 }
 
-type DataIndex = keyof DataType;
-
 export default function Students() {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
-	const [filters, setFilters] = useState({
+	const { filters, getColumnSearchProps } = useColumnSearchProps<DataType>({
 		firstName: null,
 		lastName: null,
 		patronymic: null,
 		email: null
 	});
-	const filterInput = useRef<InputRef>(null);
 	const { data, isFetching, error, refetch } = useGetStudentsQuery({ page, limit, ...filters });
 
+	const [addStudent, { isLoading: isAddLoading }] = useAddMutation();
+
 	const { isOpen, onOpen, onClose } = useModal();
-	const [formEditStudent] = Form.useForm<FormValues>();
 	const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
+	const [formEditStudent] = Form.useForm<FormValues>();
 	const [editStudent, { isLoading: isEditLoading }] = useEditMutation();
 
 	const [deleteStudent] = useDeleteMutation();
@@ -85,107 +86,12 @@ export default function Students() {
 		);
 	}
 
-	function onClickEdit(student: IStudent) {
+	function onClickEdit(student: DataType) {
 		formEditStudent.resetFields();
 		formEditStudent.setFieldsValue(student);
 
 		setSelectedEditId(student.id);
 		onOpen();
-	}
-
-	function updateFilter(key: string, value: string | null) {
-		setFilters(state => ({
-			...state,
-			[key]: value
-		}));
-	}
-
-	function onFilter(
-		selectedKeys: React.Key[],
-		confirm: (param?: FilterConfirmProps) => void,
-		dataIndex: DataIndex,
-		closeDropdown: boolean = true
-	) {
-		confirm({ closeDropdown }); // close filter block
-		updateFilter(dataIndex, selectedKeys[0] as string);
-	}
-
-	function resetFilter(
-		dataIndex: DataIndex,
-		confirm: (param?: FilterConfirmProps) => void,
-		clearFilters: () => void
-	) {
-		clearFilters();
-		confirm();
-		updateFilter(dataIndex, null);
-	}
-
-	function getColumnSearchProps(dataIndex: DataIndex, placeholder: string = dataIndex): ColumnType<DataType> {
-		return {
-			filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-				<div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-					<Input
-						ref={filterInput}
-						placeholder={placeholder}
-						value={selectedKeys[0]}
-						onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-						onPressEnter={() => onFilter(selectedKeys, confirm, dataIndex)}
-						style={{ marginBottom: 8, display: 'block' }}
-					/>
-					<Space>
-						<Button
-							type="primary"
-							onClick={() => onFilter(selectedKeys, confirm, dataIndex)}
-							icon={<SearchOutlined />}
-							size="small"
-							style={{ width: 90 }}
-						>
-							Пошук
-						</Button>
-						<Button
-							onClick={() => clearFilters && resetFilter(dataIndex, confirm, clearFilters)}
-							size="small"
-							style={{ width: 90 }}
-						>
-							Скинути
-						</Button>
-						<Button
-							type="link"
-							size="small"
-							onClick={() => onFilter(selectedKeys, confirm, dataIndex, false)}
-						>
-							Застосувати
-						</Button>
-						<Button type="link" size="small" onClick={close}>Закрити</Button>
-					</Space>
-				</div>
-			),
-			filterIcon: (filtered: boolean) => (
-				<SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-			),
-			onFilterDropdownOpenChange: (visible) => {
-				if (visible) {
-					setTimeout(() => filterInput.current?.select(), 100);
-				}
-			},
-			render: (text) => {
-				if (filters.hasOwnProperty(dataIndex) && filters[dataIndex as keyof typeof filters]) {
-					let searchWord: any = filters[dataIndex as keyof typeof filters];
-					searchWord = searchWord ? [searchWord] : [];
-
-					return (
-						<Highlighter
-							highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-							searchWords={searchWord}
-							autoEscape
-							textToHighlight={text || ''}
-						/>
-					);
-				}
-
-				return text;
-			}
-		};
 	}
 
 	const columns: ColumnsType<DataType> = [
@@ -241,7 +147,14 @@ export default function Students() {
 
 	return (
 		<>
-			<AddStudent />
+			<AddUser
+				addUser={async (values: FormValues) => await addStudent(values).unwrap()}
+				isLoading={isAddLoading}
+				addBtnText="Додати учня"
+				modalTitle="Новий учень"
+				successMessage="Нового учня успішно додано"
+				alternativeErrorMessage="Виникла помилка під час додавання нового учня"
+			/>
 			<div className="table-responsive">
 				<Table
 					bordered
@@ -259,11 +172,13 @@ export default function Students() {
 						}
 					}}
 					columns={columns}
-					dataSource={data && data.data.map((student, index) => ({
-						...student,
-						key: student.id,
-						number: limit * (page - 1) + index + 1
-					}))}
+					dataSource={!data ? []
+						: data.data.map((student, index) => ({
+							...student,
+							key: student.id,
+							number: limit * (page - 1) + index + 1
+						}))
+					}
 				/>
 			</div>
 			<Modal

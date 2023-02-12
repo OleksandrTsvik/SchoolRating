@@ -4,6 +4,7 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import LogoutPage from './LogoutPage';
 import NotFoundPage from './NotFoundPage';
+import CabinetPage from './CabinetPage';
 
 export {
 	LayoutPage,
@@ -11,5 +12,6 @@ export {
 	LoginPage,
 	RegisterPage,
 	LogoutPage,
+	CabinetPage,
 	NotFoundPage
 };

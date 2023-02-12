@@ -4,7 +4,7 @@ import Title from 'antd/es/typography/Title';
 import TableSubjects from '../../subjects/TableSubjects';
 import AddSubject from '../../subjects/AddSubject';
 import { useGetSubjectsQuery } from '../../../../api/services/subjectService';
-import FailedRequest from '../../users/FailedRequest';
+import FailedRequest from '../../../../components/FailedRequest';
 import { ApiError } from '../../../../api/config';
 
 export default function SubjectsPage() {

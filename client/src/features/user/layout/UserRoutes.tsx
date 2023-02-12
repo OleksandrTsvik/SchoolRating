@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 
-import { HomePage, NotFoundPage, LoginPage, RegisterPage, LayoutPage, LogoutPage } from '../pages';
+import { HomePage, NotFoundPage, LoginPage, RegisterPage, LayoutPage, LogoutPage, CabinetPage } from '../pages';
 import { PrivateOutlet } from './PrivateOutlet';
 import { NoAuthOutlet } from './NoAuthOutlet';
 
@@ -9,7 +9,7 @@ export default (
 		<Route path="/">
 			<Route element={<PrivateOutlet />}>
 				<Route path="logout" element={<LogoutPage />} />
-				<Route path="cabinet" element={<>Cabinet</>} />
+				<Route path="cabinet" element={<CabinetPage />} />
 			</Route>
 			<Route element={<NoAuthOutlet />}>
 				<Route path="login/*" element={<LoginPage />} />

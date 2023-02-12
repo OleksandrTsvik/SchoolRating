@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import { NotificationPlacement } from 'antd/es/notification/interface';
 
-import RenderError from './RenderError';
+import ShowError from '../components/ShowError';
 import { ApiError } from '../api/config';
 
 export default async function transactionWithNotification(
@@ -22,7 +22,7 @@ export default async function transactionWithNotification(
 		notification.open({
 			type: 'error',
 			message: alternativeErrorMessage,
-			description: <RenderError error={error as ApiError} />,
+			description: <ShowError error={error as ApiError} />,
 			placement
 		});
 	}

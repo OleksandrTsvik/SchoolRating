@@ -2,8 +2,8 @@ import { Alert, Button, Form, Input } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
-import RenderError from '../../../../utils/RenderError';
-import { ApiError } from '../../../../api/config';
+import ShowError from '../ShowError';
+import { ApiError } from '../../api/config';
 import { rules } from './rules';
 
 import styles from './LoginForm.module.scss';
@@ -44,7 +44,7 @@ export default function LoginForm(
 				{isError &&
 					<Alert
 						className="mb-3"
-						message={<RenderError error={error as ApiError} message="Виникла помилка під час входу" />}
+						message={<ShowError error={error as ApiError} message="Виникла помилка під час входу" />}
 						type="error"
 						showIcon
 					/>

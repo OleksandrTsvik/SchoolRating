@@ -3,18 +3,24 @@ import { Navigate } from 'react-router-dom';
 
 import useUserAuth from '../../../../hooks/useUserAuth';
 import LoadingPage from '../../../../components/LoadingPage';
-import { useLogoutMutation } from '../../../../api/auth/user/authStudentApi';
+import { useLogoutMutation as useStudentLogout } from '../../../../api/auth/user/authStudentApi';
+import { useLogoutMutation as useTeacherLogout } from '../../../../api/auth/user/authTeacherApi';
 
 export default function LogoutPage() {
-	const { isAuth } = useUserAuth();
-	const [logout, { isLoading }] = useLogoutMutation();
+	const { isAuth, isStudent, isTeacher } = useUserAuth();
+	const [studentLogout, { isLoading: isStudentLoading }] = useStudentLogout();
+	const [teacherLogout, { isLoading: isTeacherLoading }] = useTeacherLogout();
 
 	useEffect(() => {
-		logout();
+		if (isStudent) {
+			studentLogout();
+		} else if (isTeacher) {
+			teacherLogout();
+		}
 		// eslint-disable-next-line
 	}, []);
 
-	if (isLoading || isAuth) {
+	if (isStudentLoading || isTeacherLoading || isAuth) {
 		return <LoadingPage />;
 	}
 
