@@ -19,6 +19,7 @@ import UserForm, { FormValues } from '../../../../components/UserForm';
 import ActionButton from '../../../../components/ActionButton';
 import AddUser from '../../../../components/AddUser';
 import FailedRequest from '../../../../components/FailedRequest';
+import LoadingTable from '../../../../components/LoadingTable';
 
 interface DataType {
 	id: string;
@@ -39,7 +40,7 @@ export default function Teachers() {
 		patronymic: null,
 		email: null
 	});
-	const { data, isFetching, error, refetch } = useGetTeachersQuery({ page, limit, ...filters });
+	const { data, isLoading, isFetching, error, refetch } = useGetTeachersQuery({ page, limit, ...filters });
 
 	const [addTeacher, { isLoading: isAddLoading }] = useAddMutation();
 
@@ -145,23 +146,40 @@ export default function Teachers() {
 		}
 	];
 
+	if (isLoading) {
+		return <LoadingTable columns={columns} />;
+	}
+
+	function AddTeacherModal() {
+		return <AddUser
+			addUser={async (values: FormValues) => await addTeacher(values).unwrap()}
+			isLoading={isAddLoading}
+			addBtnText="Додати учителя"
+			modalTitle="Новий учитель"
+			successMessage="Нового учителя успішно додано"
+			alternativeErrorMessage="Виникла помилка під час додавання нового учителя"
+		/>;
+	}
+
+	if (!data || data.data.length === 0) {
+		return (
+			<>
+				<AddTeacherModal />
+				<LoadingTable columns={columns} />
+			</>
+		);
+	}
+
 	return (
 		<>
-			<AddUser
-				addUser={async (values: FormValues) => await addTeacher(values).unwrap()}
-				isLoading={isAddLoading}
-				addBtnText="Додати учителя"
-				modalTitle="Новий учитель"
-				successMessage="Нового учителя успішно додано"
-				alternativeErrorMessage="Виникла помилка під час додавання нового учителя"
-			/>
+			<AddTeacherModal />
 			<div className="table-responsive">
 				<Table
 					bordered
 					loading={isFetching}
 					pagination={{
 						pageSize: limit,
-						total: data ? data.total : 0,
+						total: data.total,
 						showSizeChanger: true,
 						pageSizeOptions: [2, 5, 10, 20, 50, 100],
 						responsive: true,
@@ -172,13 +190,11 @@ export default function Teachers() {
 						}
 					}}
 					columns={columns}
-					dataSource={!data ? []
-						: data.data.map((teacher, index) => ({
-							...teacher,
-							key: teacher.id,
-							number: limit * (page - 1) + index + 1
-						}))
-					}
+					dataSource={data.data.map((teacher, index) => ({
+						...teacher,
+						key: teacher.id,
+						number: limit * (page - 1) + index + 1
+					}))}
 				/>
 			</div>
 			<Modal

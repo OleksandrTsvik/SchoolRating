@@ -19,6 +19,7 @@ import UserForm, { FormValues } from '../../../../components/UserForm';
 import ActionButton from '../../../../components/ActionButton';
 import AddUser from '../../../../components/AddUser';
 import FailedRequest from '../../../../components/FailedRequest';
+import LoadingTable from '../../../../components/LoadingTable';
 import { IClass } from '../../../../models/IClass';
 
 interface DataType {
@@ -41,7 +42,7 @@ export default function Students() {
 		patronymic: null,
 		email: null
 	});
-	const { data, isFetching, error, refetch } = useGetStudentsQuery({ page, limit, ...filters });
+	const { data, isLoading, isFetching, error, refetch } = useGetStudentsQuery({ page, limit, ...filters });
 
 	const [addStudent, { isLoading: isAddLoading }] = useAddMutation();
 
@@ -154,23 +155,40 @@ export default function Students() {
 		}
 	];
 
+	if (isLoading) {
+		return <LoadingTable columns={columns} />;
+	}
+
+	function AddStudentModal() {
+		return <AddUser
+			addUser={async (values: FormValues) => await addStudent(values).unwrap()}
+			isLoading={isAddLoading}
+			addBtnText="Додати учня"
+			modalTitle="Новий учень"
+			successMessage="Нового учня успішно додано"
+			alternativeErrorMessage="Виникла помилка під час додавання нового учня"
+		/>;
+	}
+
+	if (!data || data.data.length === 0) {
+		return (
+			<>
+				<AddStudentModal />
+				<LoadingTable columns={columns} />
+			</>
+		);
+	}
+
 	return (
 		<>
-			<AddUser
-				addUser={async (values: FormValues) => await addStudent(values).unwrap()}
-				isLoading={isAddLoading}
-				addBtnText="Додати учня"
-				modalTitle="Новий учень"
-				successMessage="Нового учня успішно додано"
-				alternativeErrorMessage="Виникла помилка під час додавання нового учня"
-			/>
+			<AddStudentModal />
 			<div className="table-responsive">
 				<Table
 					bordered
 					loading={isFetching}
 					pagination={{
 						pageSize: limit,
-						total: data ? data.total : 0,
+						total: data.total,
 						showSizeChanger: true,
 						pageSizeOptions: [2, 5, 10, 20, 50, 100],
 						responsive: true,
@@ -181,13 +199,11 @@ export default function Students() {
 						}
 					}}
 					columns={columns}
-					dataSource={!data ? []
-						: data.data.map((student, index) => ({
-							...student,
-							key: student.id,
-							number: limit * (page - 1) + index + 1
-						}))
-					}
+					dataSource={data.data.map((student, index) => ({
+						...student,
+						key: student.id,
+						number: limit * (page - 1) + index + 1
+					}))}
 				/>
 			</div>
 			<Modal

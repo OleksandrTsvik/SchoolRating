@@ -8,21 +8,21 @@ import AddClass from '../../classes/AddClass';
 import TableClasses from '../../classes/TableClasses';
 
 export default function ClassesPage() {
-	const { data, isFetching, error, refetch } = useGetClassesQuery();
+	const { data, isLoading, isFetching, error, refetch } = useGetClassesQuery();
 
 	if (error) {
 		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}
 
-	if (isFetching) {
+	if (isLoading) {
 		return <Skeleton active />;
 	}
 
 	if (!data || data.length === 0) {
 		return (
 			<>
-				<Empty description="Класи відсутні" />
 				<AddClass />
+				<Empty className="mt-4" description="Класи відсутні" />
 			</>
 		);
 	}
@@ -33,7 +33,7 @@ export default function ClassesPage() {
 				Класи ({data.length})
 			</Title>
 			<AddClass />
-			<TableClasses classes={data} />
+			<TableClasses classes={data} isLoading={isFetching} />
 		</>
 	);
 }

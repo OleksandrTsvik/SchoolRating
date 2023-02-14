@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Empty, Space, Table } from 'antd';
+import { Empty, Skeleton, Space, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { ColumnsType } from 'antd/es/table';
 
@@ -9,6 +9,7 @@ import FailedRequest from '../../../../components/FailedRequest';
 import ActionButton from '../../../../components/ActionButton';
 import LoadingTable from '../../../../components/LoadingTable';
 import StudentsWithoutClass from './StudentsWithoutClass';
+import React from 'react';
 
 interface DataType {
 	id: string;
@@ -21,7 +22,7 @@ interface DataType {
 export default function ClassStudentsPage() {
 	const { id } = useParams();
 
-	const { data, isFetching, error, refetch } = useGetClassQuery({ id: id as string });
+	const { data, isLoading, isFetching, error, refetch } = useGetClassQuery({ id: id as string });
 	const [removeStudent, { isLoading: isRemoveStudentLoading }] = useRemoveStudentMutation();
 
 	if (error) {
@@ -53,7 +54,7 @@ export default function ClassStudentsPage() {
 		}
 	];
 
-	if (isFetching && !data) {
+	if (isLoading) {
 		return <LoadingTable columns={columns} />;
 	}
 

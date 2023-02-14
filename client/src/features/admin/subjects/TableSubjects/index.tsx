@@ -12,14 +12,15 @@ import useModal from '../../../../hooks/useModal';
 
 interface Props {
 	subjects: ISubject[];
+	isLoading: boolean;
 }
 
-export default function TableSubjects({ subjects }: Props) {
+export default function TableSubjects({ subjects, isLoading }: Props) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
 
 	const [formEditSubject] = Form.useForm<FormValues>();
-	const [editSubject, { isLoading }] = useEditMutation();
+	const [editSubject, { isLoading: isLoadingEdit }] = useEditMutation();
 
 	const [deleteSubject] = useDeleteMutation();
 
@@ -68,6 +69,7 @@ export default function TableSubjects({ subjects }: Props) {
 				<Table
 					bordered
 					pagination={false}
+					loading={isLoading}
 					columns={columns}
 					dataSource={subjects.map((subject, index) => ({
 						...subject,
@@ -81,7 +83,7 @@ export default function TableSubjects({ subjects }: Props) {
 			<EditSubjectModal
 				isOpen={isOpen}
 				onClose={onClose}
-				isLoading={isLoading}
+				isLoading={isLoadingEdit}
 				formEditSubject={formEditSubject}
 				onFinishEditSubject={onEditSubject}
 			/>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Empty, Form, Modal, Skeleton, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import Title from 'antd/es/typography/Title';
 
 import { ApiError } from '../../../../api/config';
 import { useDeleteMutation, useEditMutation, useGetEducationsQuery } from '../../../../api/services/educationService';
@@ -140,6 +141,9 @@ export default function EducationsPage() {
 
 	return (
 		<>
+			<Title level={2} className="text-center">
+				Викладання предметів ({data.length})
+			</Title>
 			<AddEducation />
 			<Table
 				className="mt-4"

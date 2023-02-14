@@ -21,13 +21,14 @@ export interface DataType {
 
 interface Props {
 	classes: IClass[];
+	isLoading: boolean;
 }
 
-export default function TableClasses({ classes }: Props) {
+export default function TableClasses({ classes, isLoading }: Props) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [selectedEditId, setSelectedEditId] = useState<string | null>(null);
 	const [formEditClass] = Form.useForm<FormValues>();
-	const [editClass, { isLoading }] = useEditMutation();
+	const [editClass, { isLoading: isLoadingEdit }] = useEditMutation();
 
 	const [deleteClass] = useDeleteMutation();
 
@@ -105,6 +106,7 @@ export default function TableClasses({ classes }: Props) {
 				<Table
 					bordered
 					pagination={false}
+					loading={isLoading}
 					columns={columns}
 					dataSource={classes.map((cls, index) => ({
 						...cls,
@@ -120,7 +122,7 @@ export default function TableClasses({ classes }: Props) {
 				onCancel={onClose}
 				okText="Зберегти зміни"
 				cancelText="Скасувати"
-				confirmLoading={isLoading}
+				confirmLoading={isLoadingEdit}
 				onOk={formEditClass.submit}
 			>
 				<ClassForm

@@ -1,4 +1,4 @@
-import { Empty, Skeleton } from 'antd';
+import { Empty } from 'antd';
 import Table from 'antd/es/table';
 
 import { useGetAdminsQuery } from '../../../../api/services/adminService';
@@ -10,21 +10,28 @@ import AddAdmin from './AddAdmin';
 import { columns } from './columns';
 
 import styles from './Admins.module.scss';
+import LoadingTable from '../../../../components/LoadingTable';
+import React from 'react';
 
 export default function Admins() {
 	const admin = useAppSelector(selectCurrentAdmin);
-	const { data, isFetching, error, refetch } = useGetAdminsQuery();
+	const { data, isLoading, isFetching, error, refetch } = useGetAdminsQuery();
 
 	if (error) {
 		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}
 
-	if (isFetching) {
-		return <Skeleton active />;
+	if (isLoading) {
+		return <LoadingTable columns={columns} />;
 	}
 
 	if (!data) {
-		return <Empty description="Дані відсутні" />;
+		return (
+			<>
+				<AddAdmin />
+				<Empty className="mt-4" description="Дані відсутні" />
+			</>
+		);
 	}
 
 	return (
@@ -35,6 +42,7 @@ export default function Admins() {
 					bordered
 					rowClassName={(record) => record.id === admin.id ? styles.rowCurrentAdmin : ''}
 					pagination={false}
+					loading={isFetching}
 					columns={columns}
 					dataSource={data.map(admin => ({
 						...admin,

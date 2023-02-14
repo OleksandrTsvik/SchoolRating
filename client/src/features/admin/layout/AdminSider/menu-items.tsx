@@ -24,7 +24,7 @@ function getItem(url: string, label: string, icon: React.ReactNode): ItemType {
 }
 
 export const items: ItemType[] = [
-	getItem('/statistics', 'Статистика', <AreaChartOutlined />),
+	// getItem('/statistics', 'Статистика', <AreaChartOutlined />),
 	getItem('/subjects', 'Предмети', <BookOutlined />),
 	getItem('/classes', 'Класи', <TeamOutlined />),
 	getItem('/educations', 'Викладання предметів', <BankOutlined />),
