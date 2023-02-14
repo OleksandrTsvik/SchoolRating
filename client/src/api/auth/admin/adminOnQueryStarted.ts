@@ -1,8 +1,8 @@
 import { MutationLifecycleApi, QueryLifecycleApi } from '@reduxjs/toolkit/dist/query/endpointDefinitions';
 import { BaseQueryFn } from '@reduxjs/toolkit/src/query/baseQueryTypes';
-import { logout, setUser } from './authUserSlice';
+import { logout, setAdmin } from './authAdminSlice';
 
-export async function setUserOnQueryStarted<QueryArg,
+export async function setAdminOnQueryStarted<QueryArg,
 	BaseQuery extends BaseQueryFn,
 	ResultType,
 	ReducerPath extends string = string>
@@ -13,7 +13,7 @@ export async function setUserOnQueryStarted<QueryArg,
 ): Promise<void> {
 	try {
 		const { data } = await api.queryFulfilled;
-		api.dispatch(setUser(data));
+		api.dispatch(setAdmin(data));
 	} catch (error) {
 		// console.log(error);
 	}

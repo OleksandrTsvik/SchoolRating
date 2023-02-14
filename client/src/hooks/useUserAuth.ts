@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { Role } from '../models/role.enum';
 import { useAppSelector } from '../store';
 import { selectCurrentUser } from '../api/auth/user/authUserSlice';
+import { Role } from '../models/role.enum';
 
 export default function useAdminAuth() {
 	const user = useAppSelector(selectCurrentUser);

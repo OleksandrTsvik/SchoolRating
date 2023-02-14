@@ -1,9 +1,9 @@
 import React from 'react';
 
-import LoadingPage from '../components/LoadingPage';
 import { useGetAdminQuery } from '../api/auth/admin/authAdminApi';
 import { useGetStudentQuery } from '../api/auth/user/authStudentApi';
 import { useGetTeacherQuery } from '../api/auth/user/authTeacherApi';
+import LoadingPage from '../components/LoadingPage';
 
 interface Props {
 	children: React.ReactNode;

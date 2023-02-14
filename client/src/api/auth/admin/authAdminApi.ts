@@ -1,8 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { Role } from '../../../models/role.enum';
+import { urlAdminRefresh } from '../../config';
 import fetchBase from '../../fetchBase';
 import { logout } from './authAdminSlice';
-import { urlAdminRefresh } from '../../config';
+import { logoutOnQueryStarted, setAdminOnQueryStarted } from './adminOnQueryStarted';
 
 export interface Admin {
 	id: string;
@@ -24,18 +25,21 @@ export const authAdminApi = createApi({
 				url: '/login',
 				method: 'POST',
 				body: data
-			})
+			}),
+			onQueryStarted: setAdminOnQueryStarted
 		}),
 		logout: builder.mutation<void, void>({
 			query: () => ({
 				url: '/logout',
 				method: 'POST'
-			})
+			}),
+			onQueryStarted: logoutOnQueryStarted
 		}),
 		getAdmin: builder.query<Admin, void>({
 			query: () => ({
 				url: '/me'
-			})
+			}),
+			onQueryStarted: setAdminOnQueryStarted
 		})
 	})
 });

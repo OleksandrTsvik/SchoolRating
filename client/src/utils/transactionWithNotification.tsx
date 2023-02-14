@@ -1,8 +1,8 @@
 import { notification } from 'antd';
 import { NotificationPlacement } from 'antd/es/notification/interface';
 
-import ShowError from '../components/ShowError';
 import { ApiError } from '../api/config';
+import ShowError from '../components/ShowError';
 
 export default async function transactionWithNotification(
 	operation: () => void,
