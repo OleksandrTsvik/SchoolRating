@@ -90,7 +90,7 @@ export class AuthService {
 	}
 
 	async getCookieWithJwtAccessToken(
-		teacher: Omit<TeacherEntity, 'hashedPassword' | 'hashedRefreshToken' | 'updatedAt'>
+		teacher: Omit<TeacherEntity, 'hashedPassword' | 'hashedRefreshToken' | 'updatedAt' | 'educations'>
 	) {
 		return getCookieWithJwtAccessToken(this.configService, this.jwtService,
 			this.getJwtPayload(teacher), 'Authentication');
@@ -115,7 +115,7 @@ export class AuthService {
 	}
 
 	getJwtPayload(
-		teacher: Omit<TeacherEntity, 'hashedPassword' | 'hashedRefreshToken' | 'updatedAt'>
+		teacher: Omit<TeacherEntity, 'hashedPassword' | 'hashedRefreshToken' | 'updatedAt' | 'educations'>
 	): JwtPayloadDto {
 		return {
 			id: teacher.id,

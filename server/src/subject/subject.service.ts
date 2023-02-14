@@ -51,6 +51,6 @@ export class SubjectService {
 			throw new NotFoundException();
 		}
 
-		await this.subjectRepository.delete(subject);
+		await this.subjectRepository.delete({ id });
 	}
 }

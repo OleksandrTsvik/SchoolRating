@@ -37,6 +37,12 @@ export const classService = createApi({
 	baseQuery: fetchBase('/class', logout, urlAdminRefresh),
 	tagTypes: ['Class', 'ClassStudents'],
 	endpoints: (builder) => ({
+		getAllClasses: builder.query<IClass[], void>({
+			query: () => ({
+				url: 'all'
+			}),
+			providesTags: ['Class']
+		}),
 		getClasses: builder.query<IClass[], void>({
 			query: () => ({
 				url: ''
@@ -100,6 +106,7 @@ export const classService = createApi({
 });
 
 export const {
+	useGetAllClassesQuery,
 	useGetClassesQuery,
 	useAddMutation,
 	useEditMutation,

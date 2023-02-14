@@ -6,6 +6,7 @@ import SettingsPage from './SettingsPage';
 import UsersPage from './UsersPage';
 import ClassesPage from './ClassesPage';
 import ClassStudentsPage from './ClassStudentsPage';
+import EducationsPage from './EducationsPage';
 import NotFoundPage from './NotFoundPage';
 
 export {
@@ -17,5 +18,6 @@ export {
 	UsersPage,
 	ClassesPage,
 	ClassStudentsPage,
+	EducationsPage,
 	NotFoundPage
 };

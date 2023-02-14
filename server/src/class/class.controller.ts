@@ -26,6 +26,11 @@ export class ClassController {
 		private readonly studentService: StudentService
 	) {}
 
+	@Get('all')
+	async getAll() {
+		return this.classService.getAll();
+	}
+
 	@Get()
 	async findClasses() {
 		return this.classService.findClasses();

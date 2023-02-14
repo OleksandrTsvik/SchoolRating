@@ -1,3 +1,5 @@
+import { IEducation } from './IEducation';
+
 export interface ITeacher {
 	id: string;
 	firstName: string;
@@ -5,4 +7,5 @@ export interface ITeacher {
 	patronymic: string;
 	email: string;
 	createdAt: Date;
+	educations: Omit<IEducation, 'teacher'>[];
 }

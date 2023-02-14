@@ -43,6 +43,12 @@ export const adminTeacherService = createApi({
 	baseQuery: fetchBase('/teacher', logout, urlAdminRefresh),
 	tagTypes: ['Teacher'],
 	endpoints: (builder) => ({
+		getAllTeachers: builder.query<ITeacher[], void>({
+			query: () => ({
+				url: 'all'
+			}),
+			providesTags: ['Teacher']
+		}),
 		getTeachers: builder.query<GetTeachersResponse, GetTeachersRequest>({
 			query: (params) => ({
 				url: '',
@@ -77,6 +83,7 @@ export const adminTeacherService = createApi({
 });
 
 export const {
+	useGetAllTeachersQuery,
 	useGetTeachersQuery,
 	useAddMutation,
 	useEditMutation,

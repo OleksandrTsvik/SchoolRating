@@ -16,6 +16,10 @@ export class TeacherService {
 		private readonly teacherRepository: Repository<TeacherEntity>
 	) {}
 
+	async getAll() {
+		return this.teacherRepository.find();
+	}
+
 	async getTeachers(page: number, limit: number, query: Query): Promise<PaginationResponse<TeacherEntity>> {
 		const [data, total] = await this.teacherRepository.findAndCount({
 			where: queryParamsForWhere(query, ['firstName', 'lastName', 'patronymic', 'email']),

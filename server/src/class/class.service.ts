@@ -14,6 +14,10 @@ export class ClassService {
 		private readonly studentRepository: Repository<StudentEntity>
 	) {}
 
+	async getAll(): Promise<ClassEntity[]> {
+		return this.classRepository.find();
+	}
+
 	async findClasses(): Promise<ClassEntity[]> {
 		return this.classRepository.find({
 			relations: {

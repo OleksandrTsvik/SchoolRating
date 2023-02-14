@@ -24,6 +24,12 @@ export class TeacherController {
 	) {}
 
 	@UseGuards(AdminJwtGuard)
+	@Get('all')
+	async getAll() {
+		return this.teacherService.getAll();
+	}
+
+	@UseGuards(AdminJwtGuard)
 	@Get()
 	async findTeachers(
 		@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
