@@ -4,7 +4,7 @@ import { useAppSelector } from '../store';
 import { selectCurrentUser } from '../api/auth/user/authUserSlice';
 import { Role } from '../models/role.enum';
 
-export default function useAdminAuth() {
+export default function useUserAuth() {
 	const user = useAppSelector(selectCurrentUser);
 
 	return useMemo(() => ({
