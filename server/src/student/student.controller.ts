@@ -17,12 +17,19 @@ import { StudentService } from './student.service';
 import { UpdateDto } from './dto/update.dto';
 import { AddDto } from './dto/add.dto';
 import { AdminJwtGuard } from '../admin/guards/admin-jwt.guard';
+import { StudentJwtGuard } from './guards/student-jwt.guard';
 
 @Controller('student')
 export class StudentController {
 	constructor(
 		private readonly studentService: StudentService
 	) {}
+
+	@UseGuards(StudentJwtGuard)
+	@Get(':id')
+	async getOne(@Param('id') id: string) {
+		return this.studentService.findById(id);
+	}
 
 	@UseGuards(AdminJwtGuard)
 	@Get()

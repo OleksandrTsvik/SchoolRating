@@ -13,7 +13,7 @@ export default function AuthMiddleware({ children }: Props) {
 	const { isFetching: isAdminFetching } = useGetAdminQuery();
 	const { isFetching: isStudentFetching } = useGetStudentQuery();
 	const { isFetching: isTeacherFetching } = useGetTeacherQuery();
-
+	console.log('AuthMiddleware')
 	if (isAdminFetching || isStudentFetching || isTeacherFetching) {
 		return <LoadingPage />;
 	}
