@@ -5,15 +5,14 @@ import { Header } from 'antd/es/layout/layout';
 import { BarsOutlined } from '@ant-design/icons';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 
-import { useAppSelector } from '../../../store';
-import { selectCurrentUser } from '../../../api/auth/user/authUserSlice';
+import useUserAuth from '../../../hooks/useUserAuth';
 import MenuNavbar from './MenuNavbar';
 import { HomeItemType, itemsLeftMenu, itemsRightMenu } from './menu-items';
 
 import styles from './UserNavbar.module.scss';
 
 export default function UserNavbar() {
-	const user = useAppSelector(selectCurrentUser);
+	const user = useUserAuth();
 	const [visible, setVisible] = useState(false);
 
 	// eslint-disable-next-line

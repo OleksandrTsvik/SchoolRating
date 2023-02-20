@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useLogoutMutation as useStudentLogout } from '../../../api/auth/user/authStudentApi';
-import { useLogoutMutation as useTeacherLogout } from '../../../api/auth/user/authTeacherApi';
+import { useLogoutMutation as useStudentLogout } from '../../../api/auth/student/authStudentApi';
+import { useLogoutMutation as useTeacherLogout } from '../../../api/auth/teacher/authTeacherApi';
 import useUserAuth from '../../../hooks/useUserAuth';
 import LoadingPage from '../../../components/LoadingPage';
 

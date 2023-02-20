@@ -5,7 +5,6 @@ import { LayoutPage } from '../admin-pages';
 
 export function PrivateOutlet() {
 	const { isAuth } = useAdminAuth();
-	console.log('PrivateOutlet')
 
 	return (
 		isAuth

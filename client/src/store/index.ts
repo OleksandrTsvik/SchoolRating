@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { authAdminApi } from '../api/auth/admin/authAdminApi';
-import { authStudentApi } from '../api/auth/user/authStudentApi';
-import { authTeacherApi } from '../api/auth/user/authTeacherApi';
+import { authStudentApi } from '../api/auth/student/authStudentApi';
+import { authTeacherApi } from '../api/auth/teacher/authTeacherApi';
 import { adminService } from '../api/services/adminService';
 import { adminStudentService } from '../api/services/adminStudentService';
 import { adminTeacherService } from '../api/services/adminTeacherService';
@@ -10,8 +10,10 @@ import { subjectService } from '../api/services/subjectService';
 import { classService } from '../api/services/classService';
 import { educationService } from '../api/services/educationService';
 import { studentService } from '../api/services/studentService';
+import { teacherService } from '../api/services/teacherService';
 import authAdminReducer from '../api/auth/admin/authAdminSlice';
-import authUserReducer from '../api/auth/user/authUserSlice';
+import authStudentReducer from '../api/auth/student/authStudentSlice';
+import authTeacherReducer from '../api/auth/teacher/authTeacherSlice';
 
 export const store = configureStore({
 	reducer: combineReducers({
@@ -25,8 +27,10 @@ export const store = configureStore({
 		[classService.reducerPath]: classService.reducer,
 		[educationService.reducerPath]: educationService.reducer,
 		[studentService.reducerPath]: studentService.reducer,
+		[teacherService.reducerPath]: teacherService.reducer,
 		authAdmin: authAdminReducer,
-		authUser: authUserReducer
+		authStudent: authStudentReducer,
+		authTeacher: authTeacherReducer
 	}),
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 		.concat(
@@ -39,7 +43,8 @@ export const store = configureStore({
 			subjectService.middleware,
 			classService.middleware,
 			educationService.middleware,
-			studentService.middleware
+			studentService.middleware,
+			teacherService.middleware
 		),
 	devTools: process.env.NODE_ENV !== 'production'
 });

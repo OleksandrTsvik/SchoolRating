@@ -4,10 +4,12 @@ import { Admin } from './authAdminApi';
 
 interface initState {
 	admin: Admin | null | undefined;
+	isAdminStoreLoading: boolean;
 }
 
 const initialState: initState = {
-	admin: null
+	admin: null,
+	isAdminStoreLoading: false
 };
 
 const authAdminSlice: any = createSlice({
@@ -19,12 +21,16 @@ const authAdminSlice: any = createSlice({
 		},
 		logout: (state) => {
 			state.admin = null;
+		},
+		setIsAdminStoreLoading(state, action: PayloadAction<boolean>) {
+			state.isAdminStoreLoading = action.payload;
 		}
 	}
 });
 
 export default authAdminSlice.reducer;
 
-export const { logout, setAdmin } = authAdminSlice.actions;
+export const { logout, setAdmin, setIsAdminStoreLoading } = authAdminSlice.actions;
 
 export const selectCurrentAdmin = (state: RootState) => state.authAdmin.admin;
+export const selectIsAdminStoreLoading = (state: RootState) => state.authAdmin.isAdminStoreLoading;

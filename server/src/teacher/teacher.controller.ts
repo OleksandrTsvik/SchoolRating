@@ -16,12 +16,19 @@ import { AdminJwtGuard } from '../admin/guards/admin-jwt.guard';
 import { Query as ExpressQuery } from 'express-serve-static-core';
 import { AddDto } from './dto/add.dto';
 import { UpdateDto } from './dto/update.dto';
+import { TeacherJwtGuard } from './guards/teacher-jwt.guard';
 
 @Controller('teacher')
 export class TeacherController {
 	constructor(
 		private readonly teacherService: TeacherService
 	) {}
+
+	@UseGuards(TeacherJwtGuard)
+	@Get(':id')
+	async getOne(@Param('id') id: string) {
+		return this.teacherService.findById(id);
+	}
 
 	@UseGuards(AdminJwtGuard)
 	@Get('all')

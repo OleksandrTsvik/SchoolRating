@@ -79,7 +79,16 @@ export class TeacherService {
 	}
 
 	async findById(id: string): Promise<TeacherEntity> {
-		const teacher = await this.teacherRepository.findOneBy({ id });
+		const teacher = await this.teacherRepository.findOne({
+			where: { id },
+			relations: {
+				educations: {
+					cls: true,
+					subject: true
+				}
+			}
+		});
+		
 		if (!teacher) {
 			throw new NotFoundException();
 		}

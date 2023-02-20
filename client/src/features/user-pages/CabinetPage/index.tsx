@@ -5,15 +5,15 @@ import StudentCabinet from './StudentCabinet';
 import TeacherCabinet from './TeacherCabinet';
 
 export default function CabinetPage() {
-	const { isStudent, isTeacher, user } = useUserAuth();
-	console.log('CabinetPage')
+	const { isStudent, isTeacher, student, teacher } = useUserAuth();
+
 	if (isStudent) {
-		return <StudentCabinet id={user.id} />;
+		return <StudentCabinet id={student.id} />;
 	}
 
 	if (isTeacher) {
-		return <TeacherCabinet id={user.id} />;
+		return <TeacherCabinet id={teacher.id} />;
 	}
 
-	return <>{'Navigate to="/login" replace'}</>;
+	return <Navigate to="/login" replace />;
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { useRegisterMutation } from '../../../../api/auth/user/authStudentApi';
+import { useRegisterMutation } from '../../../../api/auth/student/authStudentApi';
 import transactionWithNotification from '../../../../utils/transactionWithNotification';
 import RegisterForm, { FormValues } from '../../../../components/RegisterForm';
 

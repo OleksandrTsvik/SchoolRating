@@ -13,7 +13,7 @@ interface Props {
 
 export default function StudentCabinet({ id }: Props) {
 	const { data, isLoading, isFetching, error, refetch } = useGetStudentQuery({ id });
-	console.log('StudentCabinet')
+
 	if (error) {
 		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}

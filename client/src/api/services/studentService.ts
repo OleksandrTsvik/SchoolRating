@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import fetchBase from '../fetchBase';
 import { IStudent } from '../../models/IStudent';
-import { logout } from '../auth/user/authUserSlice';
+import { logout } from '../auth/student/authStudentSlice';
 import { urlStudentRefresh } from '../config';
 
 export interface GetRequest {

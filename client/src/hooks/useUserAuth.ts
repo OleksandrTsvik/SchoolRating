@@ -1,16 +1,29 @@
 import { useMemo } from 'react';
 
 import { useAppSelector } from '../store';
-import { selectCurrentUser } from '../api/auth/user/authUserSlice';
+import { selectCurrentStudent } from '../api/auth/student/authStudentSlice';
+import { selectCurrentTeacher } from '../api/auth/teacher/authTeacherSlice';
 import { Role } from '../models/role.enum';
 
 export default function useUserAuth() {
-	const user = useAppSelector(selectCurrentUser);
+	const student = useAppSelector(selectCurrentStudent);
+	const teacher = useAppSelector(selectCurrentTeacher);
 
-	return useMemo(() => ({
-		user,
-		isAuth: !!user,
-		isStudent: user && user.role === Role.Student,
-		isTeacher: user && user.role === Role.Teacher
-	}), [user]);
+	return useMemo(() => {
+		const isStudent = !!student;
+		const isTeacher = !!teacher;
+		
+		const role = isStudent ? Role.Student
+			: isTeacher ? Role.Teacher
+				: Role.Anonymous;
+
+		return {
+			student,
+			teacher,
+			isAuth: isStudent || isTeacher,
+			isStudent,
+			isTeacher,
+			role
+		};
+	}, [student, teacher]);
 }

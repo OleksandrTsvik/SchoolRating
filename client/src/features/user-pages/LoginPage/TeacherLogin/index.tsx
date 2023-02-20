@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { useLoginMutation } from '../../../../api/auth/user/authTeacherApi';
+import { useLoginMutation } from '../../../../api/auth/teacher/authTeacherApi';
 import LoginForm, { FormValues } from '../../../../components/LoginForm';
 
 export default function TeacherLogin() {
