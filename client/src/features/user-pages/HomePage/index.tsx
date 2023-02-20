@@ -11,8 +11,8 @@ import styles from './HomePage.module.scss';
 export default function HomePage() {
 	const cards = [
 		{ text: 'Адмін-панель', link: '/admin', img: admin },
-		{ text: 'Щоденник для учнів', link: '/', img: diary },
-		{ text: 'Класний журнал', link: '/', img: classBook }
+		{ text: 'Щоденник для учнів', link: '/diary', img: diary },
+		{ text: 'Класний журнал', link: '/gradebook', img: classBook }
 	];
 
 	return (

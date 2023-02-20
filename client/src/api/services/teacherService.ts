@@ -13,13 +13,15 @@ export const teacherService = createApi({
 	baseQuery: fetchBase('/teacher', logout, urlTeacherRefresh),
 	endpoints: (builder) => ({
 		getTeacher: builder.query<ITeacher, GetRequest>({
-			query: ({ id }) => ({
-				url: `/${id}`
-			})
+			query: ({ id }) => `/${id}`
+		}),
+		getGradebookClasses: builder.query<ITeacher, void>({
+			query: () => '/gradebook'
 		})
 	})
 });
 
 export const {
-	useGetTeacherQuery
+	useGetTeacherQuery,
+	useGetGradebookClassesQuery
 } = teacherService;

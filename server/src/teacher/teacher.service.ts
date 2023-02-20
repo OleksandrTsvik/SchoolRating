@@ -88,7 +88,7 @@ export class TeacherService {
 				}
 			}
 		});
-		
+
 		if (!teacher) {
 			throw new NotFoundException();
 		}

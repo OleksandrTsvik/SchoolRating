@@ -9,14 +9,17 @@ import {
 	Patch,
 	Post,
 	Query,
+	Req,
 	UseGuards
 } from '@nestjs/common';
-import { TeacherService } from './teacher.service';
-import { AdminJwtGuard } from '../admin/guards/admin-jwt.guard';
 import { Query as ExpressQuery } from 'express-serve-static-core';
+import RequestWithUser from '../common/interfaces/request-with-user.interface';
+import { AdminJwtGuard } from '../admin/guards/admin-jwt.guard';
+import { TeacherService } from './teacher.service';
+import { TeacherJwtGuard } from './guards/teacher-jwt.guard';
 import { AddDto } from './dto/add.dto';
 import { UpdateDto } from './dto/update.dto';
-import { TeacherJwtGuard } from './guards/teacher-jwt.guard';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
 
 @Controller('teacher')
 export class TeacherController {
@@ -24,16 +27,22 @@ export class TeacherController {
 		private readonly teacherService: TeacherService
 	) {}
 
-	@UseGuards(TeacherJwtGuard)
-	@Get(':id')
-	async getOne(@Param('id') id: string) {
-		return this.teacherService.findById(id);
-	}
-
 	@UseGuards(AdminJwtGuard)
 	@Get('all')
 	async getAll() {
 		return this.teacherService.getAll();
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Get('gradebook')
+	async getGradebookClasses(@Req() request: RequestWithUser<JwtPayloadDto>) {
+		return this.teacherService.findById(request.user.id);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Get(':id')
+	async getOne(@Param('id') id: string) {
+		return this.teacherService.findById(id);
 	}
 
 	@UseGuards(AdminJwtGuard)
