@@ -34,9 +34,18 @@ export class TeacherController {
 	}
 
 	@UseGuards(TeacherJwtGuard)
-	@Get('gradebook')
-	async getGradebookClasses(@Req() request: RequestWithUser<JwtPayloadDto>) {
-		return this.teacherService.findById(request.user.id);
+	@Get('gradebooks/:id')
+	async getGradebooks(@Param('id') id: string) {
+		return this.teacherService.getGradebooks(id);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Get('gradebook/:id')
+	async getGradebook(
+		@Req() request: RequestWithUser<JwtPayloadDto>,
+		@Param('id') id: string
+	) {
+		return this.teacherService.getRating(request.user.id, id);
 	}
 
 	@UseGuards(TeacherJwtGuard)

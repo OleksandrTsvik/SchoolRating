@@ -9,6 +9,7 @@ import {
 	LogoutPage,
 	CabinetPage,
 	DiaryPage,
+	GradebooksPage,
 	GradebookPage
 } from '../user-pages';
 import { PrivateOutlet } from './PrivateOutlet';
@@ -24,7 +25,12 @@ export default function UserRoutes() {
 				<Route path="logout" element={<LogoutPage />} />
 				<Route path="cabinet" element={<CabinetPage />} />
 				{isStudent && <Route path="diary" element={<DiaryPage />} />}
-				{isTeacher && <Route path="gradebook" element={<GradebookPage />} />}
+				{isTeacher &&
+					<>
+						<Route path="gradebooks" element={<GradebooksPage />} />
+						<Route path="gradebook/:id" element={<GradebookPage />} />
+					</>
+				}
 			</Route>
 			<Route element={<NoAuthOutlet />}>
 				<Route path="login/*" element={<LoginPage />} />

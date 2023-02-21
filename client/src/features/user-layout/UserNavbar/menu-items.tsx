@@ -30,6 +30,8 @@ export const itemsLeftMenu: HomeItemType[] = [
 ];
 
 export const itemsRightMenu: HomeItemType[] = [
+	getItem('/gradebooks', 'Журнали', null, [Role.Teacher]),
+	getItem('/diary', 'Щоденник', null, [Role.Student]),
 	getItem('/cabinet', 'Особистий кабінет'),
 	getItem('/logout', 'Вийти', <LogoutOutlined />, [Role.Student, Role.Teacher])
 ];

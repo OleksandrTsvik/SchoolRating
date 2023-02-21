@@ -10,10 +10,11 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TeacherJwtAtStrategy } from './strategies/teacher-jwt-at.strategy';
 import { TeacherJwtRtStrategy } from './strategies/teacher-jwt-rt.strategy';
+import { EducationEntity } from '../education/education.entity';
 
 @Module({
 	imports: [
-		TypeOrmModule.forFeature([TeacherEntity]),
+		TypeOrmModule.forFeature([TeacherEntity, EducationEntity]),
 		JwtModule.register({}),
 		PassportModule,
 		ConfigModule

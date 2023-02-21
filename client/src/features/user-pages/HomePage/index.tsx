@@ -12,7 +12,7 @@ export default function HomePage() {
 	const cards = [
 		{ text: 'Адмін-панель', link: '/admin', img: admin },
 		{ text: 'Щоденник для учнів', link: '/diary', img: diary },
-		{ text: 'Класний журнал', link: '/gradebook', img: classBook }
+		{ text: 'Класний журнал', link: '/gradebooks', img: classBook }
 	];
 
 	return (

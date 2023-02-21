@@ -8,16 +8,52 @@ import PaginationResponse from '../common/interfaces/pagination-response.interfa
 import { queryParamsForWhere } from '../common/utils/query-param';
 import { AddDto } from './dto/add.dto';
 import { UpdateDto } from './dto/update.dto';
+import { EducationEntity } from '../education/education.entity';
 
 @Injectable()
 export class TeacherService {
 	constructor(
 		@InjectRepository(TeacherEntity)
-		private readonly teacherRepository: Repository<TeacherEntity>
+		private readonly teacherRepository: Repository<TeacherEntity>,
+		@InjectRepository(EducationEntity)
+		private readonly educationRepository: Repository<EducationEntity>
 	) {}
 
 	async getAll() {
 		return this.teacherRepository.find();
+	}
+
+	async getGradebooks(id: string): Promise<EducationEntity[]> {
+		return this.educationRepository.find({
+			where: {
+				teacher: { id }
+			},
+			relations: {
+				cls: {
+					students: true
+				},
+				subject: true
+			}
+		});
+	}
+
+	async getRating(teacherId: string, educationId: string) {
+		const education = await this.educationRepository.findOne({
+			where: {
+				id: educationId,
+				teacher: { id: teacherId }
+			},
+			relations: {
+				cls: true,
+				subject: true
+			}
+		});
+
+		if (!education) {
+			throw new NotFoundException();
+		}
+
+		return education;
 	}
 
 	async getTeachers(page: number, limit: number, query: Query): Promise<PaginationResponse<TeacherEntity>> {

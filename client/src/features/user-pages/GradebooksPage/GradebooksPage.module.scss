@@ -1,0 +1,19 @@
+.list {
+  .item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    color: rgba(0, 0, 0, 0.88);
+    padding: 16px 8px;
+    border-bottom: 1px solid #001529;
+    transition: background-color 0.4s ease;
+  }
+
+  .item:first-of-type {
+    border-top: 1px solid #001529;
+  }
+
+  .item:hover {
+    background-color: #DEF2F0;
+  }
+}
