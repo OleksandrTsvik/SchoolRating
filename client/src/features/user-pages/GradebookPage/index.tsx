@@ -1,9 +1,15 @@
 import { useParams } from 'react-router-dom';
-import { Empty, Skeleton } from 'antd';
+import { Empty, Skeleton, Spin } from 'antd';
+import Title from 'antd/es/typography/Title';
 
 import { ApiError } from '../../../api/config';
 import { useGetGradebookQuery } from '../../../api/services/teacherService';
 import FailedRequest from '../../../components/FailedRequest';
+import TableWithoutRating from './TableWithoutRating';
+import TableRating from './TableRating';
+import AddRatingColumn from './AddRatingColumn';
+
+import styles from './GradebookPage.module.scss';
 
 export default function GradebooksPage() {
 	const { id } = useParams();
@@ -17,14 +23,28 @@ export default function GradebooksPage() {
 		return <Skeleton active />;
 	}
 
-	// if (!data || data.length === 0) {
 	if (!data) {
 		return <Empty description="Дані відсутні" />;
 	}
 
 	return (
 		<>
-			Hello gradebook {id}
+			<Title level={2} className="d-flex justify-content-center align-items-center">
+				{data.cls?.name}. {data.subject?.name}
+			</Title>
+			<Spin spinning={isFetching}>
+				<div className="d-flex gap-1">
+					<div className="table-responsive w-100">
+						{data.ratings.length === 0
+							? <TableWithoutRating students={data.cls!.students} />
+							: <TableRating data={data} />
+						}
+					</div>
+					<div className={styles.btnWrapper}>
+						<AddRatingColumn educationId={data.id} />
+					</div>
+				</div>
+			</Spin>
 		</>
 	);
 }

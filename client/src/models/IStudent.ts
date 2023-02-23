@@ -1,4 +1,5 @@
 import { IClass } from './IClass';
+import { IRating } from './IRating';
 
 export interface IStudent {
 	id: string;
@@ -8,4 +9,5 @@ export interface IStudent {
 	email: string;
 	createdAt: Date;
 	cls: Omit<IClass, 'students'> | null;
+	ratings: Omit<IRating, 'student'>[];
 }

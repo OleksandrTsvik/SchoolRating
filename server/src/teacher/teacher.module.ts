@@ -11,15 +11,23 @@ import { AuthService } from './auth.service';
 import { TeacherJwtAtStrategy } from './strategies/teacher-jwt-at.strategy';
 import { TeacherJwtRtStrategy } from './strategies/teacher-jwt-rt.strategy';
 import { EducationEntity } from '../education/education.entity';
+import { RatingService } from '../rating/rating.service';
+import { RatingEntity } from '../rating/rating.entity';
 
 @Module({
 	imports: [
-		TypeOrmModule.forFeature([TeacherEntity, EducationEntity]),
+		TypeOrmModule.forFeature([TeacherEntity, EducationEntity, RatingEntity]),
 		JwtModule.register({}),
 		PassportModule,
 		ConfigModule
 	],
 	controllers: [TeacherController, AuthController],
-	providers: [TeacherService, AuthService, TeacherJwtAtStrategy, TeacherJwtRtStrategy]
+	providers: [
+		TeacherService,
+		AuthService,
+		RatingService,
+		TeacherJwtAtStrategy,
+		TeacherJwtRtStrategy
+	]
 })
 export class TeacherModule {}

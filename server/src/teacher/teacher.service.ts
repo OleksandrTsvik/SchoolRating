@@ -44,8 +44,25 @@ export class TeacherService {
 				teacher: { id: teacherId }
 			},
 			relations: {
-				cls: true,
-				subject: true
+				cls: {
+					students: true
+				},
+				subject: true,
+				ratings: {
+					student: true
+				}
+			},
+			order: {
+				cls: {
+					students: {
+						firstName: 'ASC',
+						lastName: 'ASC',
+						patronymic: 'ASC'
+					}
+				},
+				ratings: {
+					date: 'ASC'
+				}
 			}
 		});
 

@@ -20,11 +20,17 @@ import { TeacherJwtGuard } from './guards/teacher-jwt.guard';
 import { AddDto } from './dto/add.dto';
 import { UpdateDto } from './dto/update.dto';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
+import { RatingService } from '../rating/rating.service';
+import { AddRatingColumnDto } from '../rating/dto/add-rating-column.dto';
+import { RemoveRatingColumnDto } from '../rating/dto/remove-rating-column.dto';
+import { UpdateDateRatingColumnDto } from '../rating/dto/update-date-rating-column.dto';
+import { UpdateDescriptionRatingColumnDto } from '../rating/dto/update-description-rating-column.dto';
 
 @Controller('teacher')
 export class TeacherController {
 	constructor(
-		private readonly teacherService: TeacherService
+		private readonly teacherService: TeacherService,
+		private readonly ratingService: RatingService
 	) {}
 
 	@UseGuards(AdminJwtGuard)
@@ -46,6 +52,42 @@ export class TeacherController {
 		@Param('id') id: string
 	) {
 		return this.teacherService.getRating(request.user.id, id);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Post('add-rating-column')
+	async addRatingColumn(
+		@Req() request: RequestWithUser<JwtPayloadDto>,
+		@Body() dto: AddRatingColumnDto
+	) {
+		return this.ratingService.addRatingColumn(request.user.id, dto);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Delete('remove-rating-column')
+	async removeRatingColumn(
+		@Req() request: RequestWithUser<JwtPayloadDto>,
+		@Body() dto: RemoveRatingColumnDto
+	) {
+		return this.ratingService.removeRatingColumn(request.user.id, dto.ratingIds);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Patch('update-date-rating-column')
+	async updateDateRatingColumn(
+		@Req() request: RequestWithUser<JwtPayloadDto>,
+		@Body() dto: UpdateDateRatingColumnDto
+	) {
+		return this.ratingService.updateDateRatingColumn(request.user.id, dto);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Patch('update-description-rating-column')
+	async updateDescriptionRatingColumn(
+		@Req() request: RequestWithUser<JwtPayloadDto>,
+		@Body() dto: UpdateDescriptionRatingColumnDto
+	) {
+		return this.ratingService.updateDescriptionRatingColumn(request.user.id, dto);
 	}
 
 	@UseGuards(TeacherJwtGuard)
