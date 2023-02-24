@@ -14,9 +14,18 @@ export interface FormValues {
 interface Props {
 	description: string | null;
 	ratingIds: string[];
+	onMouseLeave: () => void;
+	onMouseEnter: () => void;
+	className: string | undefined;
 }
 
-export default function UpdateDescriptionRatingColumn({ description, ratingIds }: Props) {
+export default function UpdateDescriptionRatingColumn({
+														  description,
+														  ratingIds,
+														  onMouseLeave,
+														  onMouseEnter,
+														  className
+													  }: Props) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [form] = Form.useForm<FormValues>();
 	const [updateDescription, { isLoading }] = useUpdateDescriptionRatingColumnMutation();
@@ -46,7 +55,14 @@ export default function UpdateDescriptionRatingColumn({ description, ratingIds }
 
 	return (
 		<>
-			<th onClick={onOpenModal}>{description}</th>
+			<th
+				className={className}
+				onClick={onOpenModal}
+				onMouseLeave={onMouseLeave}
+				onMouseEnter={onMouseEnter}
+			>
+				<span>{description}</span>
+			</th>
 			<Modal
 				title="Змінити вид оцінювання за урок"
 				open={isOpen}

@@ -13,9 +13,12 @@ export interface FormValues {
 interface Props {
 	date: Date;
 	ratingIds: string[];
+	onMouseLeave: () => void;
+	onMouseEnter: () => void;
+	className: string | undefined;
 }
 
-export default function UpdateDateRatingColumn({ date, ratingIds }: Props) {
+export default function UpdateDateRatingColumn({ date, ratingIds, onMouseLeave, onMouseEnter, className }: Props) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [form] = Form.useForm<FormValues>();
 	const [updateDate, { isLoading }] = useUpdateDateRatingColumnMutation();
@@ -43,8 +46,13 @@ export default function UpdateDateRatingColumn({ date, ratingIds }: Props) {
 
 	return (
 		<>
-			<th onClick={onOpenModal}>
-				{Moment(date).format('DD.MM.YYYY')}
+			<th
+				className={className}
+				onClick={onOpenModal}
+				onMouseLeave={onMouseLeave}
+				onMouseEnter={onMouseEnter}
+			>
+				<span>{Moment(date).format('DD.MM.YYYY')}</span>
 			</th>
 			<Modal
 				title="Змінити дату колонки"
