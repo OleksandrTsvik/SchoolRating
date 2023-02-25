@@ -7,12 +7,8 @@ export default function AppRouter() {
 	return (
 		<Router>
 			<Routes>
-				<Route path="*" element={
-					<>
-						<AdminRoutes />
-						<UserRoutes />
-					</>
-				} />
+				<Route path="/admin/*" element={<AdminRoutes />} />
+				<Route path="/*" element={<UserRoutes />} />
 			</Routes>
 		</Router>
 	);

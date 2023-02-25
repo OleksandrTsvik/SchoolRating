@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { AdminEntity } from '../admin/admin.entity';
+
+// import { AdminEntity } from '../admin/admin.entity';
 
 export async function getPostgresConfig(configService: ConfigService): Promise<TypeOrmModuleOptions> {
 	return {
@@ -12,6 +13,7 @@ export async function getPostgresConfig(configService: ConfigService): Promise<T
 		database: configService.get('POSTGRES_DATABASE'),
 		entities: [__dirname + '/../**/*.entity.{js,ts}'],
 		// entities: [AdminModel],
-		synchronize: true
+		synchronize: true,
+		// logging: true // запити до БД в терміналі
 	};
 }

@@ -7,7 +7,7 @@ export default function LoadingPage() {
 		<div className={styles.wrapper}>
 			<Spin
 				className={styles.spinner}
-				tip="Loading..."
+				tip="Завантаження..."
 				size="large"
 			/>
 		</div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Moment from 'moment/moment';
 
 import { IEducation } from '../../../models/IEducation';
@@ -18,8 +18,10 @@ export default function TableRating({ data }: Props) {
 	const [hoverColumn, setHoverColumn] = useState(-1);
 	const matrixRating: Omit<IRating, 'education'>[][] = [];
 
+	const studentIds = useMemo(() => data.cls!.students.map((student) => student.id), [data]);
+
 	data.cls?.students.forEach((student) => {
-		matrixRating.push(data.ratings.filter((rating) => rating.student.id === student.id));
+		matrixRating.push(data.ratings.filter((rating) => rating?.student?.id === student.id));
 	});
 
 	function mouseLeaveHoverColumn() {
@@ -33,13 +35,14 @@ export default function TableRating({ data }: Props) {
 				<th rowSpan={2}>#</th>
 				<th rowSpan={2}>ПІБ</th>
 				{matrixRating[0].map((rating, index) => {
-					const ratingIds = matrixRating.map((rating) => rating[index].id);
+					const ratingIds = matrixRating.map((rating) => rating[index]?.id);
 
 					return (
 						<React.Fragment key={rating.id}>
 							<UpdateDateRatingColumn
 								date={rating.date}
 								ratingIds={ratingIds}
+								studentIds={studentIds}
 								onMouseLeave={mouseLeaveHoverColumn}
 								onMouseEnter={() => setHoverColumn(index)}
 								className={hoverColumn === index ? styles.columnHover : ''}
@@ -66,7 +69,7 @@ export default function TableRating({ data }: Props) {
 					>
 						<RemoveRatingColumn
 							date={Moment(rating.date).format('DD.MM.YYYY')}
-							ratingIds={matrixRating.map((rating) => rating[index].id)}
+							ratingIds={matrixRating.map((rating) => rating[index]?.id)}
 						/>
 					</td>
 				))}
@@ -74,9 +77,9 @@ export default function TableRating({ data }: Props) {
 			</thead>
 			<tbody>
 			{matrixRating.map((arrRating, index) => (
-				<tr key={arrRating[0].id}>
+				<tr key={arrRating[0]?.id}>
 					<td>{index + 1}</td>
-					<td>{getFullName(arrRating[0].student)}</td>
+					<td>{getFullName(arrRating[0]?.student)}</td>
 					{arrRating.map((rating, i) => (
 						<td
 							onMouseLeave={mouseLeaveHoverColumn}

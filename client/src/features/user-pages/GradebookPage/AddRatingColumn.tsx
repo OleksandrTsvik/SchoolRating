@@ -1,19 +1,21 @@
 import { Button, DatePicker, Form, Modal, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
+import { DatePickerUa } from '../../../locale/DatePickerUa';
 import { useAddRatingColumnMutation } from '../../../api/services/teacherService';
 import useModal from '../../../hooks/useModal';
 import transactionWithNotification from '../../../utils/transactionWithNotification';
+import { IEducation } from '../../../models/IEducation';
 
 export interface FormValues {
 	date: Date;
 }
 
 interface Props {
-	educationId: string;
+	education: IEducation;
 }
 
-export default function AddRatingColumn({ educationId }: Props) {
+export default function AddRatingColumn({ education }: Props) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [form] = Form.useForm<FormValues>();
 	const [addRatingColumn, { isLoading }] = useAddRatingColumnMutation();
@@ -23,7 +25,8 @@ export default function AddRatingColumn({ educationId }: Props) {
 			async () => {
 				await addRatingColumn({
 					...values,
-					educationId
+					studentIds: education.cls!.students.map((student) => student.id),
+					educationId: education.id
 				}).unwrap();
 
 				onClose();
@@ -33,7 +36,7 @@ export default function AddRatingColumn({ educationId }: Props) {
 			'Виникла помилка при додаванні колонки'
 		);
 	}
-	
+
 	return (
 		<>
 			<Tooltip
@@ -72,6 +75,7 @@ export default function AddRatingColumn({ educationId }: Props) {
 						}]}
 					>
 						<DatePicker
+							locale={DatePickerUa}
 							placeholder="рррр-мм-дд"
 							style={{ width: '100%' }}
 						/>

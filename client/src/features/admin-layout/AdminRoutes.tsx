@@ -16,9 +16,9 @@ import { PrivateOutlet } from './PrivateOutlet';
 export default function AdminRoutes() {
 	return (
 		<Routes>
-			<Route path="admin/login" element={<LoginPage />} />
-			<Route path="admin" element={<PrivateOutlet />}>
-				<Route index element={<Navigate to="subjects" replace />} />
+			<Route path="login" element={<LoginPage />} />
+			<Route element={<PrivateOutlet />}>
+				<Route index element={<Navigate to="settings" replace />} />
 				<Route path="logout" element={<LogoutPage />} />
 				<Route path="subjects" element={<SubjectsPage />} />
 				<Route path="classes">

@@ -45,7 +45,7 @@ export default function GradebooksPage() {
 							<div>{education.cls?.name}</div>
 							<Badge
 								count={education.cls?.students?.length}
-								style={{ backgroundColor: '#52c41a' }}
+								style={{ backgroundColor: '#1677ff' }}
 							/>
 						</div>
 					</Link>

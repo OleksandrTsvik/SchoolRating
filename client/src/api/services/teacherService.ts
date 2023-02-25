@@ -15,9 +15,12 @@ export interface GetGradebooksRequest {
 
 export interface GetGradebookRequest {
 	id: string;
+	start?: string;
+	end?: string;
 }
 
 export interface AddRatingColumnRequest {
+	studentIds: string[];
 	educationId: string;
 	date: Date;
 }
@@ -27,6 +30,7 @@ export interface RatingColumnRequest {
 }
 
 export interface UpdateDateRatingColumnRequest {
+	studentIds: string[];
 	date: string;
 	ratingIds: string[];
 }
@@ -34,6 +38,12 @@ export interface UpdateDateRatingColumnRequest {
 export interface UpdateDescriptionRatingColumnRequest {
 	description: string;
 	ratingIds: string[];
+}
+
+export interface GetGradebookResponse {
+	education: IEducation;
+	dateStartRating: string;
+	dateEndRating: string;
 }
 
 export const teacherService = createApi({
@@ -47,8 +57,14 @@ export const teacherService = createApi({
 		getGradebooks: builder.query<IEducation[], GetGradebooksRequest>({
 			query: ({ id }) => `/gradebooks/${id}`
 		}),
-		getGradebook: builder.query<IEducation, GetGradebookRequest>({
-			query: ({ id }) => `/gradebook/${id}`,
+		getGradebook: builder.query<GetGradebookResponse, GetGradebookRequest>({
+			query: (data) => ({
+				url: `/gradebook/${data.id}`,
+				params: {
+					start: data.start,
+					end: data.end
+				}
+			}),
 			providesTags: ['Rating']
 		}),
 		addRatingColumn: builder.mutation<void, AddRatingColumnRequest>({

@@ -1,0 +1,56 @@
+import { AdditionalPickerLocaleLangProps, PickerLocale } from 'antd/es/date-picker/generatePicker';
+import { Locale } from 'antd/es/locale';
+import { TimePickerLocale } from 'antd/es/time-picker';
+
+export const DatePickerUa: PickerLocale & {
+	lang: Locale & AdditionalPickerLocaleLangProps,
+	timePickerLocale: TimePickerLocale
+} = {
+	lang: {
+		locale: 'uk_UA',
+		monthPlaceholder: 'Оберіть місяць',
+		quarterFormat: '[Квартал] Q',
+		quarterPlaceholder: 'Оберіть квартал',
+		rangeMonthPlaceholder: ['Початковий місяць', 'Кінцевий місяць'],
+		rangeWeekPlaceholder: ['Початковий тиждень', 'Кінцевий тиждень'],
+		rangeQuarterPlaceholder: ['Початковий квартал', 'Кінцевий квартал'],
+		rangeYearPlaceholder: ['Початковий рік', 'Кінцевий рік'],
+		shortMonths: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
+		// shortMonths: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру'],
+		shortWeekDays: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+		weekPlaceholder: 'Оберіть тиждень',
+		yearPlaceholder: 'Оберіть рік',
+		placeholder: 'Оберіть дату',
+		rangePlaceholder: ['Початкова дата', 'Кінцева дата'],
+		today: 'Сьогодні',
+		now: 'Зараз',
+		backToToday: 'Поточна дата',
+		ok: 'Ok',
+		clear: 'Очистити',
+		month: 'Місяць',
+		year: 'Рік',
+		timeSelect: 'Оберіть час',
+		dateSelect: 'Оберіть дату',
+		weekSelect: 'Оберіть тиждень',
+		monthSelect: 'Оберіть місяць',
+		yearSelect: 'Оберіть рік',
+		decadeSelect: 'Оберіть десятиріччя',
+		yearFormat: 'YYYY',
+		dateFormat: 'DD.MM.YYYY',
+		dayFormat: 'D',
+		dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
+		monthBeforeYear: true,
+		previousMonth: 'Попередній місяць (PageUp)',
+		nextMonth: 'Наступний місяць (PageDown)',
+		previousYear: 'Попередній рік (Control + left)',
+		nextYear: 'Наступний рік (Control + right)',
+		previousDecade: 'Попереднє десятиріччя',
+		nextDecade: 'Наступне десятиріччя',
+		previousCentury: 'Попереднє століття',
+		nextCentury: 'Наступне століття',
+	},
+	timePickerLocale: {
+		rangePlaceholder: ['Початковий час', 'Кінцевий час'],
+		placeholder: 'Оберіть час',
+	},
+};

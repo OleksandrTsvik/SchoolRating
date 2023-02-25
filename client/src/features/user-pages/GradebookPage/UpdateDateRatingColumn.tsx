@@ -1,7 +1,9 @@
-import { DatePicker, Form, Modal } from 'antd';
+import { useMemo } from 'react';
+import { DatePicker, Form, Modal, Tooltip } from 'antd';
 import Moment from 'moment';
 import dayjs from 'dayjs';
 
+import { DatePickerUa } from '../../../locale/DatePickerUa';
 import { useUpdateDateRatingColumnMutation } from '../../../api/services/teacherService';
 import useModal from '../../../hooks/useModal';
 import transactionWithNotification from '../../../utils/transactionWithNotification';
@@ -13,19 +15,31 @@ export interface FormValues {
 interface Props {
 	date: Date;
 	ratingIds: string[];
+	studentIds: string[];
 	onMouseLeave: () => void;
 	onMouseEnter: () => void;
 	className: string | undefined;
 }
 
-export default function UpdateDateRatingColumn({ date, ratingIds, onMouseLeave, onMouseEnter, className }: Props) {
+export default function UpdateDateRatingColumn(
+	{
+		date,
+		ratingIds,
+		studentIds,
+		onMouseLeave,
+		onMouseEnter,
+		className
+	}: Props
+) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [form] = Form.useForm<FormValues>();
 	const [updateDate, { isLoading }] = useUpdateDateRatingColumnMutation();
 
+	const formatDate = useMemo(() => Moment(date).format('DD.MM.YYYY'), [date]);
+
 	function onOpenModal() {
 		form.resetFields();
-		form.setFieldValue('date', dayjs(Moment(date).format('YYYY-MM-DD'), 'YYYY-MM-DD'));
+		form.setFieldValue('date', dayjs(formatDate, 'DD.MM.YYYY'));
 		onOpen();
 	}
 
@@ -34,6 +48,7 @@ export default function UpdateDateRatingColumn({ date, ratingIds, onMouseLeave, 
 			async () => {
 				await updateDate({
 					date: Moment(dayjs(values.date).toDate()).format('YYYY-MM-DD'),
+					studentIds,
 					ratingIds
 				}).unwrap();
 				onClose();
@@ -46,14 +61,16 @@ export default function UpdateDateRatingColumn({ date, ratingIds, onMouseLeave, 
 
 	return (
 		<>
-			<th
-				className={className}
-				onClick={onOpenModal}
-				onMouseLeave={onMouseLeave}
-				onMouseEnter={onMouseEnter}
-			>
-				<span>{Moment(date).format('DD.MM.YYYY')}</span>
-			</th>
+			<Tooltip placement="top" title={formatDate} color="geekblue">
+				<th
+					className={className}
+					onClick={onOpenModal}
+					onMouseLeave={onMouseLeave}
+					onMouseEnter={onMouseEnter}
+				>
+					<span>{formatDate}</span>
+				</th>
+			</Tooltip>
 			<Modal
 				title="Змінити дату колонки"
 				open={isOpen}
@@ -78,7 +95,9 @@ export default function UpdateDateRatingColumn({ date, ratingIds, onMouseLeave, 
 						}]}
 					>
 						<DatePicker
+							locale={DatePickerUa}
 							placeholder="рррр-мм-дд"
+							format="DD.MM.YYYY"
 							style={{ width: '100%' }}
 						/>
 					</Form.Item>

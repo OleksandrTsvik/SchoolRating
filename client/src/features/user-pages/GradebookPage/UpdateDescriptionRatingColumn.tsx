@@ -1,4 +1,4 @@
-import { AutoComplete, Form, Modal } from 'antd';
+import { AutoComplete, Form, Modal, Tooltip } from 'antd';
 
 import {
 	useGetDescriptionsQuery,
@@ -19,13 +19,15 @@ interface Props {
 	className: string | undefined;
 }
 
-export default function UpdateDescriptionRatingColumn({
-														  description,
-														  ratingIds,
-														  onMouseLeave,
-														  onMouseEnter,
-														  className
-													  }: Props) {
+export default function UpdateDescriptionRatingColumn(
+	{
+		description,
+		ratingIds,
+		onMouseLeave,
+		onMouseEnter,
+		className
+	}: Props
+) {
 	const { isOpen, onOpen, onClose } = useModal();
 	const [form] = Form.useForm<FormValues>();
 	const [updateDescription, { isLoading }] = useUpdateDescriptionRatingColumnMutation();
@@ -55,14 +57,17 @@ export default function UpdateDescriptionRatingColumn({
 
 	return (
 		<>
-			<th
-				className={className}
-				onClick={onOpenModal}
-				onMouseLeave={onMouseLeave}
-				onMouseEnter={onMouseEnter}
-			>
-				<span>{description}</span>
-			</th>
+
+			<Tooltip placement="top" title={description} color="geekblue">
+				<th
+					className={className}
+					onClick={onOpenModal}
+					onMouseLeave={onMouseLeave}
+					onMouseEnter={onMouseEnter}
+				>
+					<span>{description}</span>
+				</th>
+			</Tooltip>
 			<Modal
 				title="Змінити вид оцінювання за урок"
 				open={isOpen}
@@ -89,7 +94,7 @@ export default function UpdateDescriptionRatingColumn({
 						]}
 					>
 						<AutoComplete
-							placeholder="Виберіть тип оцінки"
+							placeholder="Тип оцінки"
 							allowClear={true}
 							options={descriptions ? descriptions.map((value) => ({ value })) : []}
 							filterOption={(inputValue, option) =>

@@ -37,42 +37,6 @@ export class TeacherService {
 		});
 	}
 
-	async getRating(teacherId: string, educationId: string) {
-		const education = await this.educationRepository.findOne({
-			where: {
-				id: educationId,
-				teacher: { id: teacherId }
-			},
-			relations: {
-				cls: {
-					students: true
-				},
-				subject: true,
-				ratings: {
-					student: true
-				}
-			},
-			order: {
-				cls: {
-					students: {
-						firstName: 'ASC',
-						lastName: 'ASC',
-						patronymic: 'ASC'
-					}
-				},
-				ratings: {
-					date: 'ASC'
-				}
-			}
-		});
-
-		if (!education) {
-			throw new NotFoundException();
-		}
-
-		return education;
-	}
-
 	async getTeachers(page: number, limit: number, query: Query): Promise<PaginationResponse<TeacherEntity>> {
 		const [data, total] = await this.teacherRepository.findAndCount({
 			where: queryParamsForWhere(query, ['firstName', 'lastName', 'patronymic', 'email']),
