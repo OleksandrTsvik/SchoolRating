@@ -56,7 +56,6 @@ export default function UpdateDateRatingColumn(
 			'Дату колонки успішно змінено',
 			'Виникла помилка при зміні дати в колонці'
 		);
-
 	}
 
 	return (

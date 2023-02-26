@@ -7,6 +7,7 @@ import { AddRatingColumnDto } from './dto/add-rating-column.dto';
 import { EducationEntity } from '../education/education.entity';
 import { UpdateDateRatingColumnDto } from './dto/update-date-rating-column.dto';
 import { UpdateDescriptionRatingColumnDto } from './dto/update-description-rating-column.dto';
+import { UpdateRatingDto } from './dto/update-rating.dto';
 
 @Injectable()
 export class RatingService {
@@ -101,6 +102,31 @@ export class RatingService {
 			dateStartRating: dateStart,
 			dateEndRating: dateEnd
 		};
+	}
+
+	async updateRating(teacherId: string, dto: UpdateRatingDto) {
+		const rating = await this.ratingRepository.findOne({
+			where: {
+				id: dto.id,
+				education: {
+					teacher: { id: teacherId }
+				}
+			}
+		});
+
+		if (!rating) {
+			throw new NotFoundException(`Запису про оцінку з id ${dto.id} не існує або у вас немає доступу`);
+		}
+
+		if (!dto.isPresence) {
+			rating.isPresence = false;
+			rating.mark = null;
+		} else {
+			rating.isPresence = dto.isPresence;
+			rating.mark = dto.mark;
+		}
+
+		await this.ratingRepository.save(rating);
 	}
 
 	async addRatingColumn(teacherId: string, dto: AddRatingColumnDto) {

@@ -4,8 +4,8 @@ import { DatePicker, Empty, Skeleton, Spin } from 'antd';
 import Title from 'antd/es/typography/Title';
 import dayjs from 'dayjs';
 import Moment from 'moment/moment';
-import { DatePickerUa } from '../../../locale/DatePickerUa';
 
+import { DatePickerUa } from '../../../locale/DatePickerUa';
 import { ApiError } from '../../../api/config';
 import { useGetGradebookQuery } from '../../../api/services/teacherService';
 import FailedRequest from '../../../components/FailedRequest';

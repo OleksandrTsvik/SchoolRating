@@ -26,6 +26,7 @@ import { RemoveRatingColumnDto } from '../rating/dto/remove-rating-column.dto';
 import { UpdateDateRatingColumnDto } from '../rating/dto/update-date-rating-column.dto';
 import { UpdateDescriptionRatingColumnDto } from '../rating/dto/update-description-rating-column.dto';
 import { DateRangeDto } from '../rating/dto/date-range.dto';
+import { UpdateRatingDto } from '../rating/dto/update-rating.dto';
 
 @Controller('teacher')
 export class TeacherController {
@@ -90,6 +91,15 @@ export class TeacherController {
 		@Body() dto: UpdateDescriptionRatingColumnDto
 	) {
 		return this.ratingService.updateDescriptionRatingColumn(request.user.id, dto);
+	}
+
+	@UseGuards(TeacherJwtGuard)
+	@Patch('update-rating')
+	async updateRating(
+		@Req() request: RequestWithUser<JwtPayloadDto>,
+		@Body() dto: UpdateRatingDto
+	) {
+		return this.ratingService.updateRating(request.user.id, dto);
 	}
 
 	@UseGuards(TeacherJwtGuard)

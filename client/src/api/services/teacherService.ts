@@ -40,6 +40,12 @@ export interface UpdateDescriptionRatingColumnRequest {
 	ratingIds: string[];
 }
 
+export interface UpdateRatingRequest {
+	id: string;
+	isPresence: boolean;
+	mark: number | null;
+}
+
 export interface GetGradebookResponse {
 	education: IEducation;
 	dateStartRating: string;
@@ -99,6 +105,14 @@ export const teacherService = createApi({
 			}),
 			invalidatesTags: ['Rating', 'Description']
 		}),
+		updateRating: builder.mutation<void, UpdateRatingRequest>({
+			query: (data) => ({
+				url: '/update-rating',
+				method: 'PATCH',
+				body: data
+			}),
+			invalidatesTags: ['Rating']
+		}),
 		getDescriptions: builder.query<string[], void>({
 			query: () => '../rating/descriptions',
 			providesTags: ['Description']
@@ -114,5 +128,6 @@ export const {
 	useRemoveRatingColumnMutation,
 	useUpdateDateRatingColumnMutation,
 	useUpdateDescriptionRatingColumnMutation,
+	useUpdateRatingMutation,
 	useGetDescriptionsQuery
 } = teacherService;
