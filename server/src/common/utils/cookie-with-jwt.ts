@@ -1,6 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+const settingsCookie = 'HttpOnly; SameSite=None; Secure; Path=/;';
+
 export async function getCookieWithJwtAccessToken(
 	configService: ConfigService,
 	jwtService: JwtService,
@@ -14,7 +16,7 @@ export async function getCookieWithJwtAccessToken(
 		expiresIn: expiresIn
 	});
 
-	const cookieAuthentication = `${cookieType}=${accessToken}; HttpOnly; Path=/; Max-Age=${expiresIn}`;
+	const cookieAuthentication = `${cookieType}=${accessToken}; ${settingsCookie} Max-Age=${expiresIn}`;
 
 	return {
 		cookieAuthentication,
@@ -35,7 +37,7 @@ export async function getCookieWithJwtRefreshToken(
 		expiresIn: expiresIn
 	});
 
-	const cookieRefresh = `${cookieType}=${refreshToken}; HttpOnly; Path=/; Max-Age=${expiresIn}`;
+	const cookieRefresh = `${cookieType}=${refreshToken}; ${settingsCookie} Max-Age=${expiresIn}`;
 
 	return {
 		cookieRefresh,
@@ -48,7 +50,7 @@ export function clearCookie(
 	cookieRefresh: 'Refresh' | 'AdminRefresh'
 ) {
 	return [
-		`${cookieAuthentication}=; HttpOnly; Path=/; Max-Age=0`,
-		`${cookieRefresh}=; HttpOnly; Path=/; Max-Age=0`
+		`${cookieAuthentication}=; ${settingsCookie} Max-Age=0`,
+		`${cookieRefresh}=; ${settingsCookie} Max-Age=0`
 	];
 }

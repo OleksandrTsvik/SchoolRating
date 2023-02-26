@@ -4,6 +4,7 @@ import { ITeacher } from '../../models/ITeacher';
 import { logout } from '../auth/student/authStudentSlice';
 import { urlTeacherRefresh } from '../config';
 import { IEducation } from '../../models/IEducation';
+import { ISemester } from '../../models/ISemester';
 
 export interface GetTeacherRequest {
 	id: string;
@@ -48,6 +49,7 @@ export interface UpdateRatingRequest {
 
 export interface GetGradebookResponse {
 	education: IEducation;
+	semesters: ISemester[];
 	dateStartRating: string;
 	dateEndRating: string;
 }

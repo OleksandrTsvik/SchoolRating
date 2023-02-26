@@ -10,15 +10,24 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { StudentJwtAtStrategy } from './strategies/student-jwt-at.strategy';
 import { StudentJwtRtStrategy } from './strategies/student-jwt-rt.strategy';
+import { RatingService } from '../rating/rating.service';
+import { EducationEntity } from '../education/education.entity';
+import { RatingEntity } from '../rating/rating.entity';
 
 @Module({
 	imports: [
-		TypeOrmModule.forFeature([StudentEntity]),
+		TypeOrmModule.forFeature([StudentEntity, RatingEntity, EducationEntity]),
 		JwtModule.register({}),
 		PassportModule,
 		ConfigModule
 	],
 	controllers: [StudentController, AuthController],
-	providers: [StudentService, AuthService, StudentJwtAtStrategy, StudentJwtRtStrategy]
+	providers: [
+		StudentService,
+		AuthService,
+		RatingService,
+		StudentJwtAtStrategy,
+		StudentJwtRtStrategy
+	]
 })
 export class StudentModule {}

@@ -54,7 +54,7 @@ export class TeacherController {
 		@Param('id') id: string,
 		@Query() dateRange: DateRangeDto
 	) {
-		return this.ratingService.getRating(request.user.id, id, dateRange?.start, dateRange?.end);
+		return this.ratingService.getTeacherRating(request.user.id, id, dateRange);
 	}
 
 	@UseGuards(TeacherJwtGuard)

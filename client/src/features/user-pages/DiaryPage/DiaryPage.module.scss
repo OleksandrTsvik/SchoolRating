@@ -1,0 +1,39 @@
+.table {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  position: relative;
+  width: 100%;
+  border-collapse: collapse;
+
+  tr, th, td {
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  th, td {
+    border: 1px solid #001529;
+    padding: 8px;
+  }
+
+  tbody th {
+    text-align: left;
+  }
+
+  tbody td {
+    text-align: center;
+    width: 50px;
+    min-width: 50px;
+  }
+
+  tbody td:not(:last-child):hover {
+    color: white;
+    background-color: #1677ff;
+  }
+
+  tbody td:last-child {
+    color: white;
+    background-color: #001529;
+  }
+
+  tbody tr:hover {
+    background-color: #DDDDDD
+  }
+}

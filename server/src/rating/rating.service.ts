@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { And, Between, In, IsNull, Not, Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
 import * as moment from 'moment';
 import { RatingEntity } from './rating.entity';
 import { AddRatingColumnDto } from './dto/add-rating-column.dto';
@@ -8,6 +8,8 @@ import { EducationEntity } from '../education/education.entity';
 import { UpdateDateRatingColumnDto } from './dto/update-date-rating-column.dto';
 import { UpdateDescriptionRatingColumnDto } from './dto/update-description-rating-column.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
+import { DateRangeDto } from './dto/date-range.dto';
+import { Semester } from '../common/interfaces/semester.interface';
 
 @Injectable()
 export class RatingService {
@@ -18,22 +20,53 @@ export class RatingService {
 		private readonly educationRepository: Repository<EducationEntity>
 	) {}
 
-	async getRating(
+	async getStudentRatings(
+		studentId: string,
+		dateRange: DateRangeDto
+	) {
+		const { dateStart, dateEnd } = this.getDateRange(dateRange);
+
+		const ratings = await this.ratingRepository.find({
+			where: {
+				date: Between(dateStart, dateEnd),
+				student: { id: studentId }
+			},
+			relations: {
+				education: {
+					teacher: true,
+					subject: true
+				}
+			},
+			order: {
+				date: 'ASC',
+				education: {
+					subject: { name: 'ASC' }
+				}
+			}
+		});
+
+		return {
+			ratings,
+			semesters: this.getSemesters(await this.ratingRepository.find({
+				where: { student: { id: studentId } }
+			})),
+			dateStartRating: dateStart,
+			dateEndRating: dateEnd
+		};
+	}
+
+	async getTeacherRating(
 		teacherId: string,
 		educationId: string,
-		dateStartRating?: Date,
-		dateEndRating?: Date
+		dateRange: DateRangeDto
 	) {
-		const { dateStart, dateEnd } = this.getDateRange(dateStartRating, dateEndRating);
+		const { dateStart, dateEnd } = this.getDateRange(dateRange);
 
 		const education = await this.educationRepository.findOne({
-			where: [
-				{
-					id: educationId,
-					teacher: { id: teacherId },
-					// ratings: { date: Between(dateStart, dateEnd) }
-				}
-			],
+			where: {
+				id: educationId,
+				teacher: { id: teacherId }
+			},
 			relations: {
 				cls: {
 					students: {
@@ -66,8 +99,12 @@ export class RatingService {
 		}
 
 		education.ratings = education.ratings
-			.filter((rating) => new Date(rating.date) >= dateStart && new Date(rating.date) <= dateEnd &&
-				education.cls?.id === rating.student.cls?.id);
+			.filter((rating) => education.cls?.id === rating.student.cls?.id);
+
+		const semesters = this.getSemesters(education.ratings);
+
+		education.ratings = education.ratings
+			.filter((rating) => new Date(rating.date) >= dateStart && new Date(rating.date) <= dateEnd);
 
 		const missedRating: RatingEntity[] = [];
 
@@ -99,6 +136,7 @@ export class RatingService {
 
 		return {
 			education,
+			semesters,
 			dateStartRating: dateStart,
 			dateEndRating: dateEnd
 		};
@@ -241,29 +279,79 @@ export class RatingService {
 		return descriptions.map(({ description }) => description);
 	}
 
-	getDateRange(dateStart?: Date, dateEnd?: Date) {
-		dateStart = dateStart ? new Date(dateStart) : dateStart;
-		dateEnd = dateEnd ? new Date(dateEnd) : dateEnd;
+	getDateRange(dateRange: DateRangeDto) {
+		let { start, end } = dateRange;
 
-		if (!dateEnd) {
+		start = start ? new Date(start) : start;
+		end = end ? new Date(end) : end;
+
+		if (!end) {
 			const now = new Date();
-			dateEnd = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() + 7, 0, 0, 0, 0));
+			end = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate() + 7, 0, 0, 0, 0));
 		}
 
-		if (!dateStart || dateStart >= dateEnd) {
-			if (dateEnd.getMonth() >= 8) {
+		if (!start || start >= end) {
+			if (end.getMonth() >= 8) {
 				// початок першого семестру
-				dateStart = new Date(Date.UTC(dateEnd.getFullYear(), 8, 1, 0, 0, 0, 0));
+				start = new Date(Date.UTC(end.getFullYear(), 8, 1, 0, 0, 0, 0));
 			} else {
 				// початок другого семестру
-				dateStart = new Date(Date.UTC(dateEnd.getFullYear(), 0, 1, 0, 0, 0, 0));
+				start = new Date(Date.UTC(end.getFullYear(), 0, 1, 0, 0, 0, 0));
 			}
 		}
 
-		return { dateStart, dateEnd };
+		return { dateStart: start, dateEnd: end };
 	}
 
 	sortRatingsByDate(r1: RatingEntity, r2: RatingEntity) {
 		return new Date(r1.date).getTime() - new Date(r2.date).getTime();
+	}
+
+	getSemesters(ratings: RatingEntity[]): Semester[] {
+		const semesters: Semester[] = [];
+		const uniqueYears: number[] = [];
+
+		ratings.forEach((rating) => {
+			const year = new Date(rating.date).getFullYear();
+			if (!uniqueYears.includes(year)) {
+				uniqueYears.push(year);
+			}
+		});
+
+		uniqueYears.sort((y1, y2) => y1 - y2);
+		
+		uniqueYears.forEach((year) => {
+			// першиий семестр
+			const firstSemesterStart = new Date(Date.UTC(year, 8, 1, 0, 0, 0, 0));
+			const firstSemesterEnd = new Date(Date.UTC(year, 11, 31, 0, 0, 0, 0));
+
+			// другий семестр
+			const secondSemesterStart = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
+			const secondSemesterEnd = new Date(Date.UTC(year, 4, 31, 0, 0, 0, 0));
+
+			if (
+				ratings.some((rating) => new Date(rating.date) >= firstSemesterStart &&
+					new Date(rating.date) <= firstSemesterEnd)
+			) {
+				semesters.push({
+					title: `${year} - I семестр`,
+					start: firstSemesterStart,
+					end: firstSemesterEnd
+				});
+			}
+
+			if (
+				ratings.some((rating) => new Date(rating.date) >= secondSemesterStart &&
+					new Date(rating.date) <= secondSemesterEnd)
+			) {
+				semesters.push({
+					title: `${year} - II семестр`,
+					start: secondSemesterStart,
+					end: secondSemesterEnd
+				});
+			}
+		});
+
+		return semesters;
 	}
 }

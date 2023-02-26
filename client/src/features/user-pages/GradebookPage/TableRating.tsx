@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Form, Modal, Radio, Typography } from 'antd';
 import Moment from 'moment/moment';
 
+import { useUpdateRatingMutation } from '../../../api/services/teacherService';
 import { IEducation } from '../../../models/IEducation';
 import { IRating } from '../../../models/IRating';
 import useModal from '../../../hooks/useModal';
@@ -12,7 +13,6 @@ import UpdateDateRatingColumn from './UpdateDateRatingColumn';
 import UpdateDescriptionRatingColumn from './UpdateDescriptionRatingColumn';
 
 import styles from './GradebookPage.module.scss';
-import { useUpdateRatingMutation } from '../../../api/services/teacherService';
 
 interface Props {
 	data: IEducation;
