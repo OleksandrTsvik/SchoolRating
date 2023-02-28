@@ -89,7 +89,7 @@ export const teacherService = createApi({
 				method: 'DELETE',
 				body: data
 			}),
-			invalidatesTags: ['Rating']
+			invalidatesTags: ['Rating', 'Description']
 		}),
 		updateDateRatingColumn: builder.mutation<void, UpdateDateRatingColumnRequest>({
 			query: (data) => ({

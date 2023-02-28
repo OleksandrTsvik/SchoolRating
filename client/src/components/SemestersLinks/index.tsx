@@ -9,6 +9,10 @@ interface Props {
 }
 
 export default function SemestersLinks({ semesters, className, onClick }: Props) {
+	if (semesters.length === 0) {
+		return <></>;
+	}
+
 	return (
 		<div className={`${styles.container} ${className}`}>
 			{semesters.map((semester) => (
