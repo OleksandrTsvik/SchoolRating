@@ -8,6 +8,8 @@ import TableSubjects from './TableSubjects';
 import AddSubject from './AddSubject';
 
 export default function SubjectsPage() {
+	document.title = 'Предмети';
+
 	const { data, isLoading, isFetching, error, refetch } = useGetSubjectsQuery();
 
 	if (error) {

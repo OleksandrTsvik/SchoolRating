@@ -24,6 +24,8 @@ export default function ClassStudentsPage() {
 	const { data, isLoading, isFetching, error, refetch } = useGetClassQuery({ id: id as string });
 	const [removeStudent, { isLoading: isRemoveStudentLoading }] = useRemoveStudentMutation();
 
+	document.title = `Учні в класі ${data?.name}`;
+
 	if (error) {
 		return <FailedRequest loading={isFetching} error={error as ApiError} refetch={refetch} />;
 	}

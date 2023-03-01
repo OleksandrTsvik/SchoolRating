@@ -10,6 +10,8 @@ import FailedRequest from '../../../components/FailedRequest';
 import styles from './GradebooksPage.module.scss';
 
 export default function GradebooksPage() {
+	document.title = 'Журнали';
+
 	const { teacher } = useUserAuth();
 	const { data, isLoading, isFetching, error, refetch } = useGetGradebooksQuery({ id: teacher.id });
 

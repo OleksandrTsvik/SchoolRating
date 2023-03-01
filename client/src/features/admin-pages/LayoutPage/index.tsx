@@ -9,6 +9,8 @@ import AdminMain from '../../admin-layout/AdminMain';
 import styles from './LayoutPage.module.scss';
 
 export default function LayoutPage() {
+	document.title = 'Адмін-панель';
+
 	return (
 		<Layout className={styles.admin}>
 			<AdminSider />

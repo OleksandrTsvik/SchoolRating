@@ -6,6 +6,8 @@ import Info from './Info';
 import DeleteAccount from './DeleteAccount';
 
 export default function SettingsPage() {
+	document.title = 'Налаштування';
+
 	const admin = useAppSelector(selectCurrentAdmin);
 
 	if (!admin) {

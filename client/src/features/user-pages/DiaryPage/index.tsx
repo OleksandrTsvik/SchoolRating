@@ -22,6 +22,8 @@ interface DateRange {
 }
 
 export default function DiaryPage() {
+	document.title = 'Щоденник';
+
 	const [dateRange, setDateRange] = useState<DateRange>();
 
 	const { data, isLoading, isFetching, error, refetch } = useGetDiaryQuery({ ...dateRange });

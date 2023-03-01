@@ -9,6 +9,8 @@ import classBook from '../../../assets/class-book.jpg';
 import styles from './HomePage.module.scss';
 
 export default function HomePage() {
+	document.title = 'Головна';
+
 	const cards = [
 		{ text: 'Адмін-панель', link: '/admin', img: admin },
 		{ text: 'Щоденник для учнів', link: '/diary', img: diary },

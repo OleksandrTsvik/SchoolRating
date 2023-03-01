@@ -7,6 +7,8 @@ import UserMain from '../../user-layout/UserMain';
 import styles from './LayoutPage.module.scss';
 
 export default function LayoutPage() {
+	document.title = 'Школа';
+
 	return (
 		<div className={styles.wrapper}>
 			<UserNavbar />

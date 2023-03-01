@@ -7,6 +7,8 @@ import LoginForm from './LoginForm';
 import styles from './LoginPage.module.scss';
 
 export default function LoginPage() {
+	document.title = 'Вхід в адмін-панель';
+
 	const { isAuth } = useAdminAuth();
 
 	return (

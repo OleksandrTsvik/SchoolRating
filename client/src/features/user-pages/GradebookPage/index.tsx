@@ -23,7 +23,9 @@ interface DateRange {
 	end?: string;
 }
 
-export default function GradebooksPage() {
+export default function GradebookPage() {
+	document.title = 'Журнал';
+
 	const { id } = useParams();
 	const [dateRange, setDateRange] = useState<DateRange>();
 

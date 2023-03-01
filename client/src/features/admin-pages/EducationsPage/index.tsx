@@ -26,6 +26,8 @@ interface DataType {
 }
 
 export default function EducationsPage() {
+	document.title = 'Викладання предметів';
+	
 	const { data, isLoading, isFetching, error, refetch } = useGetEducationsQuery();
 
 	const { isOpen, onOpen, onClose } = useModal();

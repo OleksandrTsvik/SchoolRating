@@ -5,6 +5,8 @@ import StudentCabinet from './StudentCabinet';
 import TeacherCabinet from './TeacherCabinet';
 
 export default function CabinetPage() {
+	document.title = 'Кабінет';
+	
 	const { isStudent, isTeacher, student, teacher } = useUserAuth();
 
 	if (isStudent) {

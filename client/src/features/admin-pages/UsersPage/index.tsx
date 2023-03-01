@@ -12,6 +12,8 @@ const tabs: Tab[] = [
 ];
 
 export default function UsersPage() {
+	document.title = 'Користувачі';
+
 	return (
 		<Tabs
 			defaultActiveKey="1"

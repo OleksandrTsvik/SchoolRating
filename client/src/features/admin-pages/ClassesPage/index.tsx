@@ -8,6 +8,8 @@ import AddClass from './AddClass';
 import TableClasses from './TableClasses';
 
 export default function ClassesPage() {
+	document.title = 'Класи';
+
 	const { data, isLoading, isFetching, error, refetch } = useGetClassesQuery();
 
 	if (error) {

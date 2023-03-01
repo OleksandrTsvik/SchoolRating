@@ -3,6 +3,8 @@ import { Button } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 
 export default function NotFoundPage() {
+	document.title = 'Not Found 404';
+
 	return (
 		<div className="h-100 bg-secondary bg-gradient">
 			<div className="h-100 p-3 d-flex justify-content-center align-items-center">
