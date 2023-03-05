@@ -14,6 +14,6 @@ export async function getPostgresConfig(configService: ConfigService): Promise<T
 		entities: [__dirname + '/../**/*.entity.{js,ts}'],
 		// entities: [AdminModel],
 		synchronize: true,
-		// logging: true // запити до БД в терміналі
+		// logging: true // логування запитів до БД в терміналі
 	};
 }

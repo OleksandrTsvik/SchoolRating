@@ -37,7 +37,7 @@ export default function AdminSider() {
 				>
 					{collapsed
 						? <CloudOutlined />
-						: 'School'
+						: 'Рейтинг'
 					}
 				</Link>
 				<Menu

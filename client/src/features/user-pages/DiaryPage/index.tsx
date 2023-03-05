@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DatePicker, Empty, Segmented, Skeleton, Spin, Tooltip, Typography } from 'antd';
+import { DatePicker, Empty, Skeleton, Spin, Tooltip, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
 import dayjs from 'dayjs';
 import Moment from 'moment';
@@ -105,7 +105,16 @@ export default function DiaryPage() {
 					}}
 				/>
 				{matrixRating.length === 0
-					? <Empty description={<>Оцінки відсутні {dateRange?.start} &mdash; {dateRange?.end}</>} />
+					? <Empty
+						description={
+							<>
+								Оцінки відсутні&nbsp;
+								{Moment(data.dateStartRating).format('DD.MM.YYYY')}
+								&nbsp;&mdash;&nbsp;
+								{Moment(data.dateEndRating).format('DD.MM.YYYY')}
+							</>
+						}
+					/>
 					: <div className="table-responsive w-100">
 						<table className={styles.table}>
 							<thead>
